@@ -1,0 +1,9 @@
+matplotlib
+seaborn
+pandas
+openpyxl
+pltly
+os
+torch
+torchvision
+scikit-learn
