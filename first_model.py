@@ -20,12 +20,47 @@ data['drugid2_encoded'] = encoder.fit_transform(data['drugid2'])
 X = data[['drugid1_encoded', 'drugid2_encoded', 'ic50_drug1', 'ic50_drug2']].values
 y = data['synergy_score'].values
 
-# Normalize IC50 values
-scaler = StandardScaler()
-X[:, 2:] = scaler.fit_transform(X[:, 2:])
-
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Choose between quartile filtering or log scaling
+def preprocess_data(X_train, X_test, y_train, y_test, method='quartile'):
+    if method == 'quartile':
+        # Separate ic50_drug1 and ic50_drug2 into quartiles and eliminate the highest quartile
+        ic50_drug1 = X_train[:, 2]
+        ic50_drug2 = X_train[:, 3]
+
+        # Calculate the 75th percentile for ic50_drug1 and ic50_drug2
+        q75_drug1 = np.percentile(ic50_drug1, 75)
+        q75_drug2 = np.percentile(ic50_drug2, 75)
+
+        # Filter out the highest quartile
+        mask = (ic50_drug1 <= q75_drug1) & (ic50_drug2 <= q75_drug2)
+        X_train = X_train[mask]
+        y_train = y_train[mask]
+
+        # Apply the same filtering to the test set
+        ic50_drug1_test = X_test[:, 2]
+        ic50_drug2_test = X_test[:, 3]
+        mask_test = (ic50_drug1_test <= q75_drug1) & (ic50_drug2_test <= q75_drug2)
+        X_test = X_test[mask_test]
+        y_test = y_test[mask_test]
+    elif method == 'log':
+        # Apply log scaling to ic50 values
+        X_train[:, 2:] = np.log1p(X_train[:, 2:])
+        X_test[:, 2:] = np.log1p(X_test[:, 2:])
+    else:
+        raise ValueError("Method must be either 'quartile' or 'log'")
+    
+    return X_train, X_test, y_train, y_test
+
+# Preprocess data
+X_train, X_test, y_train, y_test = preprocess_data(X_train, X_test, y_train, y_test, method='quartile')
+
+# Normalize IC50 values
+scaler = StandardScaler()
+X_train[:, 2:] = scaler.fit_transform(X_train[:, 2:])
+X_test[:, 2:] = scaler.transform(X_test[:, 2:])
 
 # Build the model
 model = Sequential([
