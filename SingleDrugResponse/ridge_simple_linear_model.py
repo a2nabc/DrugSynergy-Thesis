@@ -14,18 +14,20 @@ from scipy import stats
 
 data_path = "./data/"
 data_NCI = "merged_NCI"
+data_NCI_relevant = "merged_NCI_RELEVANT"
 data_GDSC = "merged_GDSC"
+data_GDSC_relevant = "merged_GDSC_RELEVANT"
 
 df = pd.read_csv(data_path+data_GDSC+".csv")       #Change NCI for GDSC
 print(df.shape)
 print(df.columns)
 
 # Drop rows with missing IC50/AAC values
-df = df.dropna(subset=['IC50'])  				  #Change IC50 for AAC
+df = df.dropna(subset=['AAC'])  				  #Change IC50 for AAC
 
 # take the cell line gene expression values and make them a matrix
 X = df.drop(columns=['cell_line', 'AAC', 'IC50'])
-y = df['IC50'] 									  #Change IC50 for AAC
+y = df['AAC'] 									  #Change IC50 for AAC
 
 #print(X.shape)
 #print(y.shape)
@@ -42,7 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # train_test_split(*arrays, test_size=None, train_size=None, random_state=None, shuffle=True, stratify=None)[source]
 
 
-num_folds = 3
+num_folds = 5
 
 # Model
 model = Ridge()
