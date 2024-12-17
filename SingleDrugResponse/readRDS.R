@@ -1,4 +1,4 @@
-
+library(PharmacoGx)
 ###################### Obtain gene expression NCI ########################
 
 dataNCI60 <- readRDS("PSet_NCI60.rds")
@@ -7,13 +7,28 @@ dataNCI60 <- readRDS("PSet_NCI60.rds")
 gene_expression_NCI <- dataNCI60@molecularProfiles$rna
 gene_expression_matrix_NCI <- as.data.frame(assay(gene_expression_NCI))  # Extract assay data (gene expression)
 
+#
+gene_names <- rownames(gene_expression_matrix_NCI)  # Gene names
+cell_line_names <- colnames(gene_expression_matrix_NCI)  # Cell line names
+
+geneid_names <- gene_expression_NCI@rowRanges@elementMetadata@listData$gene_id
+
+gene_expression_matrix_NCI_with_id <- cbind(gene_id = geneid_names, gene_expression_matrix_NCI)
+
 # Transpose to have cell lines as rows and genes as columns
-gene_expression_matrix_NCI_T <- as.data.frame(t(gene_expression_matrix_NCI))
+gene_expression_matrix_NCI_T <- as.data.frame(t(gene_expression_matrix_NCI_with_id))
 gene_expression_matrix_NCI_T$cell_line <- rownames(gene_expression_matrix_NCI_T)  # Add cell line IDs
+
 
 # Write to CSV
 write.csv(gene_expression_matrix_NCI_T, "gene_expression_matrix_NCI_T.csv", row.names = FALSE)
 
+# Additional operations to filter only relevant expression data for the drug selected: Camptothecin
+columns_to_keep <- which(gene_expression_matrix_NCI_T["gene_id", ] == "ENSG00000198900")
+columns_to_keep <- c("cell_line", colnames(gene_expression_matrix_NCI_T)[columns_to_keep])
+filtered_matrix_NCI <- gene_expression_matrix_NCI_T[, columns_to_keep, drop = FALSE]
+
+write.csv(filtered_matrix_NCI, "gene_expression_matrix_NCI_RELEVANT.csv", row.names = FALSE)
 
 ###################### Obtain ic50 and AAC ##################################
 # Drug names are in the 'drugid' column within the @drug slot
@@ -55,8 +70,14 @@ print("Data preprocessing complete. Merged file saved as 'merged_NCI.csv'")
 
 
 
+# Merge relevant columns only
+gene_expression_NCI_relevant <- read.csv("gene_expression_matrix_NCI_RELEVANT.csv")
 
+ic50_aac_NCI <- read.csv("ic50_aac_NCI.csv")# Merge by cell line to align the data
+merged_data_NCI_relevant <- merge(ic50_aac_NCI, gene_expression_NCI_relevant, by = "cell_line")
 
+# Save merged data to CSV for use in Python
+write.csv(merged_data_NCI_relevant, "merged_NCI_RELEVANT.csv", row.names = FALSE)
 
 
 ############################################################################## 
@@ -83,6 +104,12 @@ gene_expression_matrix_GDSC_T <- as.data.frame(t(gene_expression_matrix_GDSC))
 gene_expression_matrix_GDSC_T$cell_line <- rownames(gene_expression_matrix_GDSC_T)  # Add cell line IDs
 
 write.csv(gene_expression_matrix_GDSC_T, "gene_expression_matrix_GDSC_T.csv", row.names = FALSE)
+
+# Additional operations to filter only relevant expression data for the drug selected: Camptothecin
+columns_to_keep2 <- c("cell_line", "ENSG00000198900")
+filtered_matrix_GDSC <- gene_expression_matrix_GDSC_T[, columns_to_keep2, drop = FALSE]
+
+write.csv(filtered_matrix_GDSC, "gene_expression_matrix_GDSC_RELEVANT.csv", row.names = FALSE)
 
 
 ###################### Obtain ic50 and AAC ##################################
@@ -127,3 +154,9 @@ write.csv(merged_data_GDSC, "merged_GDSC.csv", row.names = FALSE)
 
 print("Data preprocessing complete. Merged file saved as 'merged_GDSC.csv'")
 
+
+gene_expression_GDSC_relevant <- read.csv("gene_expression_matrix_GDSC_RELEVANT.csv")
+merged_data_GDSC_relevant <- merge(ic50_aac_GDSC, gene_expression_GDSC_relevant, by="cell_line")
+
+write.csv(merged_data_GDSC_relevant, "merged_GDSC_RELEVANT.csv", row.names = FALSE)
+print("Data preprocessing complete. Merged file saved as 'merged_GDSC_RELEVANT.csv'")
