@@ -1,35 +1,4 @@
-"""
-Example code to predict drug synergy using simple linear models.
-
-This code is built on data available from the Therapeutic Data Commons (tdcommons)
-and uses the OncoPolyPharmacology screen. tdcommons has another synergy data set available
-(DrugComb)but let's ignore that for now. 
-
-Some notes:
- - OncoPolyPharmacology only has the Loewe Additivity synergy score
- - OncoPolyPharmacology is a large dataset (~1.6 GB)
-
-
-In brief what the code below does is select two drugs and focus on their synergy
-values across a number of cell lines. This is very similar to the task you're doing
-with GDSC except you have one drug. This should give you some example code to get 
-started on running a simpler model. I use a Lasso model to give you a chance to look at
-regularization. The wikipedia is decent: https://en.wikipedia.org/wiki/Lasso_(statistics)
-
-
-The datasets are not the one Ben wants you to use but it's good practice for you
-and also can be used as experiments in your thesis. 
-
-
-
-Written by: James Bannon
-
-
-
-
-"""
-
-# required libraries
+# libraries
 
 import numpy as np 
 import pandas as pd
@@ -47,20 +16,16 @@ data_path = "./data/"
 data_NCI = "merged_NCI"
 data_GDSC = "merged_GDSC"
 
-# this will automatically download a drug synergy dataset when you first call it.
-# subsequent calls won't need a download
-# docs: https://tdc.readthedocs.io/en/main/tdc.multi_pred.html
-
 df = pd.read_csv(data_path+data_NCI+".csv")       #Change NCI for GDSC
 print(df.shape)
 print(df.columns)
 
-# Drop rows with missing IC50 values
-df = df.dropna(subset=['IC50']) #change this to compare IC50 vs AAC
+# Drop rows with missing IC50/AAC values
+df = df.dropna(subset=['IC50'])  				  #Change IC50 for AAC
 
 # take the cell line gene expression values and make them a matrix
 X = df.drop(columns=['cell_line', 'AAC', 'IC50'])
-y = df['IC50'] #change this to compare IC50 vs AAC
+y = df['IC50'] 									  #Change IC50 for AAC
 
 #print(X.shape)
 #print(y.shape)
@@ -99,7 +64,7 @@ print(f"\n\tThe mean absolute error is {np.round(abs_error,3)}")
 print(f"\n\tThe mean square error is {np.round(square_error,3)}")
 
 
-# Visualize the predicted versus true. Good prediction should look like a straight line.
+# Visualize the predicted versus true values
 res_df = pd.DataFrame({'True Value': y_test,'Predicted Value':preds})
 sns.scatterplot(data=res_df, x="True Value", y="Predicted Value")
 plt.show()
