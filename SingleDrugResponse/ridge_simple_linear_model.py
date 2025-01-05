@@ -12,10 +12,14 @@ def load_data(data_path, data_file):
 	df = pd.read_csv(data_path + data_file + ".csv")
 	return df
 
-def preprocess_data(df):
-	df = df.dropna(subset=['AAC']) #Change IC50 for AAC, depending on the desired metric
-	X = df.drop(columns=['cell_line', 'AAC', 'IC50']) #Change IC50 for AAC
-	y = df['AAC'] #Change IC50 for AAC
+def preprocess_data(df, metric):
+	if metric == "AAC":
+		df = df.drop(columns=['IC50'])
+	else:
+		df = df.drop(columns=['AAC'])
+	df = df.dropna(subset=[metric])
+	X = df.drop(columns=['cell_line', metric])
+	y = df[metric]
 	return X, y
 
 def split_data(X, y, train_size=0.8, test_size=0.2, seed=1234):
@@ -43,12 +47,13 @@ def visualize_results(y_test, preds):
 def main():
 	data_path = "./data/"
 	data_file = "merged_GDSC" #change to merged_NCI for NCI data
+	metric = "AAC" # change to "IC50" for IC50 metric
 	
 	df = load_data(data_path, data_file)
 	print(df.shape)
 	print(df.columns)
 	
-	X, y = preprocess_data(df)
+	X, y = preprocess_data(df, metric)
 	X_train, X_test, y_train, y_test = split_data(X, y)
 	
 	clf = train_model(X_train, y_train)
