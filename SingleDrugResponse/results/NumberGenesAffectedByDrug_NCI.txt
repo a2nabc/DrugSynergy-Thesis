@@ -1,0 +1,299 @@
+CHEBI_ID	DRUG_NAME	COUNT
+CHEBI:10093	yohimbine	18
+CHEBI:10429	beta-lapachone	1
+CHEBI:114785	erlotinib	2
+CHEBI:133021	venetoclax	1
+CHEBI:134689	rucaparib	3
+CHEBI:135002	irofulven	1
+CHEBI:135233	dimetacrine	1
+CHEBI:135356	calusterone	1
+CHEBI:135876	valrubicin	1
+CHEBI:137236	ilomastat	2
+CHEBI:138488	alsterpaullone	3
+CHEBI:141969	tipifarnib	1
+CHEBI:143117	lorlatinib	1
+CHEBI:157175	enoxacin	1
+CHEBI:15738	staurosporine	13
+CHEBI:15891	taurine	21
+CHEBI:15940	nicotinic acid	4
+CHEBI:16196	oleic acid	6
+CHEBI:16243	quercetin	27
+CHEBI:164200	triclosan	5
+CHEBI:16664	albendazole	2
+CHEBI:16708	adenine	6
+CHEBI:16755	chenodeoxycholic acid	4
+CHEBI:16796	melatonin	10
+CHEBI:168396	mycophenolic acid	2
+CHEBI:17026	progesterone	10
+CHEBI:17154	nicotinamide	4
+CHEBI:171741	cerulenin	1
+CHEBI:17549	aminolevulinic acid	1
+CHEBI:17568	uracil	2
+CHEBI:175901	gemcitabine	3
+CHEBI:17650	hydrocortisone	4
+CHEBI:17698	chloramphenicol	1
+CHEBI:17939	puromycin	12
+CHEBI:18152	myricetin	2
+CHEBI:23359	colchicine	2
+CHEBI:2636	amifostine	2
+CHEBI:2654	aminoglutethimide	2
+CHEBI:2675	amoxapine	44
+CHEBI:2687	amsacrine	4
+CHEBI:2704	anastrozole	1
+CHEBI:27375	vincaleukoblastine	6
+CHEBI:27656	camptothecin	1
+CHEBI:27666	actinomycin d	2
+CHEBI:27744	glyphosate	1
+CHEBI:27899	cisplatin	4
+CHEBI:28077	rifampicin	7
+CHEBI:28088	genistein	13
+CHEBI:28241	papaverine	2
+CHEBI:28445	vincristine	2
+CHEBI:28487	reserpine	3
+CHEBI:28572	rescinnamine	1
+CHEBI:28584	gossypol	1
+CHEBI:28680	cytarabine	1
+CHEBI:28689	dehydroepiandrosterone	33
+CHEBI:28748	doxorubicin	2
+CHEBI:28794	coumarin	1
+CHEBI:28834	deoxycholic acid	4
+CHEBI:28869	menadione	13
+CHEBI:2896	astemizole	4
+CHEBI:29063	mimosine	3
+CHEBI:2922	auranofin	2
+CHEBI:2948	azathioprine	2
+CHEBI:29579	epothilone d	12
+CHEBI:3023	benzbromarone	2
+CHEBI:3070	bestatin	1
+CHEBI:31348	capecitabine	1
+CHEBI:31502	dinoprost tromethamine	2
+CHEBI:31515	domperidone	2
+CHEBI:31550	epothilone b	12
+CHEBI:31625	fluorometholone	1
+CHEBI:31638	fulvestrant	1
+CHEBI:31821	mequitazine	1
+CHEBI:32181	tamibarotene	2
+CHEBI:32188	tegafur	2
+CHEBI:34283	oxybenzone	4
+CHEBI:34848	mevastatin	1
+CHEBI:34892	nocodazole	1
+CHEBI:351346	phenethyl isothiocyanate	46
+CHEBI:36386	dichloroacetic acid	2
+CHEBI:3647	chlorpromazine	26
+CHEBI:36704	imiquimod	2
+CHEBI:3699	cimetidine	1
+CHEBI:37495	quinalizarin	1
+CHEBI:3749	clofazimine	1
+CHEBI:3750	clofibrate	1
+CHEBI:37510	anthralin	3
+CHEBI:3764	clotrimazole	3
+CHEBI:38927	pelitinib	1
+CHEBI:38940	sunitinib	8
+CHEBI:39112	bosutinib	10
+CHEBI:39462	pilocarpine	4
+CHEBI:3962	curcumin	5
+CHEBI:39867	valproic acid	22
+CHEBI:40279	allopurinol	1
+CHEBI:4027	cyclophosphamide	1
+CHEBI:40303	lovastatin	3
+CHEBI:4031	cyclosporin a	4
+CHEBI:4055	cytisine	5
+CHEBI:41423	celecoxib	7
+CHEBI:41774	tamoxifen	16
+CHEBI:41791	calyculin a	1
+CHEBI:41865	sebacic acid	3
+CHEBI:41879	dexamethasone	5
+CHEBI:41922	diethylstilbestrol	9
+CHEBI:41948	eflornithine	1
+CHEBI:41977	daunorubicin	2
+CHEBI:42068	idarubicin	1
+CHEBI:42223	emodin	2
+CHEBI:42471	forskolin	4
+CHEBI:42567	fisetin	1
+CHEBI:43645	indirubin-3'-monoxime	6
+CHEBI:44185	methotrexate	1
+CHEBI:44423	hydroxyurea	1
+CHEBI:44661	olomoucine	4
+CHEBI:45081	pentamidine	1
+CHEBI:4518	dienestrol	2
+CHEBI:45307	seliciclib	7
+CHEBI:45409	ritonavir	1
+CHEBI:4551	digoxin	1
+CHEBI:45713	resveratrol	25
+CHEBI:45716	vorinostat	5
+CHEBI:45783	imatinib	8
+CHEBI:4582	dihydroresveratrol	1
+CHEBI:45863	paclitaxel	6
+CHEBI:45906	suramin	6
+CHEBI:45969	tricarballylic acid	1
+CHEBI:46245	coenzyme q10	2
+CHEBI:46345	5-fluorouracil	1
+CHEBI:4636	diphenhydramine	2
+CHEBI:46416	virginiamycin s1	1
+CHEBI:4653	dipyridamole	6
+CHEBI:4659	disulfiram	2
+CHEBI:4672	docetaxel	6
+CHEBI:4681	dofetilide	3
+CHEBI:4717	droperidol	2
+CHEBI:472805	ouabain	3
+CHEBI:47344	alvocidib	12
+CHEBI:4775	ellagic acid	17
+CHEBI:48080	brefeldin a	2
+CHEBI:480999	vinorelbine	1
+CHEBI:48765	cacodylic acid	3
+CHEBI:490877	didanosine	1
+CHEBI:4911	etoposide	2
+CHEBI:49477	arsanilic acid	1
+CHEBI:4953	exemestane	1
+CHEBI:49603	lapatinib	2
+CHEBI:49668	gefitinib	1
+CHEBI:49960	vandetanib	5
+CHEBI:5004	fenoprofen	4
+CHEBI:50223	dexrazoxane	2
+CHEBI:50378	nitisinone	1
+CHEBI:5062	finasteride	3
+CHEBI:50692	mifepristone	4
+CHEBI:50694	minocycline	7
+CHEBI:50729	mitoxantrone	1
+CHEBI:50924	sorafenib	10
+CHEBI:5100	flucytosine	1
+CHEBI:5123	fluphenazine	6
+CHEBI:5130	flurbiprofen	2
+CHEBI:5136	fluvastatin	1
+CHEBI:52172	nilotinib	2
+CHEBI:52289	wortmannin	4
+CHEBI:52717	bortezomib	2
+CHEBI:52768	hycanthone	1
+CHEBI:5551	guaifenesin	7
+CHEBI:5553	guanabenz	2
+CHEBI:5613	haloperidol	7
+CHEBI:567361	cladribine	9
+CHEBI:5693	hexachlorophene	3
+CHEBI:5747	homatropine	5
+CHEBI:5778	hydrochlorothiazide	4
+CHEBI:5783	hydrocortisone cypionate	4
+CHEBI:5835	hypericin	2
+CHEBI:5855	ibuprofen	10
+CHEBI:5864	ifosfamide	1
+CHEBI:6067	isotretinoin	2
+CHEBI:60761	floxuridine	1
+CHEBI:6076	itraconazole	1
+CHEBI:61049	tacrolimus	1
+CHEBI:61076	belinostat	11
+CHEBI:61080	romidepsin	5
+CHEBI:61390	afatinib	3
+CHEBI:61397	neratinib	1
+CHEBI:61399	canertinib	1
+CHEBI:63115	fingolimod	2
+CHEBI:63452	midostaurin	6
+CHEBI:63486	8-azaguanine	1
+CHEBI:63580	ribavirin	4
+CHEBI:63584	cabazitaxel	2
+CHEBI:63605	ixabepilone	1
+CHEBI:63612	nelarabine	1
+CHEBI:63616	pemetrexed	4
+CHEBI:63632	topotecan	2
+CHEBI:63637	vemurafenib	1
+CHEBI:63791	lenalidomide	4
+CHEBI:6402	leflunomide	3
+CHEBI:6413	letrozole	1
+CHEBI:64153	tanespimycin	2
+CHEBI:64195	ritanserin	1
+CHEBI:64213	cantharidin	1
+CHEBI:64216	metergoline	1
+CHEBI:64310	crizotinib	2
+CHEBI:6520	lomustine	1
+CHEBI:65324	alvespimycin	1
+CHEBI:65347	carfilzomib	6
+CHEBI:6538	loratadine	2
+CHEBI:66901	ivacaftor	1
+CHEBI:66903	vismodegib	1
+CHEBI:66910	axitinib	3
+CHEBI:66919	ruxolitinib	2
+CHEBI:6704	mebendazole	2
+CHEBI:67121	nitroxoline	1
+CHEBI:6723	megestrol acetate	2
+CHEBI:67272	perifosine	3
+CHEBI:6780	mesoridazine	2
+CHEBI:681569	clofarabine	2
+CHEBI:68478	everolimus	1
+CHEBI:68534	enzalutamide	1
+CHEBI:68540	teriflunomide	1
+CHEBI:68642	abiraterone	1
+CHEBI:68647	regorafenib	18
+CHEBI:6872	methylene blue	2
+CHEBI:69136	latrunculin a	2
+CHEBI:6954	mitotane	5
+CHEBI:71019	omacetaxine mepesuccinate	1
+CHEBI:71200	tofacitinib	4
+CHEBI:71219	pazopanib	10
+CHEBI:71223	pralatrexate	2
+CHEBI:71417	procarbazine	2
+CHEBI:71958	xl765	5
+CHEBI:72317	cabozantinib	3
+CHEBI:72690	pomalidomide	3
+CHEBI:73167	concanamycin a	1
+CHEBI:7468	nandrolone phenpropionate	1
+CHEBI:75045	dabrafenib	5
+CHEBI:75283	miltefosine	1
+CHEBI:7565	nifedipine	9
+CHEBI:7577	nisoldipine	5
+CHEBI:75988	teniposide	1
+CHEBI:75998	trametinib	2
+CHEBI:76612	ibrutinib	1
+CHEBI:76995	alpha-naphthoflavone	1
+CHEBI:7731	ofloxacin	1
+CHEBI:77837	5-fluorotryptophan	2
+CHEBI:7822	oxaprozin	2
+CHEBI:78432	ceritinib	1
+CHEBI:78543	ponatinib	15
+CHEBI:78549	pipamperone	10
+CHEBI:79699	temsirolimus	1
+CHEBI:79700	ridaforolimus	1
+CHEBI:8028	perphenazine	3
+CHEBI:80630	irinotecan	2
+CHEBI:8064	phenformin	2
+CHEBI:8212	pimozide	4
+CHEBI:8249	piroxicam	2
+CHEBI:82873	econazole	1
+CHEBI:82892	miconazole	15
+CHEBI:83275	hypothemycin	1
+CHEBI:8364	prazosin	6
+CHEBI:83766	olaparib	3
+CHEBI:8382	prednisone	2
+CHEBI:8427	probucol	2
+CHEBI:85164	nintedanib	10
+CHEBI:85990	panobinostat	11
+CHEBI:85993	palbociclib	2
+CHEBI:85994	lenvatinib	8
+CHEBI:8673	pyrimethamine	2
+CHEBI:8764	mycophenolate mofetil	2
+CHEBI:8772	raloxifene	4
+CHEBI:8862	rilmenidine	1
+CHEBI:8871	risperidone	15
+CHEBI:8887	rofecoxib	2
+CHEBI:8988	sn-38	1
+CHEBI:90217	quizartinib	1
+CHEBI:90237	tandutinib	2
+CHEBI:90620	vatalanib	3
+CHEBI:90624	sgx-523	1
+CHEBI:90683	talmapimod	4
+CHEBI:90748	o-(chloroacetylcarbamoyl)fumagillol	1
+CHEBI:90851	cobimetinib	1
+CHEBI:90863	sonidegib	1
+CHEBI:90936	alectinib	1
+CHEBI:90943	osimertinib	1
+CHEBI:91083	semaxanib	1
+CHEBI:9139	sildenafil	3
+CHEBI:91435	linifanib	6
+CHEBI:9150	simvastatin	3
+CHEBI:9288	streptozocin	2
+CHEBI:9367	swainsonine	1
+CHEBI:9434	telmisartan	2
+CHEBI:9453	terfenadine	7
+CHEBI:9460	testolactone	1
+CHEBI:9513	thalidomide	7
+CHEBI:9568	thiorphan	1
+CHEBI:9604	tioconazole	1
+CHEBI:9667	triamcinolone	1
+CHEBI:9907	ursodeoxycholic acid	2
