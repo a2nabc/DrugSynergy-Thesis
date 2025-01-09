@@ -38,7 +38,7 @@ def filter_by_drug_names(input_file, drug_names_file, output_file):
                 elements[2] = elements[2].lower()
                 outfile.write('\t'.join([elements[0], elements[2]]) + '\n')
 
-def count_chebi_interactions(chebi_file, interaction_file, output_file):
+def count_chebi_interactions(chebi_file, interaction_file, output_file_number, output_file_genes):
     chebi_counts = {}
     chebi_drug_names = {}
 
@@ -58,30 +58,42 @@ def count_chebi_interactions(chebi_file, interaction_file, output_file):
             if chebi_id in chebi_drug_names:
                 if chebi_id not in chebi_counts:
                     chebi_counts[chebi_id] = set()
-                chebi_counts[chebi_id].add(elements[2])
+                chebi_counts[chebi_id].add(elements[2].strip())
 
-    with open(output_file, 'w') as output_f:
-        output_f.write('CHEBI_ID\tDRUG_NAME\tCOUNT\n')
+    with open(output_file_number, 'w') as output_num_f:
+        output_num_f.write('CHEBI_ID\tDRUG_NAME\tCOUNT\n')
         for chebi_id, participants in chebi_counts.items():
             drug_name = chebi_drug_names[chebi_id]
-            output_f.write(f'{chebi_id}\t{drug_name}\t{len(participants)}\n')
+            output_num_f.write(f'{chebi_id}\t{drug_name}\t{len(participants)}\n')
+
+        # Output another file with chebi, drug name, and the names of all genes affected
+        with open(output_file_genes, 'w') as output_genes_f:
+            output_genes_f.write('CHEBI_ID\tDRUG_NAME\tGENES_AFFECTED\n')
+            for chebi_id, participants in chebi_counts.items():
+                drug_name = chebi_drug_names[chebi_id]
+                genes_affected = ', '.join(participants)
+                #genes_affected_vector = genes_affected.split(', ')
+                #print(genes_affected_vector)
+                output_genes_f.write(f'{chebi_id}\t{drug_name}\t{genes_affected}\n')
 
 
 input_file = './data/PathwayCommons12.drugbank.hgnc.txt'
-output_file_1 = './data/Interactions.txt'
-output_file_2 = './data/DetailsAboutParticipants.txt'
+output_file_1 = './results/Interactions.txt'
+output_file_2 = './results/DetailsAboutParticipants.txt'
 
 drug_names_file_GDSC = './data/DrugNamesGDSC.txt'
-output_filtered_file_GDSC = './data/DrugName_vs_Chebi_GDSC.txt'
+output_filtered_file_GDSC = './results/DrugName_vs_Chebi_GDSC.txt'
 
 drug_names_file_NCI = './data/DrugNamesNCI.txt'
-output_filtered_file_NCI = './data/DrugName_vs_Chebi_NCI.txt'
+output_filtered_file_NCI = './results/DrugName_vs_Chebi_NCI.txt'
 
 create_new_table(input_file, output_file_1, output_file_2)
 filter_by_drug_names(output_file_2, drug_names_file_GDSC, output_filtered_file_GDSC)
 filter_by_drug_names(output_file_2, drug_names_file_NCI, output_filtered_file_NCI)
 
-output_count_file = './data/NumberGenesAffectedByDrug_GDSC.txt'
-count_chebi_interactions(output_filtered_file_GDSC, output_file_1, output_count_file)
-output_count_file = './data/NumberGenesAffectedByDrug_NCI.txt'
-count_chebi_interactions(output_filtered_file_NCI, output_file_1, output_count_file)
+output_count_file_GDSC = './results/NumberGenesAffectedByDrug_GDSC.txt'
+output_drug_genes_affected_GDSC = './results/AffectedGenesByDrug_GDSC.txt'
+count_chebi_interactions(output_filtered_file_GDSC, output_file_1, output_count_file_GDSC, output_drug_genes_affected_GDSC)
+output_count_file_NCI = './results/NumberGenesAffectedByDrug_NCI.txt'
+output_drug_genes_affected_NCI = './results/AffectedGenesByDrug_NCI.txt'
+count_chebi_interactions(output_filtered_file_NCI, output_file_1, output_count_file_NCI, output_drug_genes_affected_NCI)
