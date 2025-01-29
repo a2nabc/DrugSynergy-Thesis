@@ -32,6 +32,16 @@ extract_gene_expression <- function(data, is_GDSC, output_path) {
   return(gene_expression_matrix_T)
 }
 
+# Function to filter gene expression data for specific genes
+filter_gene_expression <- function(gene_expression_matrix_T, genes_of_interest, output_path) {
+  columns_to_keep <- c("cell_line", colnames(gene_expression_matrix_T)[
+    gene_expression_matrix_T["gene_id", ] %in% genes_of_interest
+  ])
+  filtered_matrix <- gene_expression_matrix_T[, columns_to_keep, drop = FALSE]
+  write.csv(filtered_matrix, output_path, row.names = FALSE)
+  return(filtered_matrix)
+}
+
 # Function to extract IC50 and AAC data
 extract_ic50_aac <- function(data, drug_name, output_path) {
   sensitivity_data <- data@sensitivity$profiles
@@ -53,35 +63,97 @@ merge_data <- function(ic50_aac_df, gene_expression_matrix, output_path) {
   return(merged_data)
 }
 
-# Function to process GDSC data
-process_GDSC <- function(dataGDSC, output_path_prefix, ENSGS_path, threshold = 1e6) {
-  drug_names_GDSC <- unique(dataGDSC@drug$drugid)
-  sensitivity_data <- dataGDSC@sensitivity$profiles
+# Additional operations to filter only relevant expression data
+process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, threshold = 1e6) {
+  ENSGS <- read.delim(ENSGS_path, 
+                      stringsAsFactors = FALSE, 
+                      sep = "\t", # Explicitly specify tab as the delimiter
+                      header = TRUE) # Ensure the first row is treated as headers
   
-  # Load ENSGS data
-  ENSGS <- read.delim(ENSGS_path, stringsAsFactors = FALSE, sep = "\t", header = TRUE)
-  
+  # Check the structure of the dataframe
+  str(ENSGS)
+  # Loop through each drug in ENSGS
   for (i in 1:nrow(ENSGS)) {
+    # Extract drug information
+    chebi_id <- ENSGS$CHEBI_ID[i]
     drug_name <- ENSGS$DRUG_NAME[i]
     gene_list <- unlist(strsplit(ENSGS$GENES_AFFECTED[i], ", "))
     
-    # Filter gene expression matrix
-    filtered_matrix <- filter_gene_expression(
-      gene_expression_matrix_GDSC_T, 
-      gene_list, 
-      paste0(output_path_prefix, "_filtered_", drug_name, ".csv")
+    # Filter columns to keep
+    available_genes <- intersect(gene_list, colnames(matrix))
+    columns_to_keep <- c("cell_line", available_genes)
+    
+    print("COLS TO KEEP")
+    print(columns_to_keep)
+    
+    # Check for missing genes and print a warning if any are missing
+    missing_genes <- setdiff(gene_list, colnames(matrix))
+    if (length(missing_genes) > 0) {
+      warning(paste("For drug", drug_name, "the following genes are missing and will be ignored:", 
+                    paste(missing_genes, collapse = ", ")))
+    }
+    
+    # Skip if no valid genes are found
+    if (length(columns_to_keep) <= 1) {  # Only "cell_line" is present
+      warning(paste("Skipping drug", drug_name, "because no valid genes are found in the matrix."))
+      next
+    }
+    
+    # Filter the gene expression matrix for this drug
+    filtered_matrix <- matrix[, columns_to_keep, drop = FALSE]
+    
+    
+    # Filter IC50 and AAC for the given drug
+    drug_id <- dataGDSC@drug[dataGDSC@drug$drugid == drug_name, "drugid"]
+    
+    sensitivity_data_GDSC <- dataGDSC@sensitivity$profiles
+    drug_ic50_GDSC <- sensitivity_data_GDSC$ic50_recomputed[dataGDSC@drug$drugid == drug_id]
+    drug_aac_GDSC <- sensitivity_data_GDSC$aac_recomputed[dataGDSC@drug$drugid == drug_id]
+    
+    # Extract corresponding cell line names
+    cell_lines_GDSC <- dataGDSC@sensitivity$info$CELL_LINE_NAME[dataGDSC@drug$drugid == drug_id]
+    
+    # Combine into a data frame
+    ic50_aac_GDSC_df <- data.frame(
+      cell_line = cell_lines_GDSC,
+      IC50 = drug_ic50_GDSC,
+      AAC = drug_aac_GDSC
     )
     
-    # Extract IC50 and AAC
-    ic50_aac_df <- extract_ic50_aac(dataGDSC, drug_name, paste0(output_path_prefix, "_ic50_aac_", drug_name, ".csv"))
-    ic50_aac_avg <- ic50_aac_df %>%
-      filter(IC50 < threshold) %>%
-      group_by(cell_line) %>%
-      summarize(IC50 = mean(IC50, na.rm = TRUE), AAC = mean(AAC, na.rm = TRUE))
+    # Group by cell line and calculate the average IC50 and AAC
+
+    # Define the threshold
+    threshold <- 1e6
     
-    # Merge data
-    merged_data <- merge(ic50_aac_avg, filtered_matrix, by = "cell_line")
-    write.csv(merged_data, paste0(output_path_prefix, "_merged_", drug_name, ".csv"), row.names = FALSE)
+    # Filter out IC50 values above the threshold, then group by cell line and calculate averages
+    ic50_aac_GDSC_avg <- ic50_aac_GDSC_df %>%
+      filter(IC50 < threshold) %>% 
+      group_by(cell_line) %>%
+      summarize(
+        IC50 = mean(IC50, na.rm = TRUE),
+        AAC = mean(AAC, na.rm = TRUE)
+      )
+    
+    # ONLY RELEVANT GENES
+    # Merge with IC50 and AAC data
+    merged_data_RelevantGenes <- merge(ic50_aac_GDSC_avg, filtered_matrix, by = "cell_line")
+    
+    # Create a dynamic filename
+    output_filename <- paste0("merged_GDSC_ONLY_RELEVANT_", drug_name, ".csv")
+    
+    # Write the filtered matrix to a CSV file
+    write.csv(merged_data_RelevantGenes, output_filename, row.names = FALSE)
+    
+    
+    # ALL GENE EXPRESSION DATA
+    # Merge with IC50 and AAC data
+    merged_data <- merge(ic50_aac_GDSC_avg, gene_expression_matrix_GDSC_T, by = "cell_line")
+    
+    # Create a dynamic filename
+    output_filename <- paste0("merged_GDSC_all_gene_expression_", drug_name, ".csv")
+    
+    # Write the filtered matrix to a CSV file
+    write.csv(merged_data, output_filename, row.names = FALSE)
   }
 }
 
@@ -97,10 +169,10 @@ main <- function() {
   
   # Process GDSC data
   isGDSC <- TRUE
-  gene_expression_matrix_GDSC_T <- extract_gene_expression(dataGDSC, isGDSC, "gene_expression_matrix_GDSC.csv")
+  gene_expression_matrix_GDSC <- extract_gene_expression(dataGDSC, isGDSC, "gene_expression_matrix_GDSC.csv")
   
   # Filter only relevant data
-  process_GDSC(dataGDSC, "GDSC_output", "../results/AffectedGenesByDrug_ENSG_GDSC.txt")
+  process_GDSC(dataGDSC, gene_expression_matrix_GDSC, "GDSC_output", "../results/AffectedGenesByDrug_ENSG_GDSC.txt")
 }
 
 # Run the main function
