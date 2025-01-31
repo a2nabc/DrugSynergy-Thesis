@@ -6,13 +6,19 @@ load_dataset <- function(file_path) {
   readRDS(file_path)
 }
 
+# Function to extract all different Drug Names in the PSets
+extract_drug_names <- function(data, output_path){
+  drug_names <- unique(data@drug$drugid)
+  writeLines(as.character(drug_names), output_path)
+}
+
 # Function to extract gene expression data
 extract_gene_expression <- function(data, is_GDSC, output_path) {
   gene_expression <- data@molecularProfiles$rna
   gene_expression_matrix <- as.data.frame(assay(gene_expression))
   gene_names <- rownames(gene_expression_matrix) #gene names
 
-  
+
   if (is_GDSC==TRUE) {
     gene_names <- rownames(gene_expression_matrix)  # Gene names
     cell_line_names <- colnames(gene_expression_matrix)  # Cell line names
@@ -21,6 +27,7 @@ extract_gene_expression <- function(data, is_GDSC, output_path) {
     gene_expression_matrix_T <- as.data.frame(t(gene_expression_matrix))
     gene_expression_matrix_T$cell_line <- gsub("\\.", "-", rownames(gene_expression_matrix_T))
   }
+  
   else {
     cell_line_names <- colnames(gene_expression_matrix)  # Cell line names
     geneid_names <- gene_expression@rowRanges@elementMetadata@listData$gene_id
@@ -28,6 +35,7 @@ extract_gene_expression <- function(data, is_GDSC, output_path) {
     gene_expression_matrix_T <- as.data.frame(t(gene_expression_matrix_with_id))
     gene_expression_matrix_T$cell_line <- rownames(gene_expression_matrix_T)
   }
+  
   write.csv(gene_expression_matrix_T, output_path, row.names = FALSE)
   return(gene_expression_matrix_T)
 }
@@ -67,10 +75,10 @@ merge_data <- function(ic50_aac_df, gene_expression_matrix, output_path) {
 process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, threshold = 1e6) {
   ENSGS <- read.delim(ENSGS_path, 
                       stringsAsFactors = FALSE, 
-                      sep = "\t", # Explicitly specify tab as the delimiter
-                      header = TRUE) # Ensure the first row is treated as headers
+                      sep = "\t", # tab is the delimiter
+                      header = TRUE) # First row is treated as header
   
-  # Check the structure of the dataframe
+  # Check structure of dataframe
   str(ENSGS)
   # Loop through each drug in ENSGS
   for (i in 1:nrow(ENSGS)) {
@@ -162,6 +170,10 @@ main <- function() {
   # Load datasets
   dataNCI60 <- load_dataset("PSet_NCI60.rds")
   dataGDSC <- load_dataset("GDSC2.rds")
+  
+  # Extract drug names of each PSet
+  extract_drug_names(dataNCI60, "DrugNamesNCI.txt")
+  extract_drug_names(dataGDSC, "DrugNamesGDSC.txt")
   
   # Process NCI60 data
   isGDSC <- FALSE
