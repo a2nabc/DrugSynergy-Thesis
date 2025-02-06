@@ -8,7 +8,7 @@ load_dataset <- function(file_path) {
 
 # Function to extract all different Drug Names in the PSets
 extract_drug_names <- function(data, output_path){
-  drug_names <- unique(data@drug$drugid)
+  drug_names <- drugNames(data)
   writeLines(as.character(drug_names), output_path)
 }
 
@@ -102,20 +102,18 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     
     
     # Filter IC50 and AAC for the given drug
-    drug_id <- dataGDSC@drug[dataGDSC@drug$drugid == drug_name, "drugid"]
-    
-    sensitivity_data_GDSC <- dataGDSC@sensitivity$profiles
-    drug_ic50_GDSC <- sensitivity_data_GDSC$ic50_recomputed[dataGDSC@drug$drugid == drug_id]
-    drug_aac_GDSC <- sensitivity_data_GDSC$aac_recomputed[dataGDSC@drug$drugid == drug_id]
+    drug_ic50_GDSC <- summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "ic50_recomputed")[drug_name, ]
+    drug_aac_GDSC <- summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "aac_recomputed")[drug_name, ]
     
     # Extract corresponding cell line names
-    cell_lines_GDSC <- dataGDSC@sensitivity$info$CELL_LINE_NAME[dataGDSC@drug$drugid == drug_id]
+    cell_lines_GDSC <- colnames(summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "ic50_recomputed"))
+    
     
     # Combine into a data frame
     ic50_aac_GDSC_df <- data.frame(
       cell_line = cell_lines_GDSC,
-      IC50 = drug_ic50_GDSC,
-      AAC = drug_aac_GDSC
+      IC50 = as.numeric(drug_ic50_GDSC),
+      AAC = as.numeric(drug_aac_GDSC)
     )
     
     # Group by cell line and calculate the average IC50 and AAC
@@ -159,6 +157,7 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
 main <- function() {
   # Load datasets
   dataGDSC <- load_dataset("GDSC2.rds")
+  dataGDSC <- updateObject(dataGDSC)
   
   # Extract drug names of each PSet
   extract_drug_names(dataGDSC, "DrugNamesGDSC.txt")
