@@ -12,23 +12,39 @@ extract_drug_names <- function(data, output_path){
   writeLines(as.character(drug_names), output_path)
 }
 
+
+
 # Function to extract gene expression data
-extract_gene_expression <- function(data, output_path) {
-  gene_expression <- data@molecularProfiles$rna
-  gene_expression_matrix <- as.data.frame(assay(gene_expression))
-  gene_names <- rownames(gene_expression_matrix) #gene names
+extract_gene_expression <- function(data, output_path, profile_name = "Kallisto_0.46.1.rnaseq") {
+  # Check available molecular profiles
+  available_profiles <- names(molecularProfiles(data))
   
-  gene_names <- rownames(gene_expression_matrix)  # Gene names
-  cell_line_names <- colnames(gene_expression_matrix)  # Cell line names
-  cell_id_values <- gene_expression@colData@listData$cellid
-  colnames(gene_expression_matrix) <- cell_id_values
+  # Ensure the selected profile exists
+  if (!profile_name %in% available_profiles) {
+    stop("Molecular profile not found in dataset. Available profiles: ", paste(available_profiles, collapse = ", "))
+  }
+  
+  gene_expression_matrix <- as.data.frame(assay(molecularProfiles(data, profile_name)))
+  
+  # Get cell line names
+  cell_line_names <- colnames(gene_expression_matrix)
+  
+  # Transpose matrix so genes are columns and cell lines are rows
   gene_expression_matrix_T <- as.data.frame(t(gene_expression_matrix))
-  gene_expression_matrix_T$cell_line <- gsub("\\.", "-", rownames(gene_expression_matrix_T))
   
+  # Clean colnames of matrix to remove version numbers (e.g., ENSG00000000419.12 -> ENSG00000000419)
+  clean_colnames <- gsub("\\.\\d+$", "", colnames(gene_expression_matrix_T))
+  colnames(gene_expression_matrix_T) <- clean_colnames
+  
+  # Add cell line names as a column
+  gene_expression_matrix_T <- cbind(cell_line = cell_line_names, gene_expression_matrix_T)
+  
+  # Save to CSV
   write.csv(gene_expression_matrix_T, output_path, row.names = FALSE)
+  
   return(gene_expression_matrix_T)
 }
-
+  
 # Function to filter gene expression data for specific genes
 filter_gene_expression <- function(gene_expression_matrix_T, genes_of_interest, output_path) {
   columns_to_keep <- c("cell_line", colnames(gene_expression_matrix_T)[
@@ -100,7 +116,6 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     # Filter the gene expression matrix for this drug
     filtered_matrix <- matrix[, columns_to_keep, drop = FALSE]
     
-    
     # Filter IC50 and AAC for the given drug
     drug_ic50_GDSC <- summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "ic50_recomputed")[drug_name, ]
     drug_aac_GDSC <- summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "aac_recomputed")[drug_name, ]
@@ -108,19 +123,15 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     # Extract corresponding cell line names
     cell_lines_GDSC <- colnames(summarizeSensitivityProfiles(dataGDSC, sensitivity.measure = "ic50_recomputed"))
     
-    
     # Combine into a data frame
     ic50_aac_GDSC_df <- data.frame(
       cell_line = cell_lines_GDSC,
       IC50 = as.numeric(drug_ic50_GDSC),
       AAC = as.numeric(drug_aac_GDSC)
     )
-    
+
     # Group by cell line and calculate the average IC50 and AAC
-    
-    # Define the threshold
-    threshold <- 1e6
-    
+
     # Filter out IC50 values above the threshold, then group by cell line and calculate averages
     ic50_aac_GDSC_avg <- ic50_aac_GDSC_df %>%
       filter(IC50 < threshold) %>% 
@@ -129,6 +140,12 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
         IC50 = mean(IC50, na.rm = TRUE),
         AAC = mean(AAC, na.rm = TRUE)
       )
+    
+    print("Cell lines in ic50_aac_GDSC_avg:")
+    print(unique(ic50_aac_GDSC_avg$cell_line))
+    
+    print("Cell lines in filtered_matrix:")
+    print(unique(filtered_matrix$cell_line))
     
     # ONLY RELEVANT GENES
     # Merge with IC50 and AAC data
