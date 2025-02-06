@@ -155,7 +155,7 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     
     # ALL GENE EXPRESSION DATA
     # Merge with IC50 and AAC data
-    merged_data <- merge(ic50_aac_GDSC_avg, gene_expression_matrix_GDSC_T, by = "cell_line")
+    merged_data <- merge(ic50_aac_GDSC_avg, matrix, by = "cell_line")
     
     # Create a dynamic filename
     output_filename <- paste0("merged_GDSC_all_gene_expression_", drug_name, ".csv")
