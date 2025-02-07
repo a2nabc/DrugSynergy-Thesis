@@ -16,35 +16,41 @@ extract_drug_names <- function(data, output_path){
 
 # Function to extract gene expression data
 extract_gene_expression <- function(data, output_path, profile_name = "Kallisto_0.46.1.rnaseq") {
-  # Check available molecular profiles
-  available_profiles <- names(molecularProfiles(data))
-  
-  # Ensure the selected profile exists
-  if (!profile_name %in% available_profiles) {
-    stop("Molecular profile not found in dataset. Available profiles: ", paste(available_profiles, collapse = ", "))
-  }
-  
-  gene_expression_matrix <- as.data.frame(assay(molecularProfiles(data, profile_name)))
-  
-  # Get cell line names
-  cell_line_names <- colnames(gene_expression_matrix)
+  experiment <- molecularProfiles(data)[[profile_name]]
+  gene_expression_matrix <- as.data.frame(assay(experiment))
   
   # Transpose matrix so genes are columns and cell lines are rows
   gene_expression_matrix_T <- as.data.frame(t(gene_expression_matrix))
+  
+  # Ensure rownames of gene_expression_matrix_GDSC_T are stored
+  gene_expression_matrix_T$EGAR_ID <- rownames(gene_expression_matrix_T)
+  
+  # Extract mapping of EGAR_ID to sampleid from colData(expC)
+  egar_to_sampleid <- data.frame(EGAR_ID = rownames(colData(experiment)), cell_line = colData(experiment)$sampleid)
+  
+  # Merge the gene expression matrix with the sample ID mapping
+  gene_expression_matrix_T <- merge(egar_to_sampleid, gene_expression_matrix_T, by = "EGAR_ID")
+  
+  # Remove the EGAR_ID column
+  gene_expression_matrix_T$EGAR_ID <- NULL
+  
+  # Move the sampleid column to the first position
+  gene_expression_matrix_T <- gene_expression_matrix_T[, c("cell_line", setdiff(names(gene_expression_matrix_T), "cell_line"))]
   
   # Clean colnames of matrix to remove version numbers (e.g., ENSG00000000419.12 -> ENSG00000000419)
   clean_colnames <- gsub("\\.\\d+$", "", colnames(gene_expression_matrix_T))
   colnames(gene_expression_matrix_T) <- clean_colnames
   
-  # Add cell line names as a column
-  gene_expression_matrix_T <- cbind(cell_line = cell_line_names, gene_expression_matrix_T)
+  # Add a new column that duplicates the sampleid from rownames
+  colData(experiment)$Sample_ID <- rownames(colData(experiment))
   
   # Save to CSV
-  write.csv(gene_expression_matrix_T, output_path, row.names = FALSE)
+  #write.csv(gene_expression_matrix_T, output_path, row.names = FALSE)
   
-  return(gene_expression_matrix_T)
+  return(gene_expression_matrix_T)                                             
+  
 }
-  
+
 # Function to filter gene expression data for specific genes
 filter_gene_expression <- function(gene_expression_matrix_T, genes_of_interest, output_path) {
   columns_to_keep <- c("cell_line", colnames(gene_expression_matrix_T)[
@@ -96,8 +102,7 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     available_genes <- intersect(gene_list, colnames(matrix))
     columns_to_keep <- c("cell_line", available_genes)
     
-    print("GENE COLUMNS TO KEEP for drug ")
-    print(drug_name)
+    print(paste("GENE COLUMNS TO KEEP for drug", drug_name))
     print(columns_to_keep)
     
     # Check for missing genes and print a warning if any are missing
@@ -129,9 +134,9 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
       IC50 = as.numeric(drug_ic50_GDSC),
       AAC = as.numeric(drug_aac_GDSC)
     )
-
+    
     # Group by cell line and calculate the average IC50 and AAC
-
+    
     # Filter out IC50 values above the threshold, then group by cell line and calculate averages
     ic50_aac_GDSC_avg <- ic50_aac_GDSC_df %>%
       filter(IC50 < threshold) %>% 
@@ -140,12 +145,6 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
         IC50 = mean(IC50, na.rm = TRUE),
         AAC = mean(AAC, na.rm = TRUE)
       )
-    
-    print("Cell lines in ic50_aac_GDSC_avg:")
-    print(unique(ic50_aac_GDSC_avg$cell_line))
-    
-    print("Cell lines in filtered_matrix:")
-    print(unique(filtered_matrix$cell_line))
     
     # ONLY RELEVANT GENES
     # Merge with IC50 and AAC data
@@ -178,7 +177,7 @@ main <- function() {
   
   # Extract drug names of each PSet
   extract_drug_names(dataGDSC, "DrugNamesGDSC.txt")
-
+  
   # Process GDSC data
   gene_expression_matrix_GDSC <- extract_gene_expression(dataGDSC, "gene_expression_matrix_GDSC.csv")
   
