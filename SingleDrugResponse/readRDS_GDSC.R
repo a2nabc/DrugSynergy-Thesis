@@ -13,43 +13,72 @@ extract_drug_names <- function(data, output_path){
 }
 
 
-
-# Function to extract gene expression data
 extract_gene_expression <- function(data, output_path, profile_name = "Kallisto_0.46.1.rnaseq") {
   experiment <- molecularProfiles(data)[[profile_name]]
+  
+  # Extract gene expression matrix
   gene_expression_matrix <- as.data.frame(assay(experiment))
   
-  # Transpose matrix so genes are columns and cell lines are rows
+  # Filter only protein-coding genes
+  relevant_gene_info <- as.data.frame(rowData(experiment)) %>%
+    filter(gene_type == "protein_coding") %>%
+    select(gene_name)
+  
+  gene_expression_matrix <- merge(relevant_gene_info, gene_expression_matrix, by=0) 
+  
+  # Aggregate duplicate gene names using median before transposing
+  gene_expression_matrix <- gene_expression_matrix %>%
+    group_by(gene_name) %>%
+    summarize(across(where(is.numeric), median, na.rm = TRUE)) %>%
+    as.data.frame()
+  
+  # Store gene names before transposing
+  gene_names <- gene_expression_matrix$gene_name
+  gene_expression_matrix <- gene_expression_matrix %>% select(-gene_name)  # Remove gene_name column before transposing
+  
+  # Transpose matrix (genes as columns, cell lines as rows)
   gene_expression_matrix_T <- as.data.frame(t(gene_expression_matrix))
+  
+  # Restore gene names as column names
+  colnames(gene_expression_matrix_T) <- gene_names
   
   # Ensure rownames of gene_expression_matrix_GDSC_T are stored
   gene_expression_matrix_T$EGAR_ID <- rownames(gene_expression_matrix_T)
   
-  # Extract mapping of EGAR_ID to sampleid from colData(expC)
-  egar_to_sampleid <- data.frame(EGAR_ID = rownames(colData(experiment)), cell_line = colData(experiment)$sampleid)
+  # Extract mapping of EGAR_ID to sampleid from colData
+  egar_to_sampleid <- data.frame(
+    EGAR_ID = rownames(colData(experiment)), #EGAR_NAMES
+    cell_line = colData(experiment)$sampleid
+  )
   
-  # Merge the gene expression matrix with the sample ID mapping
+  sample_info <- as.data.frame(sampleInfo(data))
+  
+  keep_sample_ids <- sample_info %>%
+    filter(!tissueid %in% c("Myeloid", "Lymphoid")) %>%
+    select(sampleid) %>%
+    pull(sampleid)
+  
+  # Merge with sample ID mapping
   gene_expression_matrix_T <- merge(egar_to_sampleid, gene_expression_matrix_T, by = "EGAR_ID")
+  gene_expression_matrix_T$EGAR_ID <- NULL  # Drop redundant ID column
   
-  # Remove the EGAR_ID column
-  gene_expression_matrix_T$EGAR_ID <- NULL
+  # Filter to keep only cell lines in keep_sample_ids
+  gene_expression_matrix_T <- gene_expression_matrix_T %>%
+    filter(cell_line %in% keep_sample_ids)
   
-  # Move the sampleid column to the first position
+  # Move sampleid (cell_line) column to the first position
   gene_expression_matrix_T <- gene_expression_matrix_T[, c("cell_line", setdiff(names(gene_expression_matrix_T), "cell_line"))]
   
-  # Clean colnames of matrix to remove version numbers (e.g., ENSG00000000419.12 -> ENSG00000000419)
-  clean_colnames <- gsub("\\.\\d+$", "", colnames(gene_expression_matrix_T))
-  colnames(gene_expression_matrix_T) <- clean_colnames
-  
-  # Add a new column that duplicates the sampleid from rownames
-  colData(experiment)$Sample_ID <- rownames(colData(experiment))
-  
+  # Clean column names (remove version numbers from gene IDs)
+  colnames(gene_expression_matrix_T) <- gsub("\\.\\d+$", "", colnames(gene_expression_matrix_T))
+ 
   # Save to CSV
   #write.csv(gene_expression_matrix_T, output_path, row.names = FALSE)
   
-  return(gene_expression_matrix_T)                                             
-  
+  return(gene_expression_matrix_T)
 }
+
+
 
 # Function to filter gene expression data for specific genes
 filter_gene_expression <- function(gene_expression_matrix_T, genes_of_interest, output_path) {
@@ -139,7 +168,7 @@ process_GDSC <- function(dataGDSC, matrix, output_path_prefix, ENSGS_path, thres
     
     # Filter out IC50 values above the threshold, then group by cell line and calculate averages
     ic50_aac_GDSC_avg <- ic50_aac_GDSC_df %>%
-      filter(IC50 < threshold) %>% 
+      #filter(IC50 < threshold) %>% 
       group_by(cell_line) %>%
       summarize(
         IC50 = mean(IC50, na.rm = TRUE),
@@ -182,7 +211,7 @@ main <- function() {
   gene_expression_matrix_GDSC <- extract_gene_expression(dataGDSC, "gene_expression_matrix_GDSC.csv")
   
   # Filter only relevant data
-  process_GDSC(dataGDSC, gene_expression_matrix_GDSC, "GDSC_output", "../results/AffectedGenesByDrug_ENSG_GDSC.txt")
+  process_GDSC(dataGDSC, gene_expression_matrix_GDSC, "GDSC_output", "../results/AffectedGenesByDrug_GDSC.txt")
 }
 
 # Run the main function
