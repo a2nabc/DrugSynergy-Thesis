@@ -61,6 +61,6 @@ for (drug in drug_names) {
   assign(paste0("drug_data_", drug), drug_data)
   complete_data <- merge(drug_data, expression_data, by = "sampleid")
   assign(paste0("complete_data_", drug), complete_data)
-  write.csv(complete_data, paste0(drug, ".csv"), row.names = FALSE)
+  write.csv(complete_data, paste0("data/single_drug/", drug, ".csv"), row.names = FALSE)
 }
 
