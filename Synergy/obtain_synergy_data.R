@@ -50,7 +50,6 @@ y$sampleid <- rownames(y)
 
 
 
-
 ##################### RUNNING THE MERGE LOCALLY CRASHES...################
 #merged_data_with_y <- merge(merged_synergy_data, y, by = "sampleid")
 
@@ -166,9 +165,9 @@ selected_drug_pairs <- synergy_data %>%
 
 merged_data_15 <- merge(selected_drug_pairs, y, by = "sampleid")
 
-write.csv(merged_data_4, "Single_drug_Lasso/synergy1.csv", row.names=FALSE)
-write.csv(merged_data_7, "Single_drug_Lasso/synergy2.csv", row.names=FALSE)
-write.csv(merged_data_11, "Single_drug_Lasso/synergy3.csv", row.names=FALSE)
-write.csv(merged_data_13, "Single_drug_Lasso/synergy4.csv", row.names=FALSE)
-write.csv(merged_data_14, "Single_drug_Lasso/synergy5.csv", row.names=FALSE)
+write.csv(merged_data_4, "data/synergy/synergy1.csv", row.names=FALSE)
+write.csv(merged_data_7, "data/synergy/synergy2.csv", row.names=FALSE)
+write.csv(merged_data_11, "data/synergy/synergy3.csv", row.names=FALSE)
+write.csv(merged_data_13, "data/synergy/synergy4.csv", row.names=FALSE)
+write.csv(merged_data_14, "data/synergy/synergy5.csv", row.names=FALSE)
 
