@@ -76,15 +76,20 @@ for (i in seq_along(synergy_names)) {
   drug1 <- synergy_data_list[[synergy_key]]$treatment1id[1]  # First drug in synergy pair
   drug2 <- synergy_data_list[[synergy_key]]$treatment2id[1]  # Second drug in synergy pair
   
-  # Keep only common cell lines
-  filtered_synergy_list[[synergy_key]] <- filtered_synergy_list[[synergy_key]] %>%
-    filter(sampleid %in% filtered_drug_data_list[[drug1]]$cell_line)
+  # Find common cell lines between drug1 and synergy data
+  common_cell_lines <- intersect(filtered_synergy_list[[synergy_key]]$sampleid, 
+                                 filtered_drug_data_list[[drug1]]$sampleid)
   
+  # Update filtered_synergy_list with only common cell lines
+  filtered_synergy_list[[synergy_key]] <- filtered_synergy_list[[synergy_key]] %>%
+    filter(sampleid %in% common_cell_lines)
+  
+  # Update filtered_drug_data_list for drug1 and drug2 with only common cell lines
   filtered_drug_data_list[[drug1]] <- filtered_drug_data_list[[drug1]] %>%
-    filter(cell_line %in% filtered_synergy_list[[synergy_key]]$sampleid)
+    filter(sampleid %in% common_cell_lines)
   
   filtered_drug_data_list[[drug2]] <- filtered_drug_data_list[[drug2]] %>%
-    filter(cell_line %in% filtered_synergy_list[[synergy_key]]$sampleid)
+    filter(sampleid %in% common_cell_lines)
 }
 
 ############################################## LASSO MODEL ######################################
@@ -112,5 +117,4 @@ for (drug in drug_names) {
   result <- run_lasso(X, y)
   results_list[[drug]] <- result
 }
-
 
