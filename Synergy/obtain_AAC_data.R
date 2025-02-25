@@ -1,6 +1,8 @@
 library(PharmacoGx)
 library(dplyr)
 library(tidyr)
+
+
 data <- readRDS("../Single_Drug_Response/data/GDSC2.rds")
 data <- updateObject(data)
 
@@ -26,6 +28,13 @@ sensitivity <- merge(experiment_info,response_vars, by=0) %>%
   group_by(sampleid,treatmentid) %>%
   summarize(aac = mean(aac_recomputed))
 
+# Binarize AAC: Top 10% performing drugs per cell line = Sensitive (1), others = Resistant (0)
+sensitivity <- sensitivity %>%
+  group_by(sampleid) %>%
+  mutate(threshold = quantile(aac, 0.9, na.rm = TRUE),  # Compute 90th percentile per cell line
+         label = ifelse(aac >= threshold, 1, 0)) %>%    # Assign labels based on threshold
+  select(-threshold) %>%
+  ungroup()
 
 ######################## OBTAIN GENE EXPRESSION MATRIX ########################
 
@@ -41,11 +50,12 @@ keep.ccls <- as.data.frame(colData(expression)) %>%
   filter(sampleid %in% keep_sample_ids) %>%
   select(sampleid, Primary_Tissue = Factor.Value.organism.part.)
 
-expression.data <- expression.data %>% as.data.frame() %>% tibble::column_to_rownames("gene_name") %>% t()
+str(keep.ccls$sampleid)
+expression_data <- expression.data %>% as.data.frame() %>% tibble::column_to_rownames("gene_name") %>% t()
 
 expression_data <- keep.ccls %>%
   select(sampleid) %>%
-  merge(expression.data, by=0) %>%
+  merge(expression_data, by=0) %>%
   select(-Row.names) %>%
   group_by(sampleid) %>%
   summarize_all(median) %>%
@@ -58,9 +68,10 @@ for (drug in drug_names) {
     filter(treatmentid == drug) %>%
     arrange(sampleid) 
   # Dynamically create a variable name for each drug
-  assign(paste0("drug_data_", drug), drug_data)
+  assign(paste0("drug_data_", drug, "_bin"), drug_data)
   complete_data <- merge(drug_data, expression_data, by = "sampleid")
-  assign(paste0("complete_data_", drug), complete_data)
-  write.csv(complete_data, paste0("data/single_drug/", drug, ".csv"), row.names = FALSE)
+  assign(paste0("complete_data_", drug, "_bin"), complete_data)
+  write.csv(complete_data, paste0("data/single_drug/", drug, "_bin.csv"), row.names = FALSE)
 }
+
 

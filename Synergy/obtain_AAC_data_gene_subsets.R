@@ -30,6 +30,14 @@ sensitivity <- merge(experiment_info, response_vars, by=0) %>%
   group_by(sampleid, treatmentid) %>%
   summarize(aac = mean(aac_recomputed), .groups = "drop")
 
+# Binarize AAC: Top 10% performing drugs per cell line = Sensitive (1), others = Resistant (0)
+sensitivity <- sensitivity %>%
+  group_by(sampleid) %>%
+  mutate(threshold = quantile(aac, 0.9, na.rm = TRUE),  # Compute 90th percentile per cell line
+         label = ifelse(aac >= threshold, 1, 0)) %>%    # Assign labels based on threshold
+  select(-threshold) %>%
+  ungroup()
+
 ######################## OBTAIN GENE EXPRESSION MATRICES ########################
 
 # Read gene lists
