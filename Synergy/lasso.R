@@ -25,6 +25,61 @@ run_lasso <- function(X, y) {
   return(non_zero_coefs)
 }
 
+run_elastic_net <- function(X, y, alpha_value = 0.5) {
+  X <- as.matrix(X)  # Ensure X is a matrix
+  
+  # Perform cross-validation for Elastic Net
+  elastic_cv <- cv.glmnet(X, y, alpha = alpha_value)  
+  best_lambda <- elastic_cv$lambda.min  # Best lambda found by CV
+  print(paste("Optimal lambda:", best_lambda))
+  
+  # Fit Elastic Net with optimal lambda
+  elastic_model <- glmnet(X, y, alpha = alpha_value, lambda = best_lambda)
+  
+  # Extract coefficients and filter non-zero ones
+  coefficients <- coef(elastic_model)
+  non_zero_coefs <- coefficients[coefficients != 0, , drop = FALSE]
+  
+  # Convert to data frame
+  coefs_df <- data.frame(
+    Feature = rownames(non_zero_coefs),
+    Coefficient = as.numeric(non_zero_coefs)
+  )
+  
+  print(coefs_df)
+  return(coefs_df)
+}
+
+
+
+run_lasso_classification <- function(X, y) {
+  # Ensure X is a matrix
+  X <- as.matrix(X)
+  
+  # Perform cross-validation for logistic regression with Lasso regularization
+  lasso_cv <- cv.glmnet(X, y, family = "binomial", alpha = 1)  # Cross-validation for logistic regression
+  best_lambda <- lasso_cv$lambda.min  # Best lambda found by CV
+  
+  print(paste("Optimal lambda:", best_lambda))
+  
+  # Fit Lasso with optimal lambda
+  lasso_model <- glmnet(X, y, family = "binomial", alpha = 1, lambda = best_lambda)
+  
+  # Extract coefficients
+  coefficients <- coef(lasso_model)
+  coefs_df <- data.frame(
+    Feature = rownames(coefficients),
+    Coefficient = as.numeric(coefficients)
+  )
+  
+  # Filter non-zero coefficients
+  non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
+  
+  print(non_zero_coefs)
+  
+  return(non_zero_coefs)
+}
+
 # drugs to analyze individually
 drug_names <- c("Bortezomib", "Axitinib", "Cisplatin", "Erlotinib", "Lapatinib", "Ruxolitinib", "Sirolimus", "Vinorelbine", "Vorinostat")
 
@@ -92,7 +147,7 @@ for (subset in gene_subset_names) {
   filtered_drug_data_list[[subset]] <- list()
   for (drug in drug_names) {
     filtered_drug_data_list[[subset]][[drug]] <- drug_data_lists[[subset]][[drug]] %>%
-      select(sampleid, aac, all_of(common_cols_list[[subset]]))
+      select(sampleid, aac, label, all_of(common_cols_list[[subset]]))
   }
 }
 
@@ -125,16 +180,35 @@ for (subset in gene_subset_names) {
 ######################### Synergy (all data available in NCI ALMANAC) ###########################
 
 results_synergy_list <- list()
+results_synergy_list_classification <- list()
 
 for (i in seq_along(synergy_names)) {
   synergy_data <- synergy_data_list[[synergy_names[i]]]  
   y <- synergy_data$median_SCORE
+
   y <- (y - min(y)) / (max(y) - min(y)) 
   X <- synergy_data[, 5:ncol(synergy_data)]
-  X <- X %>% select(where(is.numeric))  # Keep only numeric columns
   X <- log2(X+1)
   print(synergy_names[[i]])
-  results_synergy_list[[synergy_names[i]]] <- run_lasso(X, y)
+  result <- tryCatch({
+    run_lasso(X, y)
+  }, error = function(e) {
+    message(paste("Skipping drug:", drug, "due to error:", e$message))
+    return(NULL)
+  })
+  results_synergy_list[[synergy_names[i]]] <- result
+
+  z <- synergy_data$median_label
+  X <- synergy_data[, 5:ncol(synergy_data)]
+  X <- log2(X+1)
+  print(synergy_names[[i]])
+  result <- tryCatch({
+    run_lasso_classification(X, z)
+  }, error = function(e) {
+    message(paste("Skipping drug:", drug, "due to error:", e$message))
+    return(NULL)
+  })
+  results_synergy_list_classification[[synergy_names[i]]] <- result
 }
 
 for (entry_name in names(results_synergy_list)) {
@@ -155,10 +229,17 @@ for (subset in gene_subset_names) {
     y <- filtered_synergy_data$median_SCORE
     y <- (y - min(y)) / (max(y) - min(y))
     X <- filtered_synergy_data[, 5:ncol(filtered_synergy_data)]
-    X <- X %>% select(where(is.numeric))  # Keep only numeric columns
     X <- log2(X + 1)
     print(synergy_names[[i]])
-    results_synergy_list_filtered[[subset]][[synergy_names[i]]] <- run_lasso(X, y)
+    
+    result <- tryCatch({
+      run_lasso(X, y)
+    }, error = function(e) {
+      message(paste("Skipping drug:", drug, "due to error:", e$message))
+      return(NULL)
+    })
+    
+    results_synergy_list_filtered[[subset]][[synergy_names[i]]] <- result
   }
   
   for (entry_name in names(results_synergy_list_filtered[[subset]])) {
@@ -171,27 +252,57 @@ for (subset in gene_subset_names) {
 
 ################################# Filtered single drug ######################################
 
-results_list <- list()
+results_list_lasso <- list()
+results_list_elastic_net <- list()
+results_list_classification <- list()
 
 for (subset in gene_subset_names) {
-  subset_results <- list()
+  subset_results_lasso <- list()
+  subset_results_elastic_net <- list()
+  subset_results_classification <- list()
   
-  data <- filtered_drug_data_list[[subset]]
+  data_regression <- filtered_drug_data_list[[subset]]
   
   for (drug in drug_names) {
-    drug_data <- data[[drug]]
+    drug_data <- data_regression[[drug]]
     y <- drug_data$aac
+    z <- drug_data$label
     X <- drug_data[, 4:ncol(drug_data)]
-    X <- X[sapply(X, is.numeric)]
     X <- log2(X + 1)
     
     print(paste(subset, "gene subset"))
     print(drug)
-    result <- run_lasso(X, y)
-    subset_results[[drug]] <- result
+    print("LASSO: ")
+    result <- tryCatch({
+      run_lasso(X, y)
+    }, error = function(e) {
+      message(paste("Skipping drug:", drug, "due to error:", e$message))
+      return(NULL)
+    })
+    subset_results_lasso[[drug]] <- result
+    
+    print("ELASTIC NET: ")
+    result <- tryCatch({
+      run_elastic_net(X, y)
+    }, error = function(e) {
+      message(paste("Skipping drug:", drug, "due to error:", e$message))
+      return(NULL)
+    })
+    subset_results_elastic_net[[drug]] <- result
+    
+    print("CLASSIFICATION: ")
+    result_classification <- tryCatch({
+      run_lasso_classification(X, z)
+    }, error = function(e) {
+      message(paste("Skipping classification for drug:", drug, "due to error:", e$message))
+      return(NULL)
+    })
+    subset_results_classification[[drug]] <- result_classification
   }
   
-  results_list[[subset]] <- subset_results
+  results_list_lasso[[subset]] <- subset_results_lasso
+  results_list_elastic_net[[subset]] <- subset_results_elastic_net
+  results_list_classification[[subset]] <- subset_results_classification
 }
 
 # Extract and print feature names for each gene subset
