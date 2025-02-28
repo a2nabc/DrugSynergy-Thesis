@@ -307,23 +307,44 @@ for (subset in gene_subset_names) {
   results_list_classification[[subset]] <- subset_results_classification
 }
 
-# Extract and print feature names for each gene subset
-for (subset in names(results_list_lasso)) {
-  print(subset)
-  for (entry_name in names(results_list_lasso[[subset]])) {
-    feature_names <- results_list_lasso[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
-    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    cat(paste(entry_name, "LASSO", ":", feature_list, "\n\n"))  
-    
-    feature_names <- results_list_elastic_net[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
-    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    cat(paste(entry_name, "ELASTIC_NET", ":", feature_list, "\n\n"))  
-    
-    feature_names <- results_list_classification[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
-    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    cat(paste(entry_name, "CLASSIFICATION", ":", feature_list, "\n\n"))  
+model_list <- c("lasso", "elastic_net", "classification")
+  
+# Print and save files with features
+save_results <- function(gene_subset) {
+  for (drug_name in results_list[[gene_subset]]) {
+    for (model in model_list){
+      results <- switch(model,
+                        "lasso" = results_list_lasso,
+                        "elastic_net" = results_list_elastic_net,
+                        "classification" = results_list_classification)
+      feature_names <- results[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
+      feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+      
+      # Define directory and file paths
+      dir_path <- file.path(gene_subset, toupper(model))  # Convert model to uppercase for consistency
+      file_path <- file.path(dir_path, paste0(drug_name, ".txt"))
+      
+      # Create directory if it doesn't exist
+      if (!dir.exists(dir_path)) {
+        dir.create(dir_path, recursive = TRUE)
+      }
+      
+      # Save feature names to a text file
+      writeLines(feature_names, file_path)
+      
+      # Print status message
+      cat(paste("Saved:", file_path, "\n"))
+      
+      # Print results on console
+      feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+      cat(paste(entry_name, model, ":", feature_list, "\n\n")) 
+    }
   }
+  
+}
+
+# Extract and print feature names for each gene subset
+for (subset in gene_subset_names) {
+  print(subset)
+  save_results(subset)
 }
