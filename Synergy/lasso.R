@@ -25,7 +25,8 @@ run_lasso <- function(X, y) {
   return(non_zero_coefs)
 }
 
-run_elastic_net <- function(X, y, alpha_value = 0.5) {
+run_elastic_net <- function(X, y) {
+  alpha_value = 0.5
   X <- as.matrix(X)  # Ensure X is a matrix
   
   # Perform cross-validation for Elastic Net
@@ -38,16 +39,17 @@ run_elastic_net <- function(X, y, alpha_value = 0.5) {
   
   # Extract coefficients and filter non-zero ones
   coefficients <- coef(elastic_model)
-  non_zero_coefs <- coefficients[coefficients != 0, , drop = FALSE]
   
   # Convert to data frame
   coefs_df <- data.frame(
-    Feature = rownames(non_zero_coefs),
-    Coefficient = as.numeric(non_zero_coefs)
+    Feature = rownames(coefficients),
+    Coefficient = as.numeric(coefficients)
   )
   
-  print(coefs_df)
-  return(coefs_df)
+  non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
+  
+  print(non_zero_coefs)
+  return(non_zero_coefs)
 }
 
 
@@ -270,7 +272,7 @@ for (subset in gene_subset_names) {
     X <- drug_data[, 4:ncol(drug_data)]
     X <- log2(X + 1)
     
-    print(paste(subset, "gene subset"))
+    print(paste(subset, "gene subset\n\n"))
     print(drug)
     print("LASSO: ")
     result <- tryCatch({
@@ -306,11 +308,22 @@ for (subset in gene_subset_names) {
 }
 
 # Extract and print feature names for each gene subset
-for (subset in names(results_list)) {
-  for (entry_name in names(results_list[[subset]])) {
-    feature_names <- results_list[[subset]][[entry_name]]$Feature  # Extract feature names
+for (subset in names(results_list_lasso)) {
+  print(subset)
+  for (entry_name in names(results_list_lasso[[subset]])) {
+    feature_names <- results_list_lasso[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
     feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
     feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    cat(paste(entry_name, ":", feature_list, "\n\n"))  # Print the result
+    cat(paste(entry_name, "LASSO", ":", feature_list, "\n\n"))  
+    
+    feature_names <- results_list_elastic_net[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
+    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+    cat(paste(entry_name, "ELASTIC_NET", ":", feature_list, "\n\n"))  
+    
+    feature_names <- results_list_classification[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
+    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+    cat(paste(entry_name, "CLASSIFICATION", ":", feature_list, "\n\n"))  
   }
 }
