@@ -311,7 +311,7 @@ model_list <- c("lasso", "elastic_net", "classification")
   
 # Print and save files with features
 save_results <- function(gene_subset) {
-  for (drug_name in results_list[[gene_subset]]) {
+  for (drug_name in drug_names) {
     for (model in model_list){
       results <- switch(model,
                         "lasso" = results_list_lasso,
@@ -321,7 +321,7 @@ save_results <- function(gene_subset) {
       feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
       
       # Define directory and file paths
-      dir_path <- file.path(gene_subset, toupper(model))  # Convert model to uppercase for consistency
+      dir_path <- file.path("Results", "Single_Drug", gene_subset, toupper(model))  # Convert model to uppercase for consistency
       file_path <- file.path(dir_path, paste0(drug_name, ".txt"))
       
       # Create directory if it doesn't exist
