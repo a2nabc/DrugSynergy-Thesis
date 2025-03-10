@@ -52,6 +52,32 @@ run_elastic_net <- function(X, y) {
   return(non_zero_coefs)
 }
 
+run_ridge <- function(X, y) {
+  X <- as.matrix(X)  # Ensure X is a matrix
+  
+  # Perform cross-validation for Ridge Regression (alpha = 0)
+  ridge_cv <- cv.glmnet(X, y, alpha = 0)  
+  best_lambda <- ridge_cv$lambda.min  # Best lambda found by CV
+  print(paste("Optimal lambda:", best_lambda))
+  
+  # Fit Ridge Regression with optimal lambda
+  ridge_model <- glmnet(X, y, alpha = 0, lambda = best_lambda)
+  
+  # Extract coefficients
+  coefficients <- coef(ridge_model)
+  
+  # Convert to data frame
+  coefs_df <- data.frame(
+    Feature = rownames(coefficients),
+    Coefficient = as.numeric(coefficients)
+  )
+  
+  non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
+  
+  print(non_zero_coefs)
+  return(non_zero_coefs)
+}
+
 
 
 run_lasso_classification <- function(X, y) {
@@ -256,11 +282,13 @@ for (subset in gene_subset_names) {
 
 results_list_lasso <- list()
 results_list_elastic_net <- list()
+results_list_ridge <- list()
 results_list_classification <- list()
 
 for (subset in gene_subset_names) {
   subset_results_lasso <- list()
   subset_results_elastic_net <- list()
+  subset_results_ridge <- list()
   subset_results_classification <- list()
   
   data_regression <- filtered_drug_data_list[[subset]]
@@ -292,7 +320,16 @@ for (subset in gene_subset_names) {
     })
     subset_results_elastic_net[[drug]] <- result
     
-    print("CLASSIFICATION: ")
+    print("RIDGE REGRESSION: ")
+    result <- tryCatch({
+      run_ridge(X, y)
+    }, error = function(e) {
+      message(paste("Skipping drug:", drug, "due to error:", e$message))
+      return(NULL)
+    })
+    subset_results_ridge[[drug]] <- result
+    
+    print("CLASSIFICATION (LASSO): ")
     result_classification <- tryCatch({
       run_lasso_classification(X, z)
     }, error = function(e) {
@@ -304,10 +341,11 @@ for (subset in gene_subset_names) {
   
   results_list_lasso[[subset]] <- subset_results_lasso
   results_list_elastic_net[[subset]] <- subset_results_elastic_net
+  results_list_ridge[[subset]] <- subset_results_ridge
   results_list_classification[[subset]] <- subset_results_classification
 }
 
-model_list <- c("lasso", "elastic_net", "classification")
+model_list <- c("lasso", "elastic_net", "ridge", "classification")
   
 # Print and save files with features
 save_results <- function(gene_subset) {
@@ -316,9 +354,15 @@ save_results <- function(gene_subset) {
       results <- switch(model,
                         "lasso" = results_list_lasso,
                         "elastic_net" = results_list_elastic_net,
+                        "ridge" = results_list_ridge,
                         "classification" = results_list_classification)
-      feature_names <- results[[subset]][[entry_name]]$Feature  # Extract feature names <=> gene names
+      feature_names <- results[[gene_subset]][[drug_name]]$Feature  # Extract feature names <=> gene names
       feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+      
+      if (length(feature_names) == 0) {
+        cat(paste("PROBLEM with", drug_name, "(", model, "): No nonzero coefficients found \n"))
+        next  # Skip writing this file
+      }
       
       # Define directory and file paths
       dir_path <- file.path("Results", "Single_Drug", gene_subset, toupper(model))  # Convert model to uppercase for consistency
@@ -336,11 +380,10 @@ save_results <- function(gene_subset) {
       cat(paste("Saved:", file_path, "\n"))
       
       # Print results on console
-      feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-      cat(paste(entry_name, model, ":", feature_list, "\n\n")) 
+    #  feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+    #  cat(paste(entry_name, model, ":", feature_list, "\n\n")) 
     }
   }
-  
 }
 
 # Extract and print feature names for each gene subset
