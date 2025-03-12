@@ -60,6 +60,7 @@ edges <- interactions_df %>% select(preferredName_A, preferredName_B)
 g_protein_coding <- graph_from_data_frame(edges, directed = FALSE)
 
 saveRDS(g_protein_coding, file = "g_protein_coding.rds")
+write_graph(g_protein_coding, file = "g_protein_coding.graphml", format = "graphml")
 # Plot the network
 
 node_degree <- degree(g_protein_coding)
@@ -89,7 +90,9 @@ for (subset_name in gene_subsets) {
     
     # Filter interactions for only subset genes
     subset_interactions <- interactions_df %>%
+      select(preferredName_A, preferredName_B) %>%
       filter(preferredName_A %in% subset_genes & preferredName_B %in% subset_genes)
+    
     
     # Create a graph object
     assign(paste0("g_", subset_name), graph_from_data_frame(subset_interactions, directed = FALSE))
@@ -102,7 +105,8 @@ for (subset_name in gene_subsets) {
 # Save an RDS file for each graph
 for (subset_name in gene_subsets){
   saveRDS(paste0("g_", subset_name), file = paste0("g_", subset_name, ".rds"))
-  #write_graph(paste0("g_", subset_name), file = paste0("g_", subset_name, ".graphml"), format = "graphml") # --------> TO USE OUTSIDE OF R
+  write_graph(get(paste0("g_", subset_name)), file = paste0("g_", subset_name, ".graphml"), format = "graphml") # --------> TO USE OUTSIDE OF R
+  write_graph(get(paste0("g_", subset_name)), file = paste0("../Results/Single_Drug/", subset_name, "/g_", subset_name, ".graphml"), format = "graphml") # save in results folder for easier post processing
 }
 
 # Plot every graph
@@ -118,32 +122,10 @@ for (subset_name in gene_subsets) {
     
     V(graph)$label <- ifelse(node_degree >= threshold, V(graph)$name, NA)
     
-    plot(graph, vertex.size = 8, vertex.label = V(graph)$label, vertex.label.cex = 0.8, edge.color = "gray",
+    plot(graph, vertex.size = 8, vertex.label = V(graph)$name, vertex.label.cex = 0.8, edge.color = "gray",
          main = paste(subset_name, "Gene-Gene Interaction Network"))
   }    
 }
 
 
-
-library(biomaRt)
-
-# Connect to Ensembl BioMart
-mart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
-
-# Extract Ensembl Protein IDs (removing "9606.")
-ensembl_protein_ids <- sub("9606.", "", V(g_kegg)$name)
-
-# Retrieve gene symbols
-mapping <- getBM(
-  attributes = c("ensembl_peptide_id", "external_gene_name"),
-  filters = "ensembl_peptide_id",
-  values = ensembl_protein_ids,
-  mart = mart
-)
-
-# Replace vertex names with gene symbols
-V(g_kegg)$name <- mapping$external_gene_name[match(sub("9606.", "", V(g_kegg)$name), mapping$ensembl_peptide_id)]
-
-# Check updated names
-V(g_kegg)$name
 
