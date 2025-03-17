@@ -85,11 +85,15 @@ run_model_k_splits <- function(model_function, X, y, k = 5, classification = FAL
     if (!is.null(result) && "metrics" %in% names(result)) {
       print(paste("Fold", fold_idx, "- Metrics collected successfully"))
       metrics_list[[fold_idx]] <- result$metrics
-    } else if (!is.null(result) && "non_zero_coefs" %in% names(result)){
+    } else {
+      print(paste("Fold", fold_idx, "- No valid metrics returned"))
+    }
+    
+    if (!is.null(result) && "non_zero_coefs" %in% names(result)){
       print(paste("Fold", fold_idx, "- Feature selection collected successfully"))
       features_list[[fold_idx]] <- result$non_zero_coefs
     } else {
-      print(paste("Fold", fold_idx, "- No valid metrics returned"))
+      print(paste("Fold", fold_idx, "- No valid features returned"))
     }
   }
   # If no valid results, return NULL
@@ -100,10 +104,10 @@ run_model_k_splits <- function(model_function, X, y, k = 5, classification = FAL
   
   # Compute mean & std of metrics across splits
   print("Aggregating metrics across all folds... aka computing mean and std")
-  print(metrics_list)
+  #print(metrics_list)
   final_metrics <- aggregate_metrics(metrics_list)
-  print("Final aggregated metrics:")
-  print(final_metrics)
+  print("Aggregating metrics complete!")
+  #print(final_metrics)
   
   return(list(features_list = features_list, average_metrics = final_metrics, metrics_list = metrics_list))
 }
@@ -165,7 +169,7 @@ run_lasso <- function(X, y) {
   
   # Evaluate model performance
   metrics <- evaluate_regression(y, y_pred)
-  print(metrics)
+  #print(metrics)
   
 
   
@@ -179,7 +183,7 @@ run_lasso <- function(X, y) {
   # Filter non-zero coefficients
   non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
   
-  print(non_zero_coefs)
+  #print(non_zero_coefs)
   return(list(metrics = metrics, non_zero_coefs = non_zero_coefs))
 }
 
@@ -199,7 +203,7 @@ run_elastic_net <- function(X, y) {
   
   # Evaluate model performance
   metrics <- evaluate_regression(y, y_pred)
-  print(metrics)
+  #print(metrics)
   
   # Extract coefficients and filter non-zero ones
   coefficients <- coef(elastic_model)
@@ -212,7 +216,7 @@ run_elastic_net <- function(X, y) {
   
   non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
   
-  print(non_zero_coefs)
+  #print(non_zero_coefs)
   return(list(metrics = metrics, non_zero_coefs = non_zero_coefs))
 }
 
@@ -231,7 +235,7 @@ run_ridge <- function(X, y) {
   
   # Evaluate model performance
   metrics <- evaluate_regression(y, y_pred)
-  print(metrics)
+  #print(metrics)
   
   # Extract coefficients
   coefficients <- coef(ridge_model)
@@ -244,7 +248,7 @@ run_ridge <- function(X, y) {
   
   non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
   
-  print(non_zero_coefs)
+  #print(non_zero_coefs)
   return(list(metrics = metrics, non_zero_coefs = non_zero_coefs))
 }
 
@@ -269,7 +273,6 @@ run_lasso_classification <- function(X, y) {
   metrics <- evaluate_classification(y, y_pred)
   
   
-  
   # Extract coefficients
   coefficients <- coef(lasso_model)
   coefs_df <- data.frame(
@@ -280,7 +283,7 @@ run_lasso_classification <- function(X, y) {
   # Filter non-zero coefficients
   non_zero_coefs <- coefs_df[coefs_df$Coefficient != 0, ]
   
-  print(non_zero_coefs)
+  #print(non_zero_coefs)
   
   return(list(metrics = metrics, non_zero_coefs = non_zero_coefs))
 }
@@ -619,7 +622,7 @@ save_results <- function(gene_subset) {
       }
       
       # Define directory and file paths
-      dir_path <- file.path("Results3", "Single_Drug", gene_subset, toupper(model))  # Convert model to uppercase for consistency
+      dir_path <- file.path("Results6", "Single_Drug", gene_subset, toupper(model))  # Convert model to uppercase for consistency
       file_path <- file.path(dir_path, paste0(drug_name, ".txt"))
       
       # Create directory if it doesn't exist
@@ -662,5 +665,5 @@ save_results <- function(gene_subset) {
 # Extract and print feature names for each gene subset
 for (subset in gene_subset_names) {
   print(subset)
-  save_results_auxiliar(subset)
+  save_results(subset)
 }
