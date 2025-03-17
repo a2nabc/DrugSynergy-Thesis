@@ -42,10 +42,17 @@ evaluate_classification <- function(y_true, y_pred) {
 
 # External function to run a model on K different splits and return averaged metrics
 run_model_k_splits <- function(model_function, X, y, k = 5, classification = FALSE) {
+  if (classification) {
+    y <- as.factor(y)  # Ensure y is a factor for classification
+  }
+  
   folds <- createFolds(y, k = k, list = TRUE)  # Create K random splits
   metrics_list <- list()
+  features_list <- list()
   
   for (fold_idx in seq_along(folds)) {
+    print(paste("Processing fold", fold_idx, "of", k))
+    
     test_idx <- folds[[fold_idx]]
     train_idx <- setdiff(seq_len(nrow(X)), test_idx)
     
@@ -56,6 +63,10 @@ run_model_k_splits <- function(model_function, X, y, k = 5, classification = FAL
     
     # Handle classification tasks separately
     if (classification) {
+      print("It's classification")
+      unique_classes <- length(unique(y_train))
+      print(paste("Unique classes in training data:", unique_classes))
+      
       if (length(unique(y_train)) < 2) {  
         message(paste("Skipping fold", fold_idx, "- Not enough classes in training data"))
         next  # Skip this fold if there's only one class
@@ -66,39 +77,67 @@ run_model_k_splits <- function(model_function, X, y, k = 5, classification = FAL
     result <- tryCatch({
       model_function(X_train, y_train)
     }, error = function(e) {
-      message(paste("Skipping due to error:", e$message))
+      message(paste("Skipping fold", fold_idx, "due to error:", e$message))
       return(NULL)
     })
     
-    if (!is.null(result)) {
+    # Ensure result is valid before adding it to metrics_list
+    if (!is.null(result) && "metrics" %in% names(result)) {
+      print(paste("Fold", fold_idx, "- Metrics collected successfully"))
       metrics_list[[fold_idx]] <- result$metrics
+    } else if (!is.null(result) && "non_zero_coefs" %in% names(result)){
+      print(paste("Fold", fold_idx, "- Feature selection collected successfully"))
+      features_list[[fold_idx]] <- result$non_zero_coefs
+    } else {
+      print(paste("Fold", fold_idx, "- No valid metrics returned"))
     }
   }
-  
-  # Compute mean & std of metrics across splits
-  return(aggregate_metrics(metrics_list))
-}
-
-
-aggregate_metrics <- function(metrics_list) {
-  if (length(metrics_list) == 0) return(NULL)
-  
-  # Convert the list of metrics to a data frame
-  metrics_df <- do.call(rbind, metrics_list)
-  
-  # Ensure all columns are numeric
-  if (!is.data.frame(metrics_df) || ncol(metrics_df) == 0) {
-    message("No valid numeric metrics available.")
+  # If no valid results, return NULL
+  if (length(metrics_list) == 0) {
+    message("No valid metrics obtained from any fold. Returning NULL.")
     return(NULL)
   }
   
-  # Convert any non-numeric values to NA (if any)
-  metrics_df <- data.frame(lapply(metrics_df, function(x) as.numeric(as.character(x))), stringsAsFactors = FALSE)
+  # Compute mean & std of metrics across splits
+  print("Aggregating metrics across all folds... aka computing mean and std")
+  print(metrics_list)
+  final_metrics <- aggregate_metrics(metrics_list)
+  print("Final aggregated metrics:")
+  print(final_metrics)
   
-  # Remove any columns that are entirely NA
+  return(list(features_list = features_list, average_metrics = final_metrics, metrics_list = metrics_list))
+}
+
+extract_numeric <- function(x) {
+  if (inherits(x, "auc")) {
+    return(as.numeric(x))  # Convert AUC object to numeric
+  } else if (is.character(x) && grepl("Area under the curve", x)) {
+    return(as.numeric(sub(".*: ", "", x)))  # Extract numeric value after the colon
+  } else if (is.list(x) && length(x) == 1) {
+    return(as.numeric(x[[1]]))  # Extract numeric from named lists
+  } else if (is.numeric(x)) {
+    return(x)  # Already numeric
+  } else {
+    return(NA)  # If non-numeric, set to NA
+  }
+}
+
+aggregate_metrics <- function(metrics_list) {
+  if (length(metrics_list) == 0) {
+    message("No metrics provided.")
+    return(NULL)
+  }
+  
+  # Convert metrics list into a proper dataframe
+  metrics_df <- lapply(metrics_list, function(metrics) {
+    metrics <- lapply(metrics, extract_numeric)  # Extract only numeric values
+    metrics$Confusion_Matrix <- NULL  # Remove confusion matrices
+    as.data.frame(metrics, stringsAsFactors = FALSE)
+  }) %>% bind_rows()
+  
+  # Remove columns that are entirely NA
   metrics_df <- metrics_df[, colSums(!is.na(metrics_df)) > 0, drop = FALSE]
   
-  # If no valid numeric columns remain, return NULL
   if (ncol(metrics_df) == 0) {
     message("All metric columns are non-numeric or missing.")
     return(NULL)
@@ -108,6 +147,7 @@ aggregate_metrics <- function(metrics_list) {
   mean_metrics <- colMeans(metrics_df, na.rm = TRUE)
   std_metrics <- apply(metrics_df, 2, sd, na.rm = TRUE)
   
+  print("Aggregation complete!")
   return(list(mean = mean_metrics, std = std_metrics))
 }
 
@@ -389,76 +429,78 @@ for (subset in gene_subset_names) {
 
 ######################### Synergy (all data available in NCI ALMANAC) ###########################
 
-results_synergy_list <- list()
-results_synergy_list_classification <- list()
-
-for (i in seq_along(synergy_names)) {
-  synergy_data <- synergy_data_list[[synergy_names[i]]]  
-  y <- synergy_data$median_SCORE
-
-  y <- (y - min(y)) / (max(y) - min(y)) 
-  X <- synergy_data[, 5:ncol(synergy_data)]
-  X <- log2(X+1)
-  print(synergy_names[[i]])
-  result <- tryCatch({
-    run_lasso(X, y)
-  }, error = function(e) {
-    message(paste("Skipping drug:", drug, "due to error:", e$message))
-    return(NULL)
-  })
-  results_synergy_list[[synergy_names[i]]] <- result
-
-  z <- synergy_data$median_label
-  X <- synergy_data[, 5:ncol(synergy_data)]
-  X <- log2(X+1)
-  print(synergy_names[[i]])
-  result <- tryCatch({
-    run_lasso_classification(X, z)
-  }, error = function(e) {
-    message(paste("Skipping drug:", drug, "due to error:", e$message))
-    return(NULL)
-  })
-  results_synergy_list_classification[[synergy_names[i]]] <- result
-}
-
-for (entry_name in names(results_synergy_list)) {
-  feature_names <- results_synergy_list[[entry_name]]$Feature  # Extract feature names
-  feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-  feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-  cat(paste(entry_name, ":", feature_list, "\n\n"))  # Print the result
-}
+# results_synergy_list <- list()
+# results_synergy_list_classification <- list()
+# 
+# for (i in seq_along(synergy_names)) {
+#   synergy_data <- synergy_data_list[[synergy_names[i]]]  
+#   y <- synergy_data$median_SCORE
+# 
+#   y <- (y - min(y)) / (max(y) - min(y)) 
+#   X <- synergy_data[, 5:ncol(synergy_data)]
+#   X <- log2(X+1)
+#   print(synergy_names[[i]])
+#   result <- tryCatch({
+#     run_lasso(X, y)
+#   }, error = function(e) {
+#     message(paste("Skipping drug:", drug, "due to error:", e$message))
+#     return(NULL)
+#   })
+#   results_synergy_list[[synergy_names[i]]] <- result
+# 
+#   z <- synergy_data$median_label
+#   X <- synergy_data[, 5:ncol(synergy_data)]
+#   X <- log2(X+1)
+#   print(synergy_names[[i]])
+#   result <- tryCatch({
+#     run_lasso_classification(X, z)
+#   }, error = function(e) {
+#     message(paste("Skipping drug:", drug, "due to error:", e$message))
+#     return(NULL)
+#   })
+#   results_synergy_list_classification[[synergy_names[i]]] <- result
+# }
+# 
+# for (entry_name in names(results_synergy_list)) {
+#   feature_names <- results_synergy_list[[entry_name]]$Feature  # Extract feature names
+#   feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+#   feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+#   cat(paste(entry_name, ":", feature_list, "\n\n"))  # Print the result
+# }
 
 
 ##################### Filtered synergy (common cell lines and common genes) ########################
 
-results_synergy_list_filtered <- list()
-for (subset in gene_subset_names) {
-  results_synergy_list_filtered[[subset]] <- list()
-  for (i in seq_along(synergy_names)) {
-    filtered_synergy_data <- filtered_synergy_list[[subset]][[synergy_names[i]]]
-    y <- filtered_synergy_data$median_SCORE
-    y <- (y - min(y)) / (max(y) - min(y))
-    X <- filtered_synergy_data[, 5:ncol(filtered_synergy_data)]
-    X <- log2(X + 1)
-    print(synergy_names[[i]])
-    
-    result <- tryCatch({
-      run_lasso(X, y)
-    }, error = function(e) {
-      message(paste("Skipping drug:", drug, "due to error:", e$message))
-      return(NULL)
-    })
-    
-    results_synergy_list_filtered[[subset]][[synergy_names[i]]] <- result
-  }
-  
-  for (entry_name in names(results_synergy_list_filtered[[subset]])) {
-    feature_names <- results_synergy_list_filtered[[subset]][[entry_name]]$Feature  # Extract feature names
-    feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-    feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    cat(paste(entry_name, ":", feature_list, "\n\n"))  # Print the result
-  }
-}
+# results_synergy_list_filtered <- list()
+# for (subset in gene_subset_names) {
+#   results_synergy_list_filtered[[subset]] <- list()
+#   for (i in seq_along(synergy_names)) {
+#     filtered_synergy_data <- filtered_synergy_list[[subset]][[synergy_names[i]]]
+#     y <- filtered_synergy_data$median_SCORE
+#     y <- (y - min(y)) / (max(y) - min(y))
+#     X <- filtered_synergy_data[, 5:ncol(filtered_synergy_data)]
+#     X <- log2(X + 1)
+#     print(synergy_names[[i]])
+#     
+#     result <- tryCatch({
+#       run_lasso(X, y)
+#     }, error = function(e) {
+#       message(paste("Skipping drug:", drug, "due to error:", e$message))
+#       return(NULL)
+#     })
+#     
+#     results_synergy_list_filtered[[subset]][[synergy_names[i]]] <- result
+#   }
+#   
+#   for (entry_name in names(results_synergy_list_filtered[[subset]])) {
+#     feature_names <- results_synergy_list_filtered[[subset]][[entry_name]]$Feature  # Extract feature names
+#     feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
+#     feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
+#     cat(paste(entry_name, ":", feature_list, "\n\n"))  # Print the result
+#   }
+# }
+
+
 
 ################################# Filtered single drug ######################################
 
@@ -518,7 +560,46 @@ for (subset in gene_subset_names) {
 }
 
 model_list <- c("lasso", "elastic_net", "ridge", "classification", "svm", "krr")
-  
+
+save_results_auxiliar <- function(gene_subset){
+  for (drug_name in drug_names) {
+    for (model in model_list){
+      results <- switch(model,
+                        "lasso" = results_list_lasso,
+                        "elastic_net" = results_list_elastic_net,
+                        "ridge" = results_list_ridge,
+                        "classification" = results_list_classification,
+                        "svm" = results_list_svm,
+                        "krr" = results_list_krr)
+      # Define directory and file paths
+      
+      # Extract mean and std for every drug
+      mean_values <- results[[gene_subset]][[drug_name]]$average_metrics$mean
+      std_values <- results[[gene_subset]][[drug_name]]$average_metrics$std
+      
+      # Combine into a data frame
+      df <- data.frame(
+        Metric = names(mean_values),
+        Mean = mean_values,
+        Std = std_values
+      )
+      
+      dir_path <- file.path("Results3", "Single_Drug", gene_subset, toupper(model))  # Convert model to uppercase for consistency
+      file_path <- file.path(dir_path, paste0(drug_name, "_metrics", ".csv"))
+      
+      # Create directory if it doesn't exist
+      if (!dir.exists(dir_path)) {
+        dir.create(dir_path, recursive = TRUE)
+      }
+      
+      # Save feature names to a text file
+      write.csv(df, file_path, row.names = FALSE)
+      
+      # Print status message
+      cat(paste("Saved:", file_path, "\n"))
+    }
+  }
+}
 # Print and save files with features
 save_results <- function(gene_subset) {
   for (drug_name in drug_names) {
@@ -530,9 +611,9 @@ save_results <- function(gene_subset) {
                         "classification" = results_list_classification,
                         "svm" = results_list_svm,
                         "krr" = results_list_krr)
-      feature_names <- results[[gene_subset]][[drug_name]]$non_zero_coefs$Feature  # Extract feature names <=> gene names
+      feature_names <- results[[gene_subset]][[drug_name]]$featrues_list[[1]]$Feature  # Extract feature names <=> gene names
       feature_names <- feature_names[feature_names != "(Intercept)"]  # Exclude "(Intercept)"
-      
+
       if (length(feature_names) == 0) {
         feature_names <- "No features selected"
       }
@@ -553,13 +634,27 @@ save_results <- function(gene_subset) {
       cat(paste("Saved:", file_path, "\n"))
       
       # Save metrics
-      metrics_path <- file.path(dir_path, paste0(drug_name, "_metrics.txt"))
-      writeLines(capture.output(print(results[[gene_subset]][[drug_name]]$metrics)), metrics_path)
+      metrics_path <- file.path(dir_path, paste0(drug_name, "_metrics.csv"))
+      
+      mean_values <- results[[gene_subset]][[drug_name]]$average_metrics$mean
+      std_values <- results[[gene_subset]][[drug_name]]$average_metrics$std
+      
+      # Combine into a data frame
+      df <- data.frame(
+        Metric = names(mean_values),
+        Mean = mean_values,
+        Std = std_values
+      )
+      
+      # Save feature names to a text file
+      write.csv(df, metrics_path, row.names = FALSE)
+      
+      # Print status message
       cat(paste("Saved metrics:", metrics_path, "\n"))
       
-      # Print results on console
-    #  feature_list <- paste(feature_names, collapse = " ")  # Join feature names into a string
-    #  cat(paste(entry_name, model, ":", feature_list, "\n\n")) 
+      #writeLines(capture.output(print(results[[gene_subset]][[drug_name]]$average_metrics)), metrics_path) #COMPROVAR!!!!!!!!!!!!!!
+      #cat(paste("Saved metrics:", metrics_path, "\n"))
+      
     }
   }
 }
@@ -567,5 +662,5 @@ save_results <- function(gene_subset) {
 # Extract and print feature names for each gene subset
 for (subset in gene_subset_names) {
   print(subset)
-  save_results(subset)
+  save_results_auxiliar(subset)
 }
