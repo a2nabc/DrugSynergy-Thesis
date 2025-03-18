@@ -1,0 +1,21 @@
+5-Fluorouracil
+AZD7762
+AZD8055
+Bortezomib
+Crizotinib
+Dasatinib
+Erlotinib
+Gefitinib
+Gemcitabine
+JQ1 compound
+Lapatinib
+MK-2206
+Nilotinib
+PLX4720
+Pictilisib
+Vincristine
+Vorinostat
+Paclitaxel
+Dabrafenib
+Ibrutinib
+Docetaxel
