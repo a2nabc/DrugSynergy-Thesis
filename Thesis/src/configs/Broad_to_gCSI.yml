@@ -1,0 +1,14 @@
+# you need to specify a default configuration
+# we probably only need one for these experiments
+
+default:
+  source.screen: "Broad"
+  source.expression: "../data/processed/Broad/expression.csv"
+  source.response: "../data/processed/Broad/responses.csv"
+  gene.sets: !expr c('KEGG','LINCS')
+  target.screen: "gCSI"
+  target.expression: "../data/processed/gCSI/expression.csv"
+  target.response: "../data/processed/gCSI/responses.csv"
+  models: !expr c('lasso','en','ridge')
+  drugs: "../data/common_drugs.txt"
+  experiment.type.positive: "true"
