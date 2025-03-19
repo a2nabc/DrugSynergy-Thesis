@@ -2,7 +2,8 @@ library(glmnet)
 library(PharmacoGx)
 library(dplyr)
 source("src/model_functions.R")
-#install.packages("config")
+source("src/data_functions.R")
+
 ############# 
 # READ THIS:
 # 		it is a VERY bad idea to use library(config)
@@ -15,7 +16,6 @@ config.file <- args[1]
 
 config<-config::get(file=config.file)
 print(config)
-
 
 ## I suggest you to the 21 drugs that we have screened across all the datasets 
 # (gCSI, GDSC, etc.)
@@ -51,51 +51,29 @@ print(config)
 
 config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
 
-load_data <- function(expression_path, response_path) {
-  expression_data <- read.csv(expression_path)
-  response_data <- read.csv(response_path)
-  return(list(expression = expression_data, response = response_data))
-}
-
+# load source screen and target screen data
 source_data <- load_data(config$source.expression, config$source.response)
-
 target_data <- load_data(config$target.expression, config$target.response)
 
 # filter source and target just with genes from KEGG and LINCS
 keep_genes <- get_gene_union(config$gene.sets, config$gene.sets.path)
 keep_genes <- keep_genes[keep_genes %in% colnames(source_data$expression)]
-source_data$expression <- source_data$expression %>%
-  select(c("Cell_line", keep_genes))
-target_data$expression <- target_data$expression %>%
-  select(c("Cell_line", keep_genes))
 
-# Extract cell line identifiers
-source_cells <- source_data$expression$Cell_line
-target_cells <- target_data$expression$Cell_line
+source_data$expression <- source_data$expression %>% select(c("Cell_line", keep_genes))
+target_data$expression <- target_data$expression %>% select(c("Cell_line", keep_genes))
 
-if(config$experiment.type.positive){ #consistency experiment --> we want to test on common cell lines
-  common_cells <- intersect(source_cells, target_cells)
-  target_data$expression <- target_data$expression %>%
-    filter(Cell_line %in% common_cells)
-  target_data$response <- target_data$response %>%
-    filter(Cell_line %in% common_cells)
-} else{ # generalization -> we want to test only in unseen cell_lines
-  target_data$expression <- target_data$expression %>%
-    filter(!Cell_line %in% source_cells)
-  target_data$response <- target_data$response %>%
-    filter(!Cell_line %in% source_cells)
-}
+# filter cell lines across the two screens depending on the type of experiment
+target_data <- filter_cell_lines(config$experiment.type.is.positive, source_data, target_data)
 
 # Print dataset sizes after filtering
 #cat("Training Data:", nrow(source_data$expression), "samples\n")
 #cat("Testing Data:", nrow(target_data$expression), "samples\n")
 
+
+# Read drug universe and initialize list to store results
 common_drugs <- readLines(config$drugs) 
-
-
-# Initialize list to store results
-
 model_results <- list()
+debug <- list()
 
 for (model.type in config$models) {
   for (drug in common_drugs) {
@@ -117,7 +95,7 @@ for (model.type in config$models) {
     
     # ho guardem a results/MODEL/Drug
     ifelse(!dir.exists(config$results.features),dir.create(config$results.features, recursive=TRUE), FALSE)
-    writeLines(features, paste0(config$results.features, drug, ".txt"))
+####    writeLines(features, paste0(config$results.features, drug, ".txt"))
     
     # Prepare testing data
     test_data <- prepare.data.for.ml(target_data, drug)
@@ -127,10 +105,12 @@ for (model.type in config$models) {
     
     # Predict on test set
     y_pred <- predict(trained_model$model, newx = X_test)
-    
+    y_pred <- as.vector(y_pred)
+    debug[[drug]][[model.type]]$y_test <- y_test
+    debug[[drug]][[model.type]]$y_pred <- y_pred
     # Evaluate model performance
     eval_metrics <- evaluate_regression(y_test, y_pred)
-    write.csv(eval_metrics, paste0(config$results.features, drug, "_metrics.csv"))
+####    write.csv(eval_metrics, paste0(config$results.features, drug, "_metrics.csv"))
     
     # Compute gene-expression correlation with response
     gene_corrs <- sapply(features, function(gene) {
@@ -140,7 +120,7 @@ for (model.type in config$models) {
         NA
       }
     })
-    write.csv(gene_corrs, paste0(config$results.features, drug, "_genes_corr.csv"))
+####    write.csv(gene_corrs, paste0(config$results.features, drug, "_genes_corr.csv"))
     
     # Store results
     model_results[[drug]][[model.type]] <- list(
@@ -152,8 +132,17 @@ for (model.type in config$models) {
    
     # Perform 10x cross-validation (80/20 splits)
     cross_val_results <- perform.cross.validation(10, test_data)
+    cross_val_avg <- aggregate_cv_metrics(cross_val_results)
     
     # Save cross-validation results
-    model_results[[drug]][[model.type]]$cross_validation <- cross_val_results
+    model_results[[drug]][[model.type]]$cross_validation_avg <- cross_val_avg
   }
 }
+
+if(config$experiment.type.positive) {
+  saveRDS(model_results, "results_positive.rds")
+} else{
+  saveRDS(model_results, "results_negative.rds")
+}
+results_positive <- readRDS("results_positive.rds")
+results_negative <- readRDS("results_negative.rds")

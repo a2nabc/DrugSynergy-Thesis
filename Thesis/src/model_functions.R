@@ -12,12 +12,45 @@ evaluate_regression <- function(y_true, y_pred) {
   rmse <- sqrt(mse)
   mae <- mean(abs(y_true - y_pred))
   r2 <- 1 - (sum((y_true - y_pred)^2) / sum((y_true - mean(y_true))^2))
+  pearson <-  cor(y_true, y_pred)
   
   return(list(MSE = mse, RMSE = rmse, MAE = mae, R2 = r2))
 }
 
 
-
+aggregate_cv_metrics <- function(cv_results) {
+  if (length(cv_results) == 0) {
+    message("No cross-validation results provided.")
+    return(NULL)
+  }
+  
+  aggregated_results <- list()
+  
+  # Extract metrics and keep CV structure
+  for (cv in names(cv_results)) {
+    metrics <- cv_results[[cv]]
+    metrics <- lapply(metrics, as.numeric)  # Ensure numeric values
+    aggregated_results[[cv]] <- metrics
+  }
+  
+  # Convert list to a data frame for statistical computations
+  metrics_df <- do.call(rbind, lapply(aggregated_results, function(metrics) {
+    as.data.frame(metrics, stringsAsFactors = FALSE)
+  }))
+  
+  # Compute mean and standard deviation
+  mean_metrics <- colMeans(metrics_df, na.rm = TRUE)
+  std_metrics <- apply(metrics_df, 2, sd, na.rm = TRUE)
+  
+  result <- list(
+    mean = mean_metrics,
+    std = std_metrics,
+    iterations_list = aggregated_results
+  )
+  
+  print("Aggregation of CV metrics complete!")
+  return(result)
+}
 
 fit.linear.model <- function(X, y, model.type = 'lasso', alpha = 0.5){
 	## Wrapper function to fit linear models on 
@@ -66,7 +99,7 @@ perform.cross.validation.protein.coding <- function(n, test_data){
 
 perform.cross.validation <- function(n, test_data){
   cross_val_results <- list()
-  
+  print("Starting cross validation")
   for (i in 1:n) {
     train_idx <- sample(1:nrow(test_data), size = 0.8 * nrow(test_data))
     
