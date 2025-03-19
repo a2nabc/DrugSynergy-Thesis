@@ -3,12 +3,14 @@
 
 default:
   source.screen: "Broad"
-  source.expression: "../data/processed/Broad/expression.csv"
-  source.response: "../data/processed/Broad/responses.csv"
-  gene.sets: !expr c('KEGG','LINCS')
+  source.expression: "./data/processed/Broad/expression.csv"
+  source.response: "./data/processed/Broad/responses.csv"
+  gene.sets: !expr c('KEGG', 'LINCS')
+  gene.sets.path: "./data/gene_subsets/"
   target.screen: "gCSI"
-  target.expression: "../data/processed/gCSI/expression.csv"
-  target.response: "../data/processed/gCSI/responses.csv"
+  target.expression: "./data/processed/gCSI/expression.csv"
+  target.response: "./data/processed/gCSI/responses.csv"
   models: !expr c('lasso','en','ridge')
-  drugs: "../data/common_drugs.txt"
+  drugs: "./data/common_drugs.txt"
   experiment.type.positive: "true"
+  results.features: "./results/features/Broad/"

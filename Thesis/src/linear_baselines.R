@@ -49,7 +49,7 @@ print(config)
 #					What we're trying to capture here is if the biomarkers you found
 #					with lasso/enet/ridge actually generalize
 
-config <- config::get(file = "configs/Broad_to_gCSI.yml")
+config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
 
 load_data <- function(expression_path, response_path) {
   expression_data <- read.csv(expression_path)
@@ -60,6 +60,14 @@ load_data <- function(expression_path, response_path) {
 source_data <- load_data(config$source.expression, config$source.response)
 
 target_data <- load_data(config$target.expression, config$target.response)
+
+# filter source and target just with genes from KEGG and LINCS
+keep_genes <- get_gene_union(config$gene.sets, config$gene.sets.path)
+keep_genes <- keep_genes[keep_genes %in% colnames(source_data$expression)]
+source_data$expression <- source_data$expression %>%
+  select(c("Cell_line", keep_genes))
+target_data$expression <- target_data$expression %>%
+  select(c("Cell_line", keep_genes))
 
 # Extract cell line identifiers
 source_cells <- source_data$expression$Cell_line
@@ -82,9 +90,70 @@ if(config$experiment.type.positive){ #consistency experiment --> we want to test
 #cat("Training Data:", nrow(source_data$expression), "samples\n")
 #cat("Testing Data:", nrow(target_data$expression), "samples\n")
 
-# Iterate over models and drugs
+common_drugs <- readLines(config$drugs) 
+
+
+# Initialize list to store results
+
+model_results <- list()
+
 for (model.type in config$models) {
-  for (drug in config$drugs) {
+  for (drug in common_drugs) {
+    cat("\nTraining", model.type, "model for", drug, "...\n")
     
+    # Prepare training data
+    train_data <- prepare.data.for.ml(source_data, drug)
+    cat("Training data dimensions for", drug, ",", model.type, "model:", dim(train_data), "\n")
+    X_train <- train_data %>% select(-AAC)  # Gene expression
+    y_train <- train_data$AAC  # Drug response
+    
+    # Train model
+    trained_model <- fit.linear.model(X_train, y_train, model.type)
+    
+    # Extract non-zero coefficient genes
+    features <- coef(trained_model$model)
+    features <- as.data.frame(as.matrix(features))
+    features <- rownames(features)[features[, 1] != 0]
+    
+    # ho guardem a results/MODEL/Drug
+    ifelse(!dir.exists(config$results.features),dir.create(config$results.features, recursive=TRUE), FALSE)
+    writeLines(features, paste0(config$results.features, drug, ".txt"))
+    
+    # Prepare testing data
+    test_data <- prepare.data.for.ml(target_data, drug)
+    cat("Testing data dimensions for", drug, ":", dim(test_data), "\n")
+    X_test <- as.matrix(test_data %>% select(-AAC))  # Gene expression
+    y_test <- test_data$AAC  # Drug response
+    
+    # Predict on test set
+    y_pred <- predict(trained_model$model, newx = X_test)
+    
+    # Evaluate model performance
+    eval_metrics <- evaluate_regression(y_test, y_pred)
+    write.csv(eval_metrics, paste0(config$results.features, drug, "_metrics.csv"))
+    
+    # Compute gene-expression correlation with response
+    gene_corrs <- sapply(features, function(gene) {
+      if (gene %in% colnames(test_data)) {
+        cor(test_data[[gene]], y_test, use = "complete.obs")
+      } else {
+        NA
+      }
+    })
+    write.csv(gene_corrs, paste0(config$results.features, drug, "_genes_corr.csv"))
+    
+    # Store results
+    model_results[[drug]][[model.type]] <- list(
+      model = trained_model$model,
+      eval = eval_metrics,
+      features_selected = features,
+      gene_correlations = gene_corrs
+    )
+   
+    # Perform 10x cross-validation (80/20 splits)
+    cross_val_results <- perform.cross.validation(10, test_data)
+    
+    # Save cross-validation results
+    model_results[[drug]][[model.type]]$cross_validation <- cross_val_results
   }
 }
