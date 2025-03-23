@@ -13,4 +13,9 @@ default:
   models: !expr c('lasso','en','ridge')
   drugs: "./data/common_drugs.txt"
   experiment.type.is.positive: "true"
-  results.features: "./results/features/Broad/"
+  results.dir: "./results/"
+  results.features.dir: "features/"
+  results.eval.dir: "evaluation/"
+  results.correlations.dir: "correlations/"
+  results.cv.dir: "cv/"
+  results.metadata.dir: "metadata/"

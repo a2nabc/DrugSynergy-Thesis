@@ -52,34 +52,12 @@ aggregate_cv_metrics <- function(cv_results) {
   return(result)
 }
 
-fit.linear.model <- function(X, y, model.type = 'lasso', alpha = 0.5){
-	## Wrapper function to fit linear models on 
-  
-	if(model.type =='lasso'){
-		alpha <- 1
-	} else if (model.type == 'en'){
-		alpha <- alpha
-	} else if (model.type == 'ridge'){
-		alpha <- 0
-	} else {
-	  stop("Invalid model type. Choose 'lasso', 'en' (elastic net), or 'ridge'.")
-	}
-  
-	X <- as.matrix(X)  # Ensure X is a matrix
-  
-  model <- cv.glmnet(X, y, alpha = alpha)  # Perform cross-validation
-  
- 	best_lambda <- model$lambda.min  # Best lambda found by CV
- 	model <- glmnet(X, y, alpha = alpha, lambda = best_lambda)
- 	
- 	return(list(model=model))
-}
-
 
 prepare.data.for.ml <- function(data, drug) {
   data <- data$expression %>%
     inner_join(data$response %>% filter(Drug == drug), by = "Cell_line") %>%
     select(-Cell_line, -Drug)
+  return(data)
 }
 
 get_gene_union <- function(gene_subsets, path) {
@@ -89,6 +67,86 @@ get_gene_union <- function(gene_subsets, path) {
     all_genes <- union(all_genes, genes)
   }
   return(all_genes)
+}
+
+
+fit.linear.model <- function(X, y, model.type = 'lasso', alpha = 0.5){
+  ## Wrapper function to fit linear models on 
+  
+  if(model.type =='lasso'){
+    alpha <- 1
+  } else if (model.type == 'en'){
+    alpha <- alpha
+  } else if (model.type == 'ridge'){
+    alpha <- 0
+  } else {
+    stop("Invalid model type. Choose 'lasso', 'en' (elastic net), or 'ridge'.")
+  }
+  
+  X <- as.matrix(X)  # Ensure X is a matrix
+  
+  model <- cv.glmnet(X, y, alpha = alpha)  # Perform cross-validation
+  
+  best_lambda <- model$lambda.min  # Best lambda found by CV
+  model <- glmnet(X, y, alpha = alpha, lambda = best_lambda)
+  
+  return(list(model=model))
+}
+
+
+
+train.model <- function(model_type, train_data, drug) {
+  cat("\nTraining", model_type, "model for", drug, "...\n")
+  
+  # Prepare training data
+  X_train <- train_data %>% select(-AAC)  # Gene expression
+  y_train <- train_data$AAC  # Drug response
+  
+  # Train model
+  trained_model <- fit.linear.model(X_train, y_train, model_type)
+  
+  # Extract non-zero coefficient genes
+  features <- coef(trained_model$model)
+  features <- as.data.frame(as.matrix(features))
+  features <- rownames(features)[features[, 1] != 0]
+  
+  return(list(model = trained_model$model, features = features))
+}
+
+
+evaluate.model <- function(model, test_data, drug) {
+  cat("Evaluating model for", drug, "...\n")
+  
+  X_test <- as.matrix(test_data %>% select(-AAC))  # Gene expression
+  y_test <- test_data$AAC  # Drug response
+  
+  # Predict on test set
+  y_pred <- predict(model, newx = X_test)
+  y_pred <- as.vector(y_pred)
+  
+  # Evaluate model performance
+  eval_metrics <- evaluate_regression(y_test, y_pred)
+  
+  return(list(y_test = y_test, y_pred = y_pred, eval_metrics = eval_metrics))
+}
+
+
+compute.gene.correlations <- function(features, test_data, y_test, drug) {
+  gene_corrs <- sapply(features, function(gene) {
+    if (gene %in% colnames(test_data)) {
+      cor(test_data[[gene]], y_test, use = "complete.obs")
+    } else {
+      NA
+    }
+  })
+  return(gene_corrs)
+}
+
+
+perform.cv <- function(test_data) {
+  cross_val_results <- perform.cross.validation(10, test_data)
+  cross_val_avg <- aggregate_cv_metrics(cross_val_results)
+  return(cross_val_avg)
 }
 
 

@@ -70,79 +70,69 @@ target_data <- filter_cell_lines(config$experiment.type.is.positive, source_data
 #cat("Testing Data:", nrow(target_data$expression), "samples\n")
 
 
-# Read drug universe and initialize list to store results
+# Read drug universe and initialize list and folders to store results
 common_drugs <- readLines(config$drugs) 
+results.subdir <- create_output_folders(config$models, config$experiment.type.is.positive, config$results.dir, config$results.features.dir, config$results.eval.dir, config$results.correlations.dir, config$results.cv.dir)
+data_dimensions_metadata <- create_folder_metadata(config$results.metadata.dir)
 model_results <- list()
 debug <- list()
 
 for (model.type in config$models) {
   for (drug in common_drugs) {
-    cat("\nTraining", model.type, "model for", drug, "...\n")
-    
-    # Prepare training data
-    train_data <- prepare.data.for.ml(source_data, drug)
-    cat("Training data dimensions for", drug, ",", model.type, "model:", dim(train_data), "\n")
-    X_train <- train_data %>% select(-AAC)  # Gene expression
-    y_train <- train_data$AAC  # Drug response
-    
     # Train model
-    trained_model <- fit.linear.model(X_train, y_train, model.type)
+    train_data <- prepare.data.for.ml(source_data, drug)
+    print(paste("Training data is", nrow(train_data), "samples and", ncol(train_data), "features"))
+    model_info <- train.model(model.type, train_data, drug)
     
-    # Extract non-zero coefficient genes
-    features <- coef(trained_model$model)
-    features <- as.data.frame(as.matrix(features))
-    features <- rownames(features)[features[, 1] != 0]
+    # Save features
+    features <- model_info$features
+    writeLines(features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.features.dir, drug, ".txt"))
     
-    # ho guardem a results/MODEL/Drug
-    ifelse(!dir.exists(config$results.features),dir.create(config$results.features, recursive=TRUE), FALSE)
-####    writeLines(features, paste0(config$results.features, drug, ".txt"))
-    
-    # Prepare testing data
+    # Evaluate model
     test_data <- prepare.data.for.ml(target_data, drug)
-    cat("Testing data dimensions for", drug, ":", dim(test_data), "\n")
-    X_test <- as.matrix(test_data %>% select(-AAC))  # Gene expression
-    y_test <- test_data$AAC  # Drug response
+    print(paste("Testing data is", nrow(test_data), "samples and", ncol(test_data), "features"))
+
+    eval_info <- evaluate.model(model_info$model, test_data, drug)
+    write.csv(eval_info, paste0(config$results.dir, results.subdir,  model.type, "/", config$results.eval.dir, drug, ".csv"))
     
-    # Predict on test set
-    y_pred <- predict(trained_model$model, newx = X_test)
-    y_pred <- as.vector(y_pred)
-    debug[[drug]][[model.type]]$y_test <- y_test
-    debug[[drug]][[model.type]]$y_pred <- y_pred
-    # Evaluate model performance
-    eval_metrics <- evaluate_regression(y_test, y_pred)
-####    write.csv(eval_metrics, paste0(config$results.features, drug, "_metrics.csv"))
+    # Compute gene-expression correlation
+    gene_corrs <- compute.gene.correlations(features, test_data, eval_info$y_test, drug)
+    write.csv(gene_corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.correlations.dir, drug, ".csv"))
     
-    # Compute gene-expression correlation with response
-    gene_corrs <- sapply(features, function(gene) {
-      if (gene %in% colnames(test_data)) {
-        cor(test_data[[gene]], y_test, use = "complete.obs")
-      } else {
-        NA
-      }
-    })
-####    write.csv(gene_corrs, paste0(config$results.features, drug, "_genes_corr.csv"))
+    # Perform cross-validation
+    cross_val_avg <- perform.cv(test_data)
+    write.csv(cross_val_avg$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
+    write.csv(cross_val_avg$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
     
     # Store results
     model_results[[drug]][[model.type]] <- list(
-      model = trained_model$model,
-      eval = eval_metrics,
+      model = model_info$model,
+      eval = eval_info$eval_metrics,
       features_selected = features,
-      gene_correlations = gene_corrs
+      gene_correlations = gene_corrs,
+      cross_validation_avg = cross_val_avg
     )
-   
-    # Perform 10x cross-validation (80/20 splits)
-    cross_val_results <- perform.cross.validation(10, test_data)
-    cross_val_avg <- aggregate_cv_metrics(cross_val_results)
     
-    # Save cross-validation results
-    model_results[[drug]][[model.type]]$cross_validation_avg <- cross_val_avg
+    # Store dimensions of training / testing data
+    new_row <- data.frame(
+      Drug = drug,
+      Model_Type = model.type,
+      Training_Samples = nrow(train_data),
+      Training_Features = ncol(train_data),
+      Testing_Samples = nrow(test_data),
+      Testing_Features = ncol(test_data)
+    )
+    data_dimensions_metadata <- rbind(data_dimensions_metadata, new_row)
+    
   }
 }
+write.csv(data_dimensions_metadata, paste0(config$results.dir, results.subdir, config$results.metadata.dir, "data_dimensions.csv"))
 
-if(config$experiment.type.positive) {
-  saveRDS(model_results, "results_positive.rds")
-} else{
-  saveRDS(model_results, "results_negative.rds")
-}
-results_positive <- readRDS("results_positive.rds")
-results_negative <- readRDS("results_negative.rds")
+# if(config$experiment.type.is.positive) {
+#   saveRDS(model_results, "results_positive_2.rds")
+# } else{
+#   saveRDS(model_results, "results_negative_2.rds")
+# }
+
+# results_positive <- readRDS("results_positive.rds")
+# results_negative <- readRDS("results_negative.rds")
