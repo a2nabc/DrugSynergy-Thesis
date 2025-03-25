@@ -14,7 +14,7 @@ evaluate_regression <- function(y_true, y_pred) {
   r2 <- 1 - (sum((y_true - y_pred)^2) / sum((y_true - mean(y_true))^2))
   pearson <-  cor(y_true, y_pred)
   
-  return(list(MSE = mse, RMSE = rmse, MAE = mae, R2 = r2))
+  return(list(MSE = mse, RMSE = rmse, MAE = mae, R2 = r2, PEARSON = pearson))
 }
 
 

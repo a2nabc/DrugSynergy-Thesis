@@ -49,7 +49,7 @@ print(config)
 #					What we're trying to capture here is if the biomarkers you found
 #					with lasso/enet/ridge actually generalize
 
-config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
+#config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
 
 # load source screen and target screen data
 source_data <- load_data(config$source.expression, config$source.response)
@@ -70,10 +70,13 @@ target_data <- filter_cell_lines(config$experiment.type.is.positive, source_data
 #cat("Testing Data:", nrow(target_data$expression), "samples\n")
 
 
-# Read drug universe and initialize list to store results
+# Read drug universe and initialize list and folders to store results
 common_drugs <- readLines(config$drugs) 
+results.subdir <- create_output_folders(config$target.screen, config$models, config$experiment.type.is.positive, config$results.dir, config$results.features.dir, config$results.eval.dir, config$results.correlations.dir, config$results.cv.dir)
+data_dimensions_metadata <- create_df_metadata(config$results.dir, config$results.metadata.dir)
 model_results <- list()
 debug <- list()
+summary_results <- data.frame(Drug = character(), Model = character(), MSE = numeric(), RMSE = numeric(), R2 = numeric(), Biomarkers = character(), stringsAsFactors = FALSE)
 
 for (model.type in config$models) {
   for (drug in common_drugs) {
@@ -81,21 +84,27 @@ for (model.type in config$models) {
     train_data <- prepare.data.for.ml(source_data, drug)
     print(paste("Training data is", nrow(train_data), "samples and", ncol(train_data), "features"))
     model_info <- train.model(model.type, train_data, drug)
+    
     # Save features
     features <- model_info$features
-   # writeLines(features, paste0(config$results.features, drug, ".txt"))
+    features <- features[features != "(Intercept)"]  # Exclude "(Intercept)"
+    writeLines(features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.features.dir, drug, ".txt"))
     
     # Evaluate model
     test_data <- prepare.data.for.ml(target_data, drug)
     print(paste("Testing data is", nrow(test_data), "samples and", ncol(test_data), "features"))
 
     eval_info <- evaluate.model(model_info$model, test_data, drug)
+    write.csv(eval_info, paste0(config$results.dir, results.subdir,  model.type, "/", config$results.eval.dir, drug, ".csv"))
+    
     # Compute gene-expression correlation
     gene_corrs <- compute.gene.correlations(features, test_data, eval_info$y_test, drug)
-   # write.csv(gene_corrs, paste0(config$results.features, drug, "_genes_corr.csv"))
+    write.csv(gene_corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.correlations.dir, drug, ".csv"))
     
     # Perform cross-validation
     cross_val_avg <- perform.cv(test_data)
+    write.csv(cross_val_avg$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
+    write.csv(cross_val_avg$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
     
     # Store results
     model_results[[drug]][[model.type]] <- list(
@@ -105,13 +114,42 @@ for (model.type in config$models) {
       gene_correlations = gene_corrs,
       cross_validation_avg = cross_val_avg
     )
+    
+    # Store dimensions of training / testing data
+    new_row_dimensions <- data.frame(
+      Drug = drug,
+      Model_Type = model.type,
+      Training_Samples = nrow(train_data),
+      Training_Features = ncol(train_data),
+      Testing_Samples = nrow(test_data),
+      Testing_Features = ncol(test_data)
+    )
+    data_dimensions_metadata <- rbind(data_dimensions_metadata, new_row_dimensions)
+    
+    biomarkers_str <- paste(features, collapse = ", ")
+    
+    new_row_summary_results <- data.frame(
+      Drug= drug,
+      Model = model.type,
+      MSE = eval_info$eval_metrics$MSE,
+      RMSE = eval_info$eval_metrics$RMSE,
+      MAE = eval_info$eval_metrics$MAE,
+      R2 = eval_info$eval_metrics$R2,
+      PEARSON = eval_info$eval_metrics$PEARSON,
+      Biomarkers = biomarkers_str,
+      stringsAsFactors = FALSE
+    )
+    summary_results <- rbind(summary_results, new_row_summary_results)
+    
   }
 }
+write.csv(data_dimensions_metadata, paste0(config$results.dir, results.subdir, config$results.metadata.dir, "data_dimensions.csv"))
+write.csv(summary_results, paste0(config$results.dir, results.subdir, "summary_results.csv"))
+# if(config$experiment.type.is.positive) {
+#   saveRDS(model_results, "results_positive_2.rds")
+# } else{
+#   saveRDS(model_results, "results_negative_2.rds")
+# }
 
-if(config$experiment.type.is.positive) {
-  saveRDS(model_results, "results_positive.rds")
-} else{
-  saveRDS(model_results, "results_negative.rds")
-}
-results_positive <- readRDS("results_positive.rds")
-results_negative <- readRDS("results_negative.rds")
+# results_positive <- readRDS("results_positive.rds")
+# results_negative <- readRDS("results_negative.rds")

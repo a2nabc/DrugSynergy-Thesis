@@ -17,9 +17,10 @@ load_data <- function(expression_path, response_path) {
   return(list(expression = expression_data, response = response_data))
 }
 
-create_output_folders <- function(model_types, experiment_positive, results_dir, features_dir, eval_dir, correlations_dir, cv_dir) {
-  results_subdir <- if (experiment_positive == "true") "positive/" else "negative/"
+create_output_folders <- function(target_set, model_types, experiment_positive, results_dir, features_dir, eval_dir, correlations_dir, cv_dir) {
+  results_subdir <- if (experiment_positive == "true") paste0(target_set, "/positive/") else paste0(target_set, "/negative/")
   dir.create(results_dir, showWarnings = FALSE)
+  dir.create(paste0(results_dir, target_set, "/"), showWarnings = FALSE)
   dir.create(paste0(results_dir, results_subdir), showWarnings = FALSE)
   dir.create(paste0(results_dir, results_subdir, "metadata/"), showWarnings = FALSE)
   for (model in model_types) {
@@ -32,8 +33,7 @@ create_output_folders <- function(model_types, experiment_positive, results_dir,
   return(results_subdir)
 }
 
-create_folder_metadata <- function(results_metadata_dir){
-  dir.create(results_metadata_dir, showWarnings = FALSE)
+create_df_metadata <- function(results_dir, results_metadata_dir){
   data_dimensions <- data.frame(
     Drug = character(),
     Model_Type = character(),
