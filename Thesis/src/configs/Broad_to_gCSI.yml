@@ -3,13 +3,13 @@
 
 default:
   source.screen: "Broad"
-  source.expression: "./data/processed/Broad/expression.csv"
-  source.response: "./data/processed/Broad/responses.csv"
+  source.expression: !expr paste0("./data/processed/", source.screen, "/expression.csv")
+  source.response: !expr paste0("./data/processed/", source.screen, "/responses.csv")
   gene.sets: !expr c('KEGG', 'LINCS')
   gene.sets.path: "./data/gene_subsets/"
-  target.screen: "gCSI"
-  target.expression: "./data/processed/gCSI/expression.csv"
-  target.response: "./data/processed/gCSI/responses.csv"
+  target.screen: "GDSC2"
+  target.expression: !expr paste0("./data/processed/", target.screen, "/expression.csv")
+  target.response: !expr paste0("./data/processed/", target.screen, "/responses.csv")
   models: !expr c('lasso','en','ridge')
   drugs: "./data/common_drugs.txt"
   experiment.type.is.positive: "true"
