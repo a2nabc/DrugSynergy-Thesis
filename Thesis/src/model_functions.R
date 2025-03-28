@@ -131,6 +131,7 @@ evaluate.model <- function(model, test_data, drug) {
 }
 
 
+
 compute.gene.correlations <- function(features, test_data, y_test, drug) {
   gene_corrs <- sapply(features, function(gene) {
     if (gene %in% colnames(test_data)) {
@@ -143,10 +144,10 @@ compute.gene.correlations <- function(features, test_data, y_test, drug) {
 }
 
 
-perform.cv <- function(test_data) {
-  cross_val_results <- perform.cross.validation(10, test_data)
-  cross_val_avg <- aggregate_cv_metrics(cross_val_results)
-  return(cross_val_avg)
+perform.cv <- function(test_data, drug) {
+  cross_val_results <- perform.cross.validation(10, test_data, drug)
+  cross_val_avg <- aggregate_cv_metrics(cross_val_results$metrics)
+  return(list(cv=cross_val_avg, features=cross_val_results$features))
 }
 
 
@@ -155,7 +156,7 @@ perform.cross.validation.protein.coding <- function(n, test_data){
   # I have already tried biglm library, as well as lm.fit... none worked...
 }
 
-perform.cross.validation <- function(n, test_data){
+perform.cross.validation <- function(n, test_data, drug){
   cross_val_results <- list()
   print("Starting cross validation")
   for (i in 1:n) {
@@ -177,7 +178,10 @@ perform.cross.validation <- function(n, test_data){
     
     cv_eval <- evaluate_regression(y_cv_test, y_cv_pred)
     cross_val_results[[paste0("CV_", i)]] <- cv_eval
+    features <- names(coef(lm_model))
+    features <- features[features != "(Intercept)"]  # Exclude "(Intercept)"
+  #  gene_corrs <- compute.gene.correlations(features, train_subset, cv_eval$y_test, drug)
+    
   }
-  
-  return(cross_val_results)
+  return(list(metrics = cross_val_results, features = features))
 }

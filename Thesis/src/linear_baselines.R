@@ -3,6 +3,8 @@ library(PharmacoGx)
 library(dplyr)
 source("src/model_functions.R")
 source("src/data_functions.R")
+source("src/performance_results_functions.R")
+source("src/heatmaps_plotting.R")
 
 ############# 
 # READ THIS:
@@ -102,17 +104,21 @@ for (model.type in config$models) {
     write.csv(gene_corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.correlations.dir, drug, ".csv"))
     
     # Perform cross-validation
-    cross_val_avg <- perform.cv(test_data)
-    write.csv(cross_val_avg$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
-    write.csv(cross_val_avg$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
+#    cv <- perform.cv(test_data, drug)
+
+    # WE IGNORE THIS PART OF THE CODE :)
+#    write.csv(cv$cv$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
+#    write.csv(cv$cv$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
+#    write.csv(cv$features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_features.csv"))
+   # write.csv(cv$corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_correlations.csv"))
     
     # Store results
     model_results[[drug]][[model.type]] <- list(
       model = model_info$model,
       eval = eval_info$eval_metrics,
       features_selected = features,
-      gene_correlations = gene_corrs,
-      cross_validation_avg = cross_val_avg
+      gene_correlations = gene_corrs
+      #cross_validation_avg = cross_val_avg
     )
     
     # Store dimensions of training / testing data
@@ -144,12 +150,22 @@ for (model.type in config$models) {
   }
 }
 write.csv(data_dimensions_metadata, paste0(config$results.dir, results.subdir, config$results.metadata.dir, "data_dimensions.csv"))
-write.csv(summary_results, paste0(config$results.dir, results.subdir, "summary_results.csv"))
-# if(config$experiment.type.is.positive) {
-#   saveRDS(model_results, "results_positive_2.rds")
-# } else{
-#   saveRDS(model_results, "results_negative_2.rds")
-# }
 
-# results_positive <- readRDS("results_positive.rds")
-# results_negative <- readRDS("results_negative.rds")
+write.csv(summary_results, paste0(config$results.dir, results.subdir, "summary_results.csv"))
+
+############################# RESULTS AND PLOTS ###############################
+ccl_list <- list()
+for (screen in config$screens) {
+  ccl_list <- rbind(ccl_list, paste0(config$path.to.processed.screens, screen, "/", config$name.ccl.file))
+}
+venn_plot(ccl_list, paste0(config$figs.dir, "venn_plot.png"))
+
+for (screen in config$target.screens){
+  generate_tables_summary_performance(paste0(config$results.dir, screen), "summary_results.csv") 
+  generate_violin_plots(paste0(config$results.dir, screen), "summary_results.csv", paste0(config$figs.dir, screen))
+  generate_model_heatmaps(paste0(config$results.dir, screen), config$results.correlations.dir, common_drugs, paste0(config$figs.dir, screen))
+  jaccard_index(paste0(config$results.dir, screen), config$results.features.dir, common_drugs)
+}
+
+
+
