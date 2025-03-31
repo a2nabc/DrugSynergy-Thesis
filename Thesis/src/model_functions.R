@@ -185,3 +185,73 @@ perform.cross.validation <- function(n, test_data, drug){
   }
   return(list(metrics = cross_val_results, features = features))
 }
+
+
+
+train.model.and.get.results <- function(source_data, drug, model_type, output_features, target_data, output_eval, output_corrs){
+  # Train model
+  train_data <- prepare.data.for.ml(source_data, drug)
+  print(paste("Training data is", nrow(train_data), "samples and", ncol(train_data), "features"))
+  model_info <- train.model(model_type, train_data, drug)
+  
+  # Save features
+  features <- model_info$features
+  features <- features[features != "(Intercept)"]  # Exclude "(Intercept)"
+  writeLines(features, output_features)
+  
+  # Evaluate model
+  test_data <- prepare.data.for.ml(target_data, drug)
+  print(paste("Testing data is", nrow(test_data), "samples and", ncol(test_data), "features"))
+  
+  eval_info <- evaluate.model(model_info$model, test_data, drug)
+  write.csv(eval_info, output_eval)
+  
+  # Compute gene-expression correlation
+  gene_corrs <- compute.gene.correlations(features, test_data, eval_info$y_test, drug)
+  write.csv(gene_corrs, output_corrs)
+  
+  # Perform cross-validation
+  #    cv <- perform.cv(test_data, drug)
+  
+  # WE IGNORE THIS PART OF THE CODE :)
+  #    write.csv(cv$cv$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
+  #    write.csv(cv$cv$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
+  #    write.csv(cv$features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_features.csv"))
+  # write.csv(cv$corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_correlations.csv"))
+  
+  # Store results
+  
+  new_row_model_results <- list(
+    model = model_info$model,
+    eval = eval_info$eval_metrics,
+    features_selected = features,
+    gene_correlations = gene_corrs
+    #cross_validation_avg = cross_val_avg
+  )
+  
+  # Store dimensions of training / testing data
+  new_row_dimensions <- data.frame(
+    Drug = drug,
+    Model_Type = model_type,
+    Training_Samples = nrow(train_data),
+    Training_Features = ncol(train_data),
+    Testing_Samples = nrow(test_data),
+    Testing_Features = ncol(test_data)
+  )
+  
+  biomarkers_str <- paste(features, collapse = ", ")
+  
+  new_row_summary_results <- data.frame(
+    Drug= drug,
+    Model = model_type,
+    MSE = eval_info$eval_metrics$MSE,
+    RMSE = eval_info$eval_metrics$RMSE,
+    MAE = eval_info$eval_metrics$MAE,
+    R2 = eval_info$eval_metrics$R2,
+    PEARSON = eval_info$eval_metrics$PEARSON,
+    Biomarkers = biomarkers_str,
+    stringsAsFactors = FALSE
+  )
+  
+  return(list(new_row_model_results = new_row_model_results, new_row_summary_results = new_row_summary_results, new_row_dimensions = new_row_dimensions))
+}

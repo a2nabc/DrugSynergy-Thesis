@@ -51,7 +51,7 @@ print(config)
 #					What we're trying to capture here is if the biomarkers you found
 #					with lasso/enet/ridge actually generalize
 
-#config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
+config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
 
 # load source screen and target screen data
 source_data <- load_data(config$source.expression, config$source.response)
@@ -80,75 +80,21 @@ model_results <- list()
 debug <- list()
 summary_results <- data.frame(Drug = character(), Model = character(), MSE = numeric(), RMSE = numeric(), R2 = numeric(), Biomarkers = character(), stringsAsFactors = FALSE)
 
+
 for (model.type in config$models) {
   for (drug in common_drugs) {
-    # Train model
-    train_data <- prepare.data.for.ml(source_data, drug)
-    print(paste("Training data is", nrow(train_data), "samples and", ncol(train_data), "features"))
-    model_info <- train.model(model.type, train_data, drug)
+    output_features <- paste0(config$results.dir, results.subdir, model.type, "/", config$results.features.dir, drug, ".txt")
+    output_eval <- paste0(config$results.dir, results.subdir,  model.type, "/", config$results.eval.dir, drug, ".csv")
+    output_corrs <- paste0(config$results.dir, results.subdir, model.type, "/", config$results.correlations.dir, drug, ".csv")
     
-    # Save features
-    features <- model_info$features
-    features <- features[features != "(Intercept)"]  # Exclude "(Intercept)"
-    writeLines(features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.features.dir, drug, ".txt"))
+    results <- train.model.and.get.results(source_data, drug, model.type, output_features, target_data, output_eval, output_corrs)
     
-    # Evaluate model
-    test_data <- prepare.data.for.ml(target_data, drug)
-    print(paste("Testing data is", nrow(test_data), "samples and", ncol(test_data), "features"))
-
-    eval_info <- evaluate.model(model_info$model, test_data, drug)
-    write.csv(eval_info, paste0(config$results.dir, results.subdir,  model.type, "/", config$results.eval.dir, drug, ".csv"))
-    
-    # Compute gene-expression correlation
-    gene_corrs <- compute.gene.correlations(features, test_data, eval_info$y_test, drug)
-    write.csv(gene_corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.correlations.dir, drug, ".csv"))
-    
-    # Perform cross-validation
-#    cv <- perform.cv(test_data, drug)
-
-    # WE IGNORE THIS PART OF THE CODE :)
-#    write.csv(cv$cv$mean, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_mean.csv"))
-#    write.csv(cv$cv$std, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_std.csv"))
-#    write.csv(cv$features, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_features.csv"))
-   # write.csv(cv$corrs, paste0(config$results.dir, results.subdir, model.type, "/", config$results.cv.dir, drug, "_correlations.csv"))
-    
-    # Store results
-    model_results[[drug]][[model.type]] <- list(
-      model = model_info$model,
-      eval = eval_info$eval_metrics,
-      features_selected = features,
-      gene_correlations = gene_corrs
-      #cross_validation_avg = cross_val_avg
-    )
-    
-    # Store dimensions of training / testing data
-    new_row_dimensions <- data.frame(
-      Drug = drug,
-      Model_Type = model.type,
-      Training_Samples = nrow(train_data),
-      Training_Features = ncol(train_data),
-      Testing_Samples = nrow(test_data),
-      Testing_Features = ncol(test_data)
-    )
-    data_dimensions_metadata <- rbind(data_dimensions_metadata, new_row_dimensions)
-    
-    biomarkers_str <- paste(features, collapse = ", ")
-    
-    new_row_summary_results <- data.frame(
-      Drug= drug,
-      Model = model.type,
-      MSE = eval_info$eval_metrics$MSE,
-      RMSE = eval_info$eval_metrics$RMSE,
-      MAE = eval_info$eval_metrics$MAE,
-      R2 = eval_info$eval_metrics$R2,
-      PEARSON = eval_info$eval_metrics$PEARSON,
-      Biomarkers = biomarkers_str,
-      stringsAsFactors = FALSE
-    )
-    summary_results <- rbind(summary_results, new_row_summary_results)
-    
+    summary_results <- rbind(summary_results, results$new_row_summary_results)
+    model_results[[drug]][[model.type]] <- results$new_row_model_results
+    data_dimensions_metadata <- rbind(data_dimensions_metadata, results$new_row_dimensions)
   }
 }
+
 write.csv(data_dimensions_metadata, paste0(config$results.dir, results.subdir, config$results.metadata.dir, "data_dimensions.csv"))
 
 write.csv(summary_results, paste0(config$results.dir, results.subdir, "summary_results.csv"))
@@ -166,6 +112,9 @@ for (screen in config$target.screens){
   generate_model_heatmaps(paste0(config$results.dir, screen), config$results.correlations.dir, common_drugs, paste0(config$figs.dir, screen))
   jaccard_index(paste0(config$results.dir, screen), config$results.features.dir, common_drugs)
 }
+
+####################### K-FOLD CROSS VALIDATION FOR PAGERANK GENES ########################
+
 
 
 
