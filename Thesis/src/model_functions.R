@@ -318,15 +318,25 @@ k.fold.linear.model <- function(data_to_split, drug, num_folds) {
 }
 
 
-
-
-
 compute.cv.for.pagerank.input <- function(path_pagerank_genes, source_data, target_data, drug, num_folds) {
   pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
   pagerank_genes <- pagerank_genes[pagerank_genes %in% colnames(source_data$expression)]
   
   filtered_source$expression <- source_data$expression %>% select(c("Cell_line", pagerank_genes))
   filtered_target$expression <- target_data$expression %>% select(c("Cell_line", pagerank_genes))
+  filtered_source$response <- source_data$response
+  filtered_target$response <- target_data$response
+  
+  results_drug <- k.fold.linear.model(filtered_target, drug, num_folds)
+  
+  return(results_drug)
+}
+
+compute.cv.for.random.input <- function(source_data, target_data, drug, num_folds, num_genes) {
+  random_genes_to_keep <- sample(2:ncol(target_data$expression), num_genes)
+
+  filtered_source$expression <- source_data$expression[, c("Cell_line", names(source_data$expression)[random_genes_to_keep])]
+  filtered_target$expression <- target_data$expression[, c("Cell_line", names(target_data$expression)[random_genes_to_keep])]
   filtered_source$response <- source_data$response
   filtered_target$response <- target_data$response
   
