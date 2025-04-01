@@ -1,6 +1,7 @@
 library(glmnet)
 library(PharmacoGx)
 library(dplyr)
+library(caret)
 source("src/model_functions.R")
 source("src/data_functions.R")
 source("src/performance_results_functions.R")
@@ -115,6 +116,28 @@ for (screen in config$target.screens){
 
 ####################### K-FOLD CROSS VALIDATION FOR PAGERANK GENES ########################
 
-
-
+for (screen in config$target.screens) {
+  results_pagerank_10 <- list()
+  results_pagerank_20 <- list()
+  results_pagerank_50 <- list()
+  
+  for (drug in common_drugs) {
+    path_10 <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug, "_10.txt")
+    results_drug_10 <- compute.cv.for.pagerank.input(path_10, source_data, target_data, drug, 10)
+    results_pagerank_10 <- rbind(results_pagerank_10, results_drug_10)
+    
+    path_20 <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug, "_20.txt")
+    results_drug_20 <- compute.cv.for.pagerank.input(path_20, source_data, target_data, drug, 10)
+    results_pagerank_20 <- rbind(results_pagerank_20, results_drug_20)
+    
+    path_50 <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug, "_50.txt")  
+    results_drug_50 <- compute.cv.for.pagerank.input(path_50, source_data, target_data, drug, 10)
+    results_pagerank_50 <- rbind(results_pagerank_50, results_drug_50)
+  }
+  
+  write.csv(results_pagerank_10, paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_top_10_features.csv"))
+  write.csv(results_pagerank_20, paste0(config$results.dir, screen , "/positive/lasso", "/pagerank_performance_top_20_features.csv"))
+  write.csv(results_pagerank_50, paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_top_50_features.csv"))
+  
+}
 

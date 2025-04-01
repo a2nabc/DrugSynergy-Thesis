@@ -65,3 +65,11 @@ filter_cell_lines <- function(is_consistency_experiment, source_data, target_dat
   
   return(target_data)
 }
+
+load_pagerank_feature_list <- function(gene_list_path) {
+  if (file.exists(gene_list_path)) {
+    return(readLines(gene_list_path))
+  } else{
+    stop(paste("Pagerank feature list not found:", gene_list_path))
+  }
+}

@@ -2,6 +2,7 @@ library(dplyr)
 library(tidyr)
 library(glmnet)
 library(biglm)
+library(caret)
 # library(Metrics)  
 # library(caret)  
 # library(pROC)  
@@ -254,4 +255,82 @@ train.model.and.get.results <- function(source_data, drug, model_type, output_fe
   )
   
   return(list(new_row_model_results = new_row_model_results, new_row_summary_results = new_row_summary_results, new_row_dimensions = new_row_dimensions))
+}
+
+one.fold.linear.model <- function(train_subset, test_subset, drug){
+  
+  x_train <- as.data.frame(train_subset %>% select(-AAC))
+
+  y_train <- train_subset$AAC
+  
+  x_test <- as.data.frame(test_subset %>% select(-AAC))
+  y_test <- test_subset$AAC
+  
+  model <- lm(y_train ~ ., data=x_train)
+  
+  y_pred <- predict(model, newdata = x_test)
+  
+  return(evaluate_regression(y_test, y_pred))
+}
+
+k.fold.linear.model <- function(data_to_split, drug, num_folds) {
+  data <- prepare.data.for.ml(data_to_split, drug)
+  responses <- data$AAC
+  cv_folds <- createFolds(responses, k = num_folds, list = TRUE)
+  
+  results <- data.frame(Drug = character(), MSE = numeric(), RMSE = numeric(), MAE = numeric(), R2 = numeric(), PEARSON = numeric())
+  for (fold_idx in seq_along(cv_folds)) {
+    print(paste("Processing Fold", fold_idx, "for", drug))
+    
+    # Split data for this fold
+    train_indices <- unlist(cv_folds[-fold_idx])  # All but one fold for training
+    test_indices <- unlist(cv_folds[fold_idx])  # The held-out fold for testing
+    
+    train_data <- data[train_indices, ]
+    test_data <- data[test_indices, ]
+    
+    fold_results <- one.fold.linear.model(train_data, test_data, drug)
+    results <- rbind(results, fold_results)
+  }
+  
+  numeric_results <- results[, sapply(results, is.numeric)]
+  
+  # Compute column-wise mean and standard deviation
+  mean_results <- colMeans(numeric_results, na.rm = TRUE)
+  sd_results <- apply(numeric_results, 2, sd, na.rm = TRUE)
+  
+  # Create summary dataframe
+  summary_results <- data.frame(
+    Drug = drug,
+    MSE_Mean = mean_results["MSE"],
+    MSE_SD = sd_results["MSE"],
+    RMSE_Mean = mean_results["RMSE"],
+    RMSE_SD = sd_results["RMSE"],
+    MAE_Mean = mean_results["MAE"],
+    MAE_SD = sd_results["MAE"],
+    R2_Mean = mean_results["R2"],
+    R2_SD = sd_results["R2"],
+    PEARSON_Mean = mean_results["PEARSON"],
+    PEARSON_SD = sd_results["PEARSON"]
+  )
+  
+  return(summary_results)
+}
+
+
+
+
+
+compute.cv.for.pagerank.input <- function(path_pagerank_genes, source_data, target_data, drug, num_folds) {
+  pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
+  pagerank_genes <- pagerank_genes[pagerank_genes %in% colnames(source_data$expression)]
+  
+  filtered_source$expression <- source_data$expression %>% select(c("Cell_line", pagerank_genes))
+  filtered_target$expression <- target_data$expression %>% select(c("Cell_line", pagerank_genes))
+  filtered_source$response <- source_data$response
+  filtered_target$response <- target_data$response
+  
+  results_drug <- k.fold.linear.model(filtered_target, drug, num_folds)
+  
+  return(results_drug)
 }

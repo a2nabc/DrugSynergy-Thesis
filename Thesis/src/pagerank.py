@@ -94,8 +94,6 @@ def process_all_features(base_path, G, output_folder):
                         for gene, score in results:
                             out_f.write(f"{gene}\t{score}\n")
 
-                    print(f"Saved results to {output_file}")
-
                     # Create and save the pagerank_{file}_10.txt file
                     with open(f"{output_file}_10.txt", "w") as f:
                         for gene in top_10_genes:
@@ -112,6 +110,7 @@ def process_all_features(base_path, G, output_folder):
                             f.write(f"{gene}\n")
 
                     print("Files saved: ")
+                    print(f"{output_file}")
                     print(f"{output_file}_10.txt")
                     print(f"{output_file}_20.txt")
                     print(f"{output_file}_50.txt")

@@ -7,7 +7,7 @@ default:
   source.response: !expr paste0("./data/processed/", source.screen, "/responses.csv")
   gene.sets: !expr c('KEGG', 'LINCS')
   gene.sets.path: "./data/gene_subsets/"
-  target.screen: "gCSI"
+  target.screen: "GDSC2"
   target.expression: !expr paste0("./data/processed/", target.screen, "/expression.csv")
   target.response: !expr paste0("./data/processed/", target.screen, "/responses.csv")
   models: !expr c('lasso','en','ridge')
@@ -24,4 +24,5 @@ default:
   target.screens: !expr c('GDSC2', 'gCSI')
   name.ccl.file: "ccl_data.csv"
   figs.dir: "./figs/"
+  results.pagerank.features.dir: "pagerank_genes/"
   
