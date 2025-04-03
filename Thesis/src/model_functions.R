@@ -280,7 +280,6 @@ k.fold.linear.model <- function(data_to_split, drug, num_folds) {
   
   results <- data.frame(Drug = character(), MSE = numeric(), RMSE = numeric(), MAE = numeric(), R2 = numeric(), PEARSON = numeric())
   for (fold_idx in seq_along(cv_folds)) {
-    print(paste("Processing Fold", fold_idx, "for", drug))
     
     # Split data for this fold
     train_indices <- unlist(cv_folds[-fold_idx])  # All but one fold for training
@@ -343,4 +342,16 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
   results_drug <- k.fold.linear.model(filtered_target, drug, num_folds)
   
   return(results_drug)
+}
+
+
+
+process.results.pagerank <- function(path, drug, feature_size, source_data, target_data, config) {
+  path_nfeatures <- paste0(path, "_", feature_size, ".txt")
+  
+  results_pagerank <- compute.cv.for.pagerank.input(path_nfeatures, source_data, target_data, drug, 10) # 10 is num_folds
+  
+  results_random <- compute.cv.for.random.input(source_data, target_data, drug, 10, feature_size)
+  
+  return(list(pagerank = results_pagerank, random = results_random))
 }

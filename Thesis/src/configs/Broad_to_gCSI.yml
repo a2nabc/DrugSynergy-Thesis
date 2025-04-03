@@ -12,7 +12,7 @@ default:
   target.response: !expr paste0("./data/processed/", target.screen, "/responses.csv")
   models: !expr c('lasso','en','ridge')
   drugs: "./data/common_drugs.txt"
-  experiment.type.is.positive: "true"
+  experiment.type.is.positive: "false"
   results.dir: "./results/"
   results.features.dir: "features/"
   results.eval.dir: "evaluation/"

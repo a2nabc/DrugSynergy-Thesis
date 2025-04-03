@@ -56,11 +56,13 @@ filter_cell_lines <- function(is_consistency_experiment, source_data, target_dat
       filter(Cell_line %in% common_cells)
     target_data$response <- target_data$response %>%
       filter(Cell_line %in% common_cells)
+    print("COMMON cell lines")
   } else{ # generalization -> we want to test only in unseen cell_lines
     target_data$expression <- target_data$expression %>%
       filter(!Cell_line %in% source_cells)
     target_data$response <- target_data$response %>%
       filter(!Cell_line %in% source_cells)
+    print("DIFFERENT cell lines")
   }
   
   return(target_data)
