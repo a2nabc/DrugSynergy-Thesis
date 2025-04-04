@@ -25,4 +25,5 @@ default:
   name.ccl.file: "ccl_data.csv"
   figs.dir: "./figs/"
   results.pagerank.features.dir: "pagerank_genes/"
+  drugbank.data.file: "drugbank/AffectedGenesByDrug.txt"
   

@@ -72,6 +72,7 @@ load_pagerank_feature_list <- function(gene_list_path) {
   if (file.exists(gene_list_path)) {
     return(readLines(gene_list_path))
   } else{
-    stop(paste("Pagerank feature list not found:", gene_list_path))
+    print(paste("Pagerank feature list not found:", gene_list_path))
+    return(NULL)
   }
 }

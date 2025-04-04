@@ -321,11 +321,16 @@ compute.cv.for.pagerank.input <- function(path_pagerank_genes, source_data, targ
   pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
   pagerank_genes <- pagerank_genes[pagerank_genes %in% colnames(source_data$expression)]
   
-  filtered_source$expression <- source_data$expression %>% select(c("Cell_line", pagerank_genes))
-  filtered_target$expression <- target_data$expression %>% select(c("Cell_line", pagerank_genes))
-  filtered_source$response <- source_data$response
-  filtered_target$response <- target_data$response
-  
+  if (length(pagerank_genes) == 0 || is.null(pagerank_genes)) {
+    # Handle the case when gene_list is NULL or empty
+    cat("gene_list is empty or NULL\n")
+    return(NULL)
+  } else {
+    filtered_source$expression <- source_data$expression %>% select(c("Cell_line", pagerank_genes))
+    filtered_target$expression <- target_data$expression %>% select(c("Cell_line", pagerank_genes))
+    filtered_source$response <- source_data$response
+    filtered_target$response <- target_data$response
+  }
   results_drug <- k.fold.linear.model(filtered_target, drug, num_folds)
   
   return(results_drug)
@@ -345,13 +350,14 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
 }
 
 
-
-process.results.pagerank <- function(path, drug, feature_size, source_data, target_data, config) {
-  path_nfeatures <- paste0(path, "_", feature_size, ".txt")
-  
-  results_pagerank <- compute.cv.for.pagerank.input(path_nfeatures, source_data, target_data, drug, 10) # 10 is num_folds
-  
+process.results.pagerank <- function(path_lasso, path_drugbank, drug, feature_size, source_data, target_data) {
+  path_lasso_nfeatures <- paste0(path_lasso, "_", feature_size, ".txt")
+  path_drugbank_nfeatures <- paste0(path_drugbank, "_", feature_size, ".txt")
+  print(paste0("Starting cv for lasso vs random vs drugbank input for ", feature_size, " features"))
+  results_pagerank_lasso <- compute.cv.for.pagerank.input(path_lasso_nfeatures, source_data, target_data, drug, 10) # 10 is num_folds
+  results_pagerank_drugbank <- compute.cv.for.pagerank.input(path_drugbank_nfeatures, source_data, target_data, drug, 10)
   results_random <- compute.cv.for.random.input(source_data, target_data, drug, 10, feature_size)
-  
-  return(list(pagerank = results_pagerank, random = results_random))
+  print(paste0("Finished cv for lasso vs random vs drugbank input for ", feature_size, " features"))
+  return(list(lasso = results_pagerank_lasso, random = results_random, drugbank = results_pagerank_drugbank))
 }
+

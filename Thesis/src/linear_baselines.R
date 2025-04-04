@@ -125,19 +125,23 @@ results <- list()
 for (screen in config$target.screens) {
   # Initialize result lists for each feature size
   for (size in feature_sizes) {
-    results[[paste0("pagerank_", size)]] <- list()
+    results[[paste0("lasso_", size)]] <- list()
     results[[paste0("random_", size)]] <- list()
+    results[[paste0("drugbank_", size)]] <- list()
   }
   
   for (drug in common_drugs) {
     for (size in feature_sizes) {
       # Process results for the current drug and feature size
-      path <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug)
-      result <- process.results.pagerank(path, drug, size, source_data, target_data, config)
-    
+      path_lasso <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug)
+      path_drugbank <- paste0(config$results.dir, "pagerank_genes/pagerank_drugbank_", drug)
+      result <- process.results.pagerank(path_lasso, path_drugbank, drug, size, source_data, target_data)
+      #results/pagerank_genes/pagerank_drugbank_5-Fluorouracil_50.txt
+      
       # Append results to the corresponding lists
-      results[[paste0("pagerank_", size)]] <- rbind(results[[paste0("pagerank_", size)]], result$pagerank)
+      results[[paste0("lasso_", size)]] <- rbind(results[[paste0("lasso_", size)]], result$lasso)
       results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], result$random)
+      results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result$drugbank)
     }
   }
   
@@ -145,6 +149,7 @@ for (screen in config$target.screens) {
   for (size in feature_sizes) {
     write.csv(results[[paste0("pagerank_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_top_", size, "_features.csv"))
     write.csv(results[[paste0("random_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/random_performance_", size, "_features.csv"))
+    write.csv(results[[paste0("drugbank_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_drugbank_", size, "_features.csv"))
   }
 }
 

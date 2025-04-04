@@ -1,5 +1,6 @@
 import os
 import networkx as nx
+import pandas as pd
 
 def load_graph(graphml_path):
     """Load a graph from a GraphML file."""
@@ -20,10 +21,8 @@ def compute_personalized_pagerank(G, P0, alpha=0.85):
     """Compute personalized PageRank."""
     return nx.pagerank(G, alpha=alpha, personalization=P0)
 
-def process_gene_list(G, gene_list_path):
+def process_gene_list(G, gene_list):
     """Process a single gene list file and return the top PageRank results."""
-    with open(gene_list_path, "r") as f:
-        gene_list = {line.strip() for line in f}
 
     P0 = create_personalization_vector(G, gene_list)
     G_simple = nx.Graph(G)  # Convert to simple graph if needed
@@ -37,12 +36,12 @@ def process_gene_list(G, gene_list_path):
 
 def save_top_genes(pagerank_scores, file_name):
     # Sort genes by their PageRank scores (highest first)
-    sorted_genes = sorted(pagerank_scores.items(), key=lambda x: x[1], reverse=True)
+    #sorted_genes = sorted(pagerank_scores.items(), key=lambda x: x[1], reverse=True)
 
     # Get the top 10, 20, and 50 genes (no scores, just names)
-    top_10_genes = [gene for gene, score in sorted_genes[:10]]
-    top_20_genes = [gene for gene, score in sorted_genes[:20]]
-    top_50_genes = [gene for gene, score in sorted_genes[:50]]
+    top_10_genes = [gene for gene, score in pagerank_scores[:10]]
+    top_20_genes = [gene for gene, score in pagerank_scores[:20]]
+    top_50_genes = [gene for gene, score in pagerank_scores[:50]]
 
     # Define file paths
     dir_path = os.path.dirname(file_name)  # Get the directory from the file path
@@ -85,35 +84,11 @@ def process_all_features(base_path, G, output_folder):
 
                     print(f"Processing {input_path}...")
 
-                    results = process_gene_list(G, input_path)
-                    top_10_genes = [gene for gene, score in results[:10]]
-                    top_20_genes = [gene for gene, score in results[:20]]
-                    top_50_genes = [gene for gene, score in results[:50]]
+                    with open(input_path, "r") as f:
+                        gene_list = {line.strip() for line in f}
 
-                    with open(f"{output_file}.txt", "w") as out_f:
-                        for gene, score in results:
-                            out_f.write(f"{gene}\t{score}\n")
-
-                    # Create and save the pagerank_{file}_10.txt file
-                    with open(f"{output_file}_10.txt", "w") as f:
-                        for gene in top_10_genes:
-                            f.write(f"{gene}\n")
-
-                    # Create and save the pagerank_{file}_20.txt file
-                    with open(f"{output_file}_20.txt", "w") as f:
-                        for gene in top_20_genes:
-                            f.write(f"{gene}\n")
-
-                    # Create and save the pagerank_{file}_50.txt file
-                    with open(f"{output_file}_50.txt", "w") as f:
-                        for gene in top_50_genes:
-                            f.write(f"{gene}\n")
-
-                    print("Files saved: ")
-                    print(f"{output_file}")
-                    print(f"{output_file}_10.txt")
-                    print(f"{output_file}_20.txt")
-                    print(f"{output_file}_50.txt")
+                    results = process_gene_list(G, gene_list)
+                    save_top_genes(results, output_file)
 
 # Paths
 graphml_path = "data/g_KEGG_UNION_LINCS.graphml"  # Change as needed
@@ -124,9 +99,44 @@ G = load_graph(graphml_path)
 G_largest = get_largest_connected_component(G)
 
 # Iterate through datasets (gCSI, GDSC2), conditions (negative, positive), and methods (en, ridge, lasso)
-for dataset in ["gCSI", "GDSC2"]:
-    for condition in ["negative", "positive"]:
-        for method in ["en", "ridge", "lasso"]:
-            features_path = os.path.join(base_results_path, dataset, condition, method, "features")
-            if os.path.exists(features_path):
-                process_all_features(features_path, G_largest, "pagerank_genes")
+#for dataset in ["gCSI", "GDSC2"]:
+#    for condition in ["negative", "positive"]:
+#        for method in ["en", "ridge", "lasso"]:
+#            features_path = os.path.join(base_results_path, dataset, condition, method, "features")
+#            if os.path.exists(features_path):
+#                process_all_features(features_path, G_largest, "pagerank_genes")
+
+
+def run_pagerank_from_drugbank(path_drugbank_genes, G):
+
+    # Load DrugBank data
+    drugbank_data = pd.read_csv(path_drugbank_genes, sep="\t", header=0)
+    drug_gene_map = {
+        row['DRUG_NAME']: [gene.strip() for gene in row['GENES_AFFECTED'].split(",")]
+        for _, row in drugbank_data.iterrows()
+    }
+
+
+    # Run PageRank with the filtered gene list
+    for drug in drug_gene_map:
+        gene_list = drug_gene_map[drug]
+        print(f"Processing drug: {drug} with genes: {gene_list}")
+
+        # Compute PageRank scores
+        results = process_gene_list(G, gene_list)
+        output_path = os.path.join("results", "pagerank_genes", f"pagerank_drugbank_{drug}")
+        save_top_genes(results, output_path)
+
+        # Save results
+        #save_top_genes(pagerank_scores, os.path.join("results", "pagerank_genes", f"pagerank_{drug}"))
+
+    return 
+
+path_drugbank_info = "results/drugbank/AffectedGenesByDrug.txt"
+drugs_path = "data/common_drugs.txt"
+
+# Load the list of drugs from the file
+with open(drugs_path, "r") as f:
+    drug_list = [line.strip() for line in f]
+
+pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
