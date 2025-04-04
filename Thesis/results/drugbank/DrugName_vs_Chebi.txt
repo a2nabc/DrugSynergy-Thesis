@@ -1,0 +1,15 @@
+PARTICIPANT	PARTICIPANT_NAME
+CHEBI:52172	Nilotinib
+CHEBI:45863	Paclitaxel
+CHEBI:46345	5-Fluorouracil
+CHEBI:28445	Vincristine
+CHEBI:45716	Vorinostat
+CHEBI:75045	Dabrafenib
+CHEBI:49603	Lapatinib
+CHEBI:64310	Crizotinib
+CHEBI:49668	Gefitinib
+CHEBI:114785	Erlotinib
+CHEBI:52717	Bortezomib
+CHEBI:4672	Docetaxel
+CHEBI:175901	Gemcitabine
+CHEBI:76612	Ibrutinib

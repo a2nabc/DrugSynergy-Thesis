@@ -1,0 +1,15 @@
+CHEBI_ID	DRUG_NAME	COUNT
+CHEBI:114785	Erlotinib	2
+CHEBI:175901	Gemcitabine	3
+CHEBI:28445	Vincristine	2
+CHEBI:45716	Vorinostat	5
+CHEBI:45863	Paclitaxel	6
+CHEBI:46345	5-Fluorouracil	1
+CHEBI:4672	Docetaxel	6
+CHEBI:49603	Lapatinib	2
+CHEBI:49668	Gefitinib	1
+CHEBI:52172	Nilotinib	2
+CHEBI:52717	Bortezomib	2
+CHEBI:64310	Crizotinib	2
+CHEBI:75045	Dabrafenib	5
+CHEBI:76612	Ibrutinib	1

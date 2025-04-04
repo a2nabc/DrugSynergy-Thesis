@@ -1,0 +1,2719 @@
+Drugs in DetailsAboutParticipants file but not in the list
+CHEBI:31236, aripiprazole
+CHEBI:31232, Aranidipine
+CHEBI:94809, N-[[4-[2-(dimethylamino)ethoxy]phenyl]methyl]-3,4-dimethoxybenzamide
+CHEBI:94802, (2S)-N-[(2S)-6-amino-1-[(2-amino-2-oxoethyl)amino]-1-oxohexan-2-yl]-1-[[(4R,7S,10S,13S,16S,19R)-19-amino-7-(2-amino-2-oxoethyl)-10-(3-amino-3-oxopropyl)-16-[(4-hydroxyphenyl)methyl]-6,9,12,15,18-pentaoxo-13-(phenylmethyl)-1,2-dithia-5,8,11,14,17-pentazacycloeicos-4-yl]-oxomethyl]-2-pyrrolidinecarboxamide
+CHEBI:9667, Triamcinolone
+CHEBI:7009, Moxonidine
+CHEBI:134966, rufinamide
+CHEBI:31247, Azelnidipine
+CHEBI:507499, tricetin
+CHEBI:5292, geldanamycin
+CHEBI:49, (+)-Tetrandrine
+CHEBI:5296, gemfibrozil
+CHEBI:9654, Trazodone
+CHEBI:64153, tanespimycin
+CHEBI:9652, tranylcypromine
+CHEBI:70824, m-hydroxyhippuric acid
+CHEBI:8327, Polythiazide
+CHEBI:44557, nitrilotriacetic acid
+CHEBI:94810, N-[4-oxo-2-(2H-tetrazol-5-yl)-1-benzopyran-8-yl]-4-(4-phenylbutoxy)benzamide
+CHEBI:18258, 3,3',5-triiodo-L-thyronine
+CHEBI:18255, nebularine
+CHEBI:94812, 2-[4-[3-(4-acetyl-3-hydroxy-2-propylphenoxy)propoxy]phenoxy]acetic acid
+CHEBI:40199, 6-(2,4-diamino-6-ethylpyrimidin-5-yl)-4-(3-methoxypropyl)-2,2-dimethyl-2H-1,4-benzoxazin-3(4H)-one
+CHEBI:31252, 5,5-diethylbarbituric acid
+CHEBI:18250, Chondroitin sulfate
+CHEBI:31257, bendazac
+CHEBI:76127, cimicoxib
+CHEBI:76128, dexketoprofen
+CHEBI:68540, teriflunomide
+CHEBI:32588, potassium chloride
+CHEBI:64187, benserazide
+CHEBI:91755, LSM-1636
+CHEBI:48928, 6-phospho-D-gluconic acid
+CHEBI:85078, Dapagliflozin
+CHEBI:18248, Iron
+CHEBI:68534, enzalutamide
+CHEBI:45895, tert-butanol
+CHEBI:9649, trandolapril
+CHEBI:18243, dopamine
+CHEBI:31263, bentiromide
+CHEBI:76133, droxicam
+CHEBI:48926, S-(hydroxymethyl)glutathione
+CHEBI:134989, taribavirin
+CHEBI:76136, firocoxib
+CHEBI:32599, Magnesium sulfate
+CHEBI:9635, toremifene
+CHEBI:9637, torasemide
+CHEBI:47600, purvalanol A
+CHEBI:41480, N-cyclohexyl-N'-(4-iodophenyl)urea
+CHEBI:61092, 3-methylfentanyl
+CHEBI:8378, prednisolone
+CHEBI:39168, Imidacloprid
+CHEBI:617099, carbimazole
+CHEBI:31205, amlexanox
+CHEBI:61080, romidepsin
+CHEBI:8362, Prazepam
+CHEBI:61084, carfentanil
+CHEBI:8364, Prazosin
+CHEBI:91749, 7-[(3-chloro-6-methyl-5,5-dioxo-11H-benzo[c][2,1]benzothiazepin-11-yl)amino]heptanoic acid
+CHEBI:7035, muscimol
+CHEBI:44515, 6-[(4-hydroxy-3-nitrophenyl)acetamido]caproate
+CHEBI:61076, belinostat
+CHEBI:40154, 5-fluorouridine
+CHEBI:40153, 4-(4-methylpiperazin-1-yl)-N-[5-(2-thienylacetyl)-1,5-dihydropyrrolo[3,4-c]pyrazol-3-yl]benzamide
+CHEBI:134990, agomelatine
+CHEBI:134991, frovatriptan
+CHEBI:18297, 1D-myo-inositol 1-phosphate
+CHEBI:18295, histamine
+CHEBI:39176, {(2Z)-3-[(6-chloropyridin-3-yl)methyl]-1,3-thiazolidin-2-ylidene}cyanamide
+CHEBI:53486, all-cis-icosa-8,11,14-trienoic acid
+CHEBI:9683, trichlormethiazide
+CHEBI:8354, Pralidoxime
+CHEBI:8356, Pramipexole
+CHEBI:40167, 5-iodotubercidin
+CHEBI:18280, phenylglyoxylic acid
+CHEBI:31225, antipyrine
+CHEBI:9671, triamterene
+CHEBI:10304, Levonordefrin
+CHEBI:9674, triazolam
+CHEBI:9679, tricalcium bis(phosphate)
+CHEBI:77431, Bupivacaine
+CHEBI:43208, (2R,3R)-heptane-1,2,3-triol
+CHEBI:81579, Erythropoietin
+CHEBI:35677, betahistine
+CHEBI:45002, N-[4-(4-nitrophenylphospho)butanoyl]-D-alanine
+CHEBI:81570, Chorionic gonadotropin
+CHEBI:67272, perifosine
+CHEBI:81571, Leptin
+CHEBI:138488, alsterpaullone
+CHEBI:131854, (S)-fotemustine
+CHEBI:47657, roflumilast
+CHEBI:60634, lefradafiban
+CHEBI:92223, 3-[(dimethylamino)methyl]-N-[2-[4-[(hydroxyamino)-oxomethyl]phenoxy]ethyl]-2-benzofurancarboxamide
+CHEBI:68595, telaprevir
+CHEBI:45013, 2-phospho-L-lactic acid
+CHEBI:7872, oxytocin
+CHEBI:6541, losartan
+CHEBI:45007, [5-amino-1-(4-fluorophenyl)-1H-pyrazol-4-yl][3-(piperidin-4-yloxy)phenyl]methanone
+CHEBI:109100, 3,8-dibromo-7-hydroxy-4-methyl-1-benzopyran-2-one
+CHEBI:116225, nomifensine
+CHEBI:474053, Cefazolin
+CHEBI:6532, Loperamide
+CHEBI:7862, Oxymetazoline
+CHEBI:7865, Oxymorphone
+CHEBI:7864, oxymetholone
+CHEBI:6538, Loratadine
+CHEBI:60652, Porfimer sodium
+CHEBI:7868, Oxyphencyclimine
+CHEBI:258351, practolol
+CHEBI:81569, Follicle stimulating hormone
+CHEBI:80234, Nesiritide
+CHEBI:82892, Miconazole
+CHEBI:45030, 5-(2-ethoxyethyl)-5-[4-(4-fluorophenoxy)phenoxy]barbituric acid
+CHEBI:6520, lomustine
+CHEBI:7852, Oxycodone
+CHEBI:7856, Oxybutynin
+CHEBI:34385, 4-aminopyridine
+CHEBI:34380, monobenzone
+CHEBI:59601, patent blue V
+CHEBI:68564, Icatibant
+CHEBI:44592, 9-(2-carboxyethyl)-10-methylanthracene endoperoxide
+CHEBI:47619, piclamilast
+CHEBI:9622, Tolterodine
+CHEBI:94843, (4,6-dimethyl-5-pyrimidinyl)-[4-[(3S)-4-[(1R)-2-methoxy-1-[4-(trifluoromethyl)phenyl]ethyl]-3-methyl-1-piperazinyl]-4-methyl-1-piperidinyl]methanone
+CHEBI:68558, ticagrelor
+CHEBI:31286, bifonazole
+CHEBI:47612, bezafibrate
+CHEBI:134923, talbutal
+CHEBI:43275, hexadecane-1-sulfonyl fluoride
+CHEBI:82872, (S)-econazole
+CHEBI:82873, Econazole
+CHEBI:68551, linaclotide
+CHEBI:64198, dimercaprol
+CHEBI:73927, 1alpha,25-dihydroxy-2beta-(3-hydroxypropoxy)vitamin D3
+CHEBI:64195, ritanserin
+CHEBI:9613, tolazamide
+CHEBI:9611, tocainide
+CHEBI:44598, 5-(\{4-[2-(1-oxidopiperidin-1-yl)ethyl]phenyl\}amino)-5-oxopentanoic acid
+CHEBI:31296, Blonanserin
+CHEBI:47628, 8-(2-chloro-3,4,5-trimethoxybenzyl)-2-fluoro-9-pent-4-yn-1-yl-9H-purin-6-amine
+CHEBI:46311, 8-(pyrimidin-2-ylamino)naphthalene-2-carboximidamide
+CHEBI:68584, ezogabine
+CHEBI:546274, (4-hydroxy-3-nitrophenyl)acetic acid
+CHEBI:9604, tioconazole
+CHEBI:9605, Tirofiban
+CHEBI:68579, rivaroxaban
+CHEBI:43278, (1S,2S,5S)-2-(4-glutaridylbenzyl)-5-phenylcyclohexan-1-ol
+CHEBI:76172, loxoprofen
+CHEBI:116278, Lomefloxacin
+CHEBI:46322, 2'-deoxyuridine 3'-monophosphate
+CHEBI:68575, Indacaterol
+CHEBI:499361, aprepitant
+CHEBI:61936, Gamma-Carboxy-Glutamic Acid
+CHEBI:46295, vardenafil
+CHEBI:71253, Asenapine
+CHEBI:3558, Cerivastatin
+CHEBI:135370, Aprindine
+CHEBI:4888, ethotoin
+CHEBI:4887, ethosuximide
+CHEBI:4884, ethinamate
+CHEBI:30703, tetrathiomolybdate(2-)
+CHEBI:4882, ethchlorvynol
+CHEBI:17733, Glucose-6-Phosphate
+CHEBI:7922, Paramethasone
+CHEBI:7921, Paramethadione
+CHEBI:63622, Sotalol
+CHEBI:63620, rasagiline
+CHEBI:63626, tesamorelin
+CHEBI:63629, tizanidine
+CHEBI:3568, cevimeline
+CHEBI:50305, podophyllotoxin
+CHEBI:3561, cetirizine
+CHEBI:63612, nelarabine
+CHEBI:63611, Moxifloxacin
+CHEBI:40992, N-acetyl-L-alanine
+CHEBI:63610, misoprostol
+CHEBI:7915, Pantoprazole
+CHEBI:63616, Pemetrexed
+CHEBI:63615, peginterferon alfa-2b
+CHEBI:64945, sn-glycero-3-phosphoserine
+CHEBI:63614, Olsalazine
+CHEBI:63619, Propafenone
+CHEBI:27999, tolbutamide
+CHEBI:63618, Pravastatin
+CHEBI:63617, Pergolide
+CHEBI:4868, Estramustine
+CHEBI:52993, lormetazepam
+CHEBI:17709, 5'-adenylyl sulfate
+CHEBI:134066, N(6)-(pyridoxal phosphate)-L-lysine
+CHEBI:135398, norelgestromin
+CHEBI:49339, methyl L-phenylalaninate
+CHEBI:7903, pamidronate
+CHEBI:93492, 6,7-dinitro-1,4-dihydroquinoxaline-2,3-dione
+CHEBI:7907, Pancuronium
+CHEBI:4876, etacrynic acid
+CHEBI:15999, (4-hydroxyphenyl)pyruvic acid
+CHEBI:63630, tolcapone
+CHEBI:17700, undecan-2-one
+CHEBI:63634, valdecoxib
+CHEBI:63633, triptorelin
+CHEBI:63632, topotecan
+CHEBI:63631, topiramate
+CHEBI:63638, vigabatrin
+CHEBI:63637, vemurafenib
+CHEBI:28421, coproporphyrin I
+CHEBI:39955, (2S,3S)-3-\{3-[4-(methylsulfonyl)phenyl]-1,2,4-oxadiazol-5-yl\}-1-oxo-1-pyrrolidin-1-ylbutan-2-amine
+CHEBI:81496, Iopodic acid
+CHEBI:71219, Pazopanib
+CHEBI:39959, (1S,2R,5S)-5-[3-(trifluoromethyl)-5,6-dihydro[1,2,4]triazolo[4,3-a]pyrazin-7(8H)-yl]-2-(2,4,5-trifluorophenyl)cyclohexanamine
+CHEBI:17775, Uric acid
+CHEBI:40940, 3-\{[(9-cyano-10-methyl-9,10-dihydroacridin-9-yl)carbonyl]amino\}propanoic acid
+CHEBI:6633, Mafenide
+CHEBI:40947, bis-tris propane
+CHEBI:29746, Glycocholic acid
+CHEBI:71223, pralatrexate
+CHEBI:39968, 3-METHOXYBENZAMIDE
+CHEBI:38635, 3-methyladenine
+CHEBI:34283, oxybenzone
+CHEBI:7954, penbutolol
+CHEBI:59565, N-[4-(4-nitrophenylphospho)butanoyl]-L-alanine
+CHEBI:391960, Darifenacin
+CHEBI:40953, doramapimod
+CHEBI:59560, Sapropterin
+CHEBI:84500, Varenicline
+CHEBI:17748, thymidine
+CHEBI:16422, androst-4-ene-3,17-dione
+CHEBI:39980, 3-hydroxyglutaric acid
+CHEBI:17754, glycerol
+CHEBI:17750, glycine betaine
+CHEBI:94789, Trimetazidine
+CHEBI:63605, ixabepilone
+CHEBI:40968, astaxanthin
+CHEBI:63609, mefloquine
+CHEBI:63608, maraviroc
+CHEBI:94782, 4-[(4-fluoro-2-methyl-1H-indol-5-yl)oxy]-6-methoxy-7-[3-(1-pyrrolidinyl)propoxy]quinazoline
+CHEBI:34292, 1,3-benzothiazole-2-thiol
+CHEBI:71200, tofacitinib
+CHEBI:71204, Bepotastine
+CHEBI:16411, indole-3-acetic acid
+CHEBI:16414, L-valine
+CHEBI:7931, paricalcitol
+CHEBI:7930, Pargyline
+CHEBI:60562, ferroheme c
+CHEBI:17741, N,N-dimethylformamide
+CHEBI:38666, (R)-flurbiprofen
+CHEBI:60564, felypressin
+CHEBI:6605, lysergic acid diethylamide
+CHEBI:7936, Paroxetine
+CHEBI:94796, Mercaptopurine
+CHEBI:59582, Clocortolone
+CHEBI:4806, (-)-epigallocatechin 3-gallate
+CHEBI:4803, epibatidine
+CHEBI:73038, Parecoxib
+CHEBI:313639, Profenamine
+CHEBI:28462, ajmaline
+CHEBI:87681, ranolazine
+CHEBI:132268, dacomitinib
+CHEBI:61049, Tacrolimus
+CHEBI:65408, andrographolide
+CHEBI:16480, nitric oxide
+CHEBI:42768, geneticin
+CHEBI:40108, O6-CYCLOHEXYLMETHOXY-2-(4'-SULPHAMOYLANILINO) PURINE
+CHEBI:73044, lumiracoxib
+CHEBI:30796, Malate Ion
+CHEBI:50383, nicotinamide mononucleotide
+CHEBI:30794, malonic acid
+CHEBI:4814, eprosartan
+CHEBI:575568, atovaquone
+CHEBI:48080, brefeldin A
+CHEBI:91704, 1-(propan-2-ylamino)-3-(2-prop-2-enoxyphenoxy)-2-propanol
+CHEBI:16474, NADPH
+CHEBI:40118, \{4-[2,2-bis(5-methyl-1,2,4-oxadiazol-3-yl)-3-phenylpropyl]phenyl\}sulfamic acid
+CHEBI:40117, 1,4'-bipiperidine
+CHEBI:24088, formycin
+CHEBI:309594, Oxybuprocaine
+CHEBI:8397, Prenylamine
+CHEBI:16467, L-arginine
+CHEBI:40125, 7-(5-deoxy-beta-D-ribofuranosyl)-5-iodo-7H-pyrrolo[2,3-d]pyrimidin-4-amine
+CHEBI:16469, Estradiol
+CHEBI:135314, indecainide
+CHEBI:40128, (2S)-N-[(3Z)-5-cyclopropyl-3H-pyrazol-3-ylidene]-2-[4-(2-oxoimidazolidin-1-yl)phenyl]propanamide
+CHEBI:8382, Prednisone
+CHEBI:8389, estrone sodium sulfate
+CHEBI:85010, eltrombopag
+CHEBI:45825, tetrabutylammonium
+CHEBI:42797, gabapentin
+CHEBI:40138, (3R)-4-[(3R)-3-amino-4-(2,4,5-trifluorophenyl)butanoyl]-3-methyl-1,4-diazepan-2-one
+CHEBI:41462, CARBENOXOLONE
+CHEBI:40133, (-)-rolipram
+CHEBI:61058, alpha-methyl-L-dopa
+CHEBI:17781, lumichrome
+CHEBI:83275, hypothemycin
+CHEBI:30746, benzoic acid
+CHEBI:18225, myo-inositol 1,3-bisphosphate
+CHEBI:18220, isoflavone
+CHEBI:135339, demegestone
+CHEBI:49375, dasatinib (anhydrous)
+CHEBI:76995, alpha-naphthoflavone
+CHEBI:30754, anthranilic acid
+CHEBI:73002, 1-hexadecanoyl-2-(9Z,12Z-octadecadienoyl)-sn-glycero-3-phosphocholine
+CHEBI:30751, formic acid
+CHEBI:4858, estazolam
+CHEBI:28499, kaempferol
+CHEBI:73005, 3-[Aminoethylphosphoryl]-[1,2-Di-Palmitoyl]-Sn-Glycerol
+CHEBI:28494, cardiolipin
+CHEBI:4853, esculin
+CHEBI:18208, Benzylpenicillin
+CHEBI:37397, Chondroitin sulfate
+CHEBI:41401, CANALINE
+CHEBI:135323, gestodene
+CHEBI:71272, Saxagliptin
+CHEBI:50373, homatropine methylbromide
+CHEBI:50378, nitisinone
+CHEBI:28487, reserpine
+CHEBI:4822, Ergometrine
+CHEBI:28483, N-acetylhistamine
+CHEBI:135351, rotigotine
+CHEBI:30769, citric acid
+CHEBI:30768, propionic acid
+CHEBI:135356, calusterone
+CHEBI:135357, Zimelidine
+CHEBI:36076, L-topaquinone
+CHEBI:50381, miglustat
+CHEBI:50368, tris(nicotinato)chromium
+CHEBI:30772, butyric acid
+CHEBI:28475, phosphoglycolohydroxamic acid
+CHEBI:27140, Oxygen
+CHEBI:41423, celecoxib
+CHEBI:39112, bosutinib
+CHEBI:20506, 5,6,7,8-tetrahydrofolic acid
+CHEBI:39118, (+)-trans-allethrin
+CHEBI:135342, Reboxetine
+CHEBI:16497, dGTP
+CHEBI:16494, lipoic acid
+CHEBI:135349, mitiglinide
+CHEBI:2904, Atenolol
+CHEBI:82702, vorapaxar
+CHEBI:82700, olodaterol
+CHEBI:40074, 2,3-diphenyl-N-(2-piperazin-1-ylethyl)furo[2,3-b]pyridin-4-amine
+CHEBI:27091, triazolopyrimidine
+CHEBI:9544, Thiethylperazine
+CHEBI:40071, 4-amino-1,8-naphthalimide
+CHEBI:8212, pimozide
+CHEBI:36803, trans-dothiepin
+CHEBI:91656, 4-[1-hydroxy-2-(4-phenylbutan-2-ylamino)propyl]phenol
+CHEBI:8214, pindolol
+CHEBI:9546, thimerosal
+CHEBI:18148, alpha-D-glucose 1,6-bisphosphate
+CHEBI:44423, hydroxyurea
+CHEBI:18145, Vitamin E
+CHEBI:19475, 2-aminopentanoic acid
+CHEBI:134847, etafedrine
+CHEBI:53394, Alteplase
+CHEBI:82708, AT7867
+CHEBI:2915, Atracurium besylate
+CHEBI:82715, PH 797804
+CHEBI:82713, SB220025
+CHEBI:82714, N-cyclopropyl-3-\{[1-(2,4-difluorophenyl)-7-methyl-6-oxo-6,7-dihydropyrazolo[3,4-b]pyridin-4-yl]amino\}-4-methylbenzamide
+CHEBI:82712, SD-06
+CHEBI:40083, (2R)-N-hydroxy-2-[(3S)-3-methyl-3-\{4-[(2-methylquinolin-4-yl)methoxy]phenyl\}-2-oxopyrrolidin-1-yl]propanamide
+CHEBI:40086, 4-(4-fluorobenzyl)piperidine
+CHEBI:27086, tributylstannane
+CHEBI:70708, dienogest
+CHEBI:70707, Vilazodone
+CHEBI:40082, 5-(4-phenoxyphenyl)-5-(4-pyrimidin-2-ylpiperazin-1-yl)pyrimidine-2,4,6(2H,3H)-trione
+CHEBI:9536, thiamylal
+CHEBI:44434, naphthalene-1,3,6-trisulfonate(3-)
+CHEBI:18132, phosphocholine
+CHEBI:39098, pyrethrins
+CHEBI:76004, dimethyl fumarate
+CHEBI:79995, GW 3965
+CHEBI:86290, 6-bromoindirubin-3'-oxime
+CHEBI:45783, Imatinib
+CHEBI:43120, Quinonoid 7,8-Tetrahydrobiopterin
+CHEBI:5163, fosinopril
+CHEBI:681569, clofarabine
+CHEBI:5165, Fosphenytoin
+CHEBI:70735, Lurasidone
+CHEBI:44445, nimesulide
+CHEBI:76016, Vortioxetine
+CHEBI:76018, riociguat
+CHEBI:44460, naphthalene-2,6-dicarboxylic acid
+CHEBI:6485, Liotrix
+CHEBI:89324, Vitamin D
+CHEBI:43127, 3-[(2,2-dimethylpropanoyl)amino]-N-1,3-thiazol-2-ylpyridine-2-carboxamide
+CHEBI:9513, thalidomide
+CHEBI:64045, amisulpride
+CHEBI:70723, reversine
+CHEBI:44454, 3-nitro-L-tyrosine
+CHEBI:2948, azathioprine
+CHEBI:2946, Azatadine
+CHEBI:77317, SR12813
+CHEBI:15903, beta-D-glucose
+CHEBI:92948, 3-bromo-N-[[(2S)-1-ethyl-2-pyrrolidinyl]methyl]-2,6-dimethoxybenzamide
+CHEBI:9588, Ticlopidine
+CHEBI:9586, tiagabine
+CHEBI:67987, ginsenoside Rg1
+CHEBI:65324, alvespimycin
+CHEBI:134884, butobarbital
+CHEBI:45713, Resveratrol
+CHEBI:67989, Ginsenoside Rb1
+CHEBI:53351, chromium(3+) trichloride
+CHEBI:65329, LY294002
+CHEBI:18183, Pidolic Acid
+CHEBI:77321, 1,8-dihydroxy-4-nitroxanthen-9-one
+CHEBI:2955, Azithromycin
+CHEBI:79988, Sobetirome
+CHEBI:2950, Azelastine
+CHEBI:9571, Thiothixene
+CHEBI:9574, Thrombin
+CHEBI:8245, Pirbuterol
+CHEBI:8247, Pirenzepine
+CHEBI:8249, piroxicam
+CHEBI:42699, fluoridophosphate
+CHEBI:92950, 2-[(2-cyclopropylphenoxy)methyl]-4,5-dihydro-1H-imidazole
+CHEBI:134870, toloxatone
+CHEBI:40035, 4-methylimidazole
+CHEBI:52010, chlorphenamine
+CHEBI:79993, GW 9662
+CHEBI:2922, auranofin
+CHEBI:8230, Pipecuronium
+CHEBI:64022, nebivolol
+CHEBI:65353, Lorcaserin
+CHEBI:9566, Thioridazine
+CHEBI:65346, Aclidinium
+CHEBI:41378, dodecyltrimethylammonium ion
+CHEBI:45735, troleandomycin
+CHEBI:9568, Thiorphan
+CHEBI:40044, (2S)-6-(2,4-diamino-6-ethylpyrimidin-5-yl)-2-(3,5-difluorophenyl)-4-(3-methoxypropyl)-2H-1,4-benzoxazin-3(4H)-one
+CHEBI:65349, mirabegron
+CHEBI:101096, ethoxzolamide
+CHEBI:65347, carfilzomib
+CHEBI:39066, Bicine
+CHEBI:44409, NADP zwitterion
+CHEBI:2930, Aurothioglucose
+CHEBI:134895, fencamfamin
+CHEBI:8228, pioglitazone
+CHEBI:132233, Amphetamine
+CHEBI:101085, diclofenamide
+CHEBI:18152, myricetin
+CHEBI:27931, alpha-maltotriose
+CHEBI:59526, (4Z)-2,8:7,12:11,15:14,18:17,22-pentaanhydro-4,5,6,9,10,13,19,20,21-nonadeoxy-L-arabino-L-allo-L-allo-docosa-4,9,20-trienitol
+CHEBI:40909, azoxystrobin
+CHEBI:31199, amcinonide
+CHEBI:15946, keto-D-fructose 6-phosphate
+CHEBI:15949, diphthamide
+CHEBI:3398, Carbinoxamine
+CHEBI:453011, Ciclopirox
+CHEBI:6431, Levallorphan
+CHEBI:5100, flucytosine
+CHEBI:6432, levamisole
+CHEBI:5103, flumazenil
+CHEBI:35560, 1,2,4-triazole
+CHEBI:5106, flunisolide
+CHEBI:6437, levetiracetam
+CHEBI:68478, everolimus
+CHEBI:6438, Levobunolol
+CHEBI:7769, Olopatadine
+CHEBI:94767, N'-[(4-chlorophenyl)methyl]-N,N-dimethyl-N'-(2-pyridinyl)ethane-1,2-diamine
+CHEBI:43179, 5-methyl-5-(4-phenoxyphenyl)barbituric acid
+CHEBI:5109, Fluocinonide
+CHEBI:93430, 6-[(2-fluorophenyl)methyl]-2,4-dimethyl-5-thieno[3,4]pyrrolo[1,3-d]pyridazinone
+CHEBI:46209, L-tyrosinal
+CHEBI:94760, (2S)-3-(4-acetamidophenoxy)-2-hydroxy-2-methyl-N-[4-nitro-3-(trifluoromethyl)phenyl]propanamide
+CHEBI:15939, Glycyrrhizic acid
+CHEBI:59514, cinolazepam
+CHEBI:39922, 3-methylpyridine
+CHEBI:43197, (R)-3-hydroxylauric acid
+CHEBI:15940, nicotinic acid
+CHEBI:94777, (3aR,7aS)-2-[4-[4-(1,2-benzothiazol-3-yl)-1-piperazinyl]butyl]-3a,4,5,6,7,7a-hexahydroisoindole-1,3-dione
+CHEBI:6427, Leuprolide
+CHEBI:47564, mometasone furoate
+CHEBI:46234, ubiquinone-1
+CHEBI:47566, dioxo(sulfanyl)molybdenum
+CHEBI:52916, phenylsulfonyl group
+CHEBI:3374, capsaicin
+CHEBI:93416, 1-cyclohexyl-3-[4-[2-(7-methoxy-4,4-dimethyl-1,3-dioxo-2-isoquinolinyl)ethyl]phenyl]sulfonylurea
+CHEBI:6413, letrozole
+CHEBI:131751, 5-[(2-cyclopropyl-7,8-dimethoxy-2H-chromen-5-yl)methyl]pyrimidine-2,4-diamine
+CHEBI:93414, N,N-diethyl-2-[4-(phenylmethyl)phenoxy]ethanamine
+CHEBI:59555, trans-4-(dimethylphenylsilyl)-N-methylpiperidine N-oxide
+CHEBI:46229, Uridine diphosphate glucose
+CHEBI:27902, tetracycline
+CHEBI:46245, coenzyme Q10
+CHEBI:15919, N(6)-(1,2-dicarboxyethyl)-AMP
+CHEBI:137045, Z-Val-Ala-Asp(OMe)-CH2F
+CHEBI:67168, UDP-N-acetyl-alpha-D-galactosamine
+CHEBI:3387, carbamazepine
+CHEBI:39949, Triphosphoric acid
+CHEBI:3385, carbachol
+CHEBI:7731, ofloxacin
+CHEBI:94758, acetic acid [2-oxo-2-[3-[3-(1-piperidinylmethyl)phenoxy]propylamino]ethyl] ester
+CHEBI:6402, leflunomide
+CHEBI:7735, olanzapine
+CHEBI:3380, captopril
+CHEBI:94754, acetic acid [4-[2-(dimethylamino)ethoxy]-2-methyl-5-propan-2-ylphenyl] ester
+CHEBI:39951, (2S)-1-amino-3-[(5-nitroquinolin-8-yl)amino]propan-2-ol
+CHEBI:59540, (S)-Rolipram
+CHEBI:40933, 5alpha-androst-16-en-3alpha-ol
+CHEBI:27974, estriol
+CHEBI:31159, aceclofenac
+CHEBI:27971, Alpha-Aminoisobutyric Acid
+CHEBI:5141, fomepizole
+CHEBI:15994, 5alpha-androstane-3,17-dione
+CHEBI:15996, GTP
+CHEBI:43136, 2,2'-dithiodiethanol
+CHEBI:490877, didanosine
+CHEBI:94721, 2-acetyloxy-4-(trifluoromethyl)benzoic acid
+CHEBI:90369, 6-chloro-2,3,4,9-tetrahydro-1H-carbazole-1-carboxamide
+CHEBI:9506, tetrodotoxin
+CHEBI:94720, 1-(3-chlorophenyl)-3-[5-[2-(4-thieno[3,2-d]pyrimidinylamino)ethyl]-2-thiazolyl]urea
+CHEBI:31162, acemetacin
+CHEBI:27960, N(gamma)-nitro-L-arginine
+CHEBI:64073, exendin-4
+CHEBI:82752, eliglustat
+CHEBI:44485, N-ethylmaleimide
+CHEBI:32499, amineptine
+CHEBI:5130, flurbiprofen
+CHEBI:5132, flutamide
+CHEBI:44480, 4-nitrophenyl (4-carboxybutyl)phosphonate
+CHEBI:15978, sn-glycerol 3-phosphate
+CHEBI:5134, fluticasone
+CHEBI:5136, Fluvastatin
+CHEBI:70746, dabigatran etexilate
+CHEBI:7798, Oseltamivir
+CHEBI:131762, dodecyldimethylamine N-oxide
+CHEBI:5138, fluvoxamine
+CHEBI:27958, Cocaine
+CHEBI:31174, adapalene
+CHEBI:27953, physostigmine
+CHEBI:82720, empagliflozin
+CHEBI:47522, 4-[3-(4-chlorophenyl)-1H-pyrazol-5-yl]piperidine
+CHEBI:94708, 4,5-diacetyloxy-9,10-dioxo-2-anthracenecarboxylic acid
+CHEBI:44493, 2-(oxaloamino)benzoic acid
+CHEBI:5120, fluoxymesterone
+CHEBI:5121, flupenthixol
+CHEBI:34208, 2,2'-Dihydroxy-4-methoxybenzophenone
+CHEBI:385425, [N-(4-cyanophenyl)-N'-(diphenylmethyl)guanidine]acetic acid
+CHEBI:5123, fluphenazine
+CHEBI:15971, L-histidine
+CHEBI:2086, 5-methoxy-N,N-dimethyltryptamine
+CHEBI:6456, Lidocaine
+CHEBI:5127, Flurandrenolide
+CHEBI:7789, Orphenadrine
+CHEBI:5128, flurazepam
+CHEBI:48844, roxithromycin
+CHEBI:31186, alfacalcidol
+CHEBI:31183, alclofenac
+CHEBI:47518, (2S,4R)-ketoconazole
+CHEBI:31189, Allylestrenol
+CHEBI:67121, nitroxoline
+CHEBI:39902, 4-(1,3-benzodioxol-5-yloxy)-2-[4-(1H-imidazol-1-yl)phenoxy]pyrimidine
+CHEBI:7770, Olsalazine
+CHEBI:142437, lepirudin
+CHEBI:7773, Ondansetron
+CHEBI:15956, biotin
+CHEBI:6441, levacetylmethadol
+CHEBI:7772, omeprazole
+CHEBI:6443, levonorgestrel
+CHEBI:94714, doxofylline
+CHEBI:6444, Levorphanol
+CHEBI:64089, vanoxerine
+CHEBI:44499, methyl nonanoate
+CHEBI:35553, perhexiline
+CHEBI:31197, dihydroxy(stearato)aluminium
+CHEBI:134813, chlorobutanol
+CHEBI:92070, 3,5-dichloro-N-[[(2S)-1-ethyl-2-pyrrolidinyl]methyl]-2-hydroxy-6-methoxybenzamide
+CHEBI:49203, torcetrapib
+CHEBI:3437, Carteolol
+CHEBI:17609, cortisol 21-acetate
+CHEBI:17606, diiodine
+CHEBI:31911, Nilvadipine
+CHEBI:7809, Oxacillin
+CHEBI:746859, travoprost
+CHEBI:4779, Emedastine
+CHEBI:291902, eptifibatide
+CHEBI:4775, ellagic acid
+CHEBI:3441, carvedilol
+CHEBI:39893, 4-[(1E,7E)-8-(2,6-dioxo-1,2,3,6-tetrahydropyrimidin-4-yl)-3,6-dioxa-2,7-diazaocta-1,7-dien-1-yl]benzoic acid
+CHEBI:17600, hexadecanal
+CHEBI:46195, paracetamol
+CHEBI:3419, carisoprodol
+CHEBI:50212, pizotifen
+CHEBI:140621, Cisatracurium
+CHEBI:140618, castor oil
+CHEBI:15891, taurine
+CHEBI:40889, 4,5-dihydro-1,3-thiazol-2-amine
+CHEBI:3423, carmustine
+CHEBI:30618, hydroxypropyl methylcellulose
+CHEBI:4753, Echothiophate
+CHEBI:31947, Oxethazaine
+CHEBI:15882, phenol
+CHEBI:28304, heparin
+CHEBI:47462, 5-chloro-6-methyl-N-(2-phenylethyl)-2-pyridin-2-ylpyrimidin-4-amine
+CHEBI:39836, 2-(3,4-dihydroxyphenyl)-8-(1,1-dioxidoisothiazolidin-2-yl)-3-hydroxy-6-methyl-4H-chromen-4-one
+CHEBI:17649, hydroxymalonate(2-)
+CHEBI:141969, tipifarnib
+CHEBI:34154, 13(S)-HODE
+CHEBI:17650, Hydrocortisone
+CHEBI:94686, orlistat
+CHEBI:94683, 4-cyano-4-(3-cyclopentyloxy-4-methoxyphenyl)-1-cyclohexanecarboxylic acid
+CHEBI:94682, 1-[bis(4-fluorophenyl)methyl]-4-[(2,3,4-trimethoxyphenyl)methyl]piperazine
+CHEBI:40823, aminooxyacetic acid
+CHEBI:135285, vildagliptin
+CHEBI:364453, carprofen
+CHEBI:3485, cefdinir
+CHEBI:2150, 5beta-dihydrotestosterone
+CHEBI:93369, 8-[4,4-bis(4-fluorophenyl)butyl]-1-phenyl-1,3,8-triazaspiro[4.5]decan-4-one
+CHEBI:6504, lithium carbonate
+CHEBI:135289, spaglumic acid
+CHEBI:59445, Chlormerodrin
+CHEBI:94691, 3-[2,4-diamino-7-(3-hydroxyphenyl)-6-pteridinyl]phenol
+CHEBI:93363, 2-(1-naphthalenylmethyl)-4,5-dihydro-1H-imidazole
+CHEBI:46151, N-(trans-4'-nitro-4-stilbenyl)-N-methyl-5-aminopentanoic acid
+CHEBI:4788, Encainide
+CHEBI:4787, Enalkiren
+CHEBI:4786, Enalaprilat
+CHEBI:4784, Enalapril
+CHEBI:3452, Casimiroin
+CHEBI:7820, oxandrolone
+CHEBI:7823, oxazepam
+CHEBI:94666, N-[2-(diethylamino)ethyl]-2-methoxy-5-methylsulfonylbenzamide
+CHEBI:7822, oxaprozin
+CHEBI:7825, Oxiconazole
+CHEBI:16300, alpha-D-ribose 1-phosphate
+CHEBI:7824, oxcarbazepine
+CHEBI:79042, tasimelteon
+CHEBI:79041, umeclidinium
+CHEBI:94661, 5-amino-2-[2-(dimethylamino)ethyl]benzo[de]isoquinoline-1,3-dione
+CHEBI:47495, N-[2-(4-bromocinnamylamino)ethyl]isoquinoline-5-sulfonamide
+CHEBI:47499, imipramine
+CHEBI:82698, suvorexant
+CHEBI:31905, nicorandil
+CHEBI:4798, entacapone
+CHEBI:39867, valproic acid
+CHEBI:31902, Nicergoline
+CHEBI:47492, 3-BROMO-7-NITROINDAZOLE
+CHEBI:4792, enflurane
+CHEBI:17621, FMN
+CHEBI:17622, dUMP
+CHEBI:38545, Rosuvastatin
+CHEBI:27899, cisplatin
+CHEBI:50275, esomeprazole
+CHEBI:50277, farnesyl diphosphate
+CHEBI:171741, cerulenin
+CHEBI:92907, N-(6-propoxy-1H-benzimidazol-2-yl)carbamic acid methyl ester
+CHEBI:43977, 7-methyl-7,8-dihydroguanosine-5'-diphosphate
+CHEBI:63585, certolizumab pegol
+CHEBI:16367, N(tele)-methyl-L-histidine residue
+CHEBI:63584, cabazitaxel
+CHEBI:17698, Chloramphenicol
+CHEBI:17697, N-acetylserotonin
+CHEBI:63587, Eribulin
+CHEBI:28335, 3,5-dibromo-L-tyrosine
+CHEBI:16349, L-citrulline
+CHEBI:63580, ribavirin
+CHEBI:41323, tetraethylene glycol monooctyl ether
+CHEBI:16356, 3',5'-cyclic GMP
+CHEBI:16359, cholic acid
+CHEBI:17688, Nicotine
+CHEBI:92913, 4-[4,4-bis(4-fluorophenyl)butyl]-N-ethyl-1-piperazinecarboxamide
+CHEBI:43983, N-methylleucine
+CHEBI:101064, Ro 48-8071
+CHEBI:41321, cholesterol sulfate
+CHEBI:16345, 3-sulfino-L-alanine
+CHEBI:16347, (R)-carnitine
+CHEBI:17677, CTP
+CHEBI:86204, chromium trinitrate
+CHEBI:16344, guanidinoacetic acid
+CHEBI:43993, [(4R)-4-(3-hydroxyphenyl)-1,6-dimethyl-2-thioxo-1,2,3,4-tetrahydropyrimidin-5-yl](phenyl)methanone
+CHEBI:65307, corticotropin-releasing hormone (ovine)
+CHEBI:28315, alloxanthine
+CHEBI:106738, FAMOXADONE
+CHEBI:42682, 3-aminobenzoic acid
+CHEBI:2972, baclofen
+CHEBI:9598, Tiludronic acid
+CHEBI:9599, Timolol
+CHEBI:17659, UDP
+CHEBI:16335, adenosine
+CHEBI:17665, alpha-D-glucose 6-phosphate
+CHEBI:16336, hyaluronic acid
+CHEBI:16330, 17beta-hydroxy-5alpha-androstan-3-one
+CHEBI:63599, fludarabine phosphate
+CHEBI:17661, GDP-6-deoxy-alpha-D-mannose
+CHEBI:63598, levofloxacin
+CHEBI:17660, N(6)-dimethylallyladenine
+CHEBI:30621, diarsenic trioxide
+CHEBI:4728, dyphylline
+CHEBI:4724, dyclonine
+CHEBI:135212, befunolol
+CHEBI:42606, alpha-D-quinovopyranose
+CHEBI:3405, carboxin
+CHEBI:50223, Dexrazoxane
+CHEBI:3404, Carboprost tromethamine
+CHEBI:83168, acrivastine
+CHEBI:50226, 7-methyl-GTP(1+)
+CHEBI:43943, methyl alpha-D-mannoside
+CHEBI:63530, Histrelin
+CHEBI:16393, sphingosine
+CHEBI:135207, clofedanol
+CHEBI:71193, liraglutide
+CHEBI:135209, procaterol
+CHEBI:4708, Doxazosin
+CHEBI:4707, doxacurium chloride
+CHEBI:31974, Pentagastrin
+CHEBI:28364, all-cis-5,8,11,14,17-icosapentaenoic acid
+CHEBI:4702, Dorzolamide
+CHEBI:135233, Dimetacrine
+CHEBI:4717, droperidol
+CHEBI:76855, 3-(5-oxoisoxazolin-2-yl)-L-alanine zwitterion
+CHEBI:31981, periciazine
+CHEBI:4712, doxercalciferol
+CHEBI:4710, doxepin
+CHEBI:63560, tixocortol
+CHEBI:30659, D-thyroxine
+CHEBI:135227, butriptyline
+CHEBI:16375, D-cysteine
+CHEBI:135222, dimetindene
+CHEBI:42638, flufenamic acid
+CHEBI:41308, benzophenone
+CHEBI:44794, octaethylene glycol
+CHEBI:43460, N-\{2'-[(4-fluorophenyl)amino]-4,4'-bipyridin-2-yl\}-4-methoxycyclohexanecarboxamide
+CHEBI:44789, N-(PHOSPHONACETYL)-L-ASPARTIC ACID
+CHEBI:90683, talmapimod
+CHEBI:76399, N-nonyldeoxynojirimycin
+CHEBI:30154, 5beta-pregnane-3,20-dione
+CHEBI:31485, Difluprednate
+CHEBI:90695, anthra[1,9-cd]pyrazol-6(2H)-one
+CHEBI:43467, immucillin G
+CHEBI:63059, (2S,3R)-EHNA
+CHEBI:75037, vilanterol
+CHEBI:42150, ethyl oxo(piperidin-1-yl)acetate
+CHEBI:35859, zomepirac
+CHEBI:87016, eslicarbazepine acetate
+CHEBI:17154, nicotinamide
+CHEBI:91991, 2-[3-(trifluoromethyl)anilino]-3-pyridinecarboxylic acid (3-oxo-1H-isobenzofuran-1-yl) ester
+CHEBI:17150, 2-phosphoglycolic acid
+CHEBI:81717, Calcium levulinate anhydrous
+CHEBI:60805, rolicyclidine
+CHEBI:81724, Diminazene
+CHEBI:63082, Formoterol
+CHEBI:17148, putrescine
+CHEBI:43486, N-(1-isopropylpiperidin-4-yl)-1-(3-methoxybenzyl)-1H-indole-2-carboxamide
+CHEBI:93701, (2S)-1-[[(2R,3S)-5-chloro-3-(2-chlorophenyl)-1-(3,4-dimethoxyphenyl)sulfonyl-3-hydroxy-2H-indol-2-yl]-oxomethyl]-2-pyrrolidinecarboxamide
+CHEBI:42156, 17-epiestriol
+CHEBI:30185, zinc(0)
+CHEBI:17141, cysteamine
+CHEBI:51043, Tegaserod
+CHEBI:64360, tocilizumab
+CHEBI:43415, dexibuprofen
+CHEBI:64356, pregabalin
+CHEBI:64354, metolazone
+CHEBI:64357, rituximab
+CHEBI:135613, regadenoson
+CHEBI:51052, lucanthone
+CHEBI:44748, heptaethylene glycol
+CHEBI:31448, cyclothiazide
+CHEBI:51032, Epinastine
+CHEBI:30114, aluminium trichloride
+CHEBI:51038, Minaprine
+CHEBI:30111, tetrafluoroaluminate(1-)
+CHEBI:31441, fluticasone propionate
+CHEBI:44751, 3,6,9,12,15-pentaoxaheptadecane
+CHEBI:51041, Acamprosate
+CHEBI:51066, dapiprazole
+CHEBI:23872, dodecyl sulfate
+CHEBI:8597, protriptyline
+CHEBI:90620, vatalanib
+CHEBI:135633, beraprost
+CHEBI:90625, 5-(5-chloro-1H-pyrrolo[2,3-d]pyrimidin-4-yl)-4,5,6,7-tetrahydro-1H-imidazo[4,5-c]pyridine
+CHEBI:90624, SGX-523
+CHEBI:135630, drotaverine
+CHEBI:17196, L-asparagine
+CHEBI:17191, L-isoleucine
+CHEBI:31468, deslanoside
+CHEBI:1963, guanosine 5'-[beta,gamma-methylene]triphosphate
+CHEBI:8583, Prothrombin
+CHEBI:63043, potassium nitrate
+CHEBI:89642, Gestrinone
+CHEBI:135624, diflucortolone
+CHEBI:135626, gemeprost
+CHEBI:135627, quinagolide
+CHEBI:6794, Metaraminol
+CHEBI:34593, Bufuralol
+CHEBI:47898, 4'-epidoxorubicin
+CHEBI:83527, O-desmethylvenlafaxine
+CHEBI:136052, lobeglitazone
+CHEBI:71545, 2-endo-amino-2-exo-benzoyl-3-exo-phenylnorbornane
+CHEBI:6780, Mesoridazine
+CHEBI:136051, lusutrombopag
+CHEBI:6784, mestranol
+CHEBI:133809, anisindione
+CHEBI:45262, 6-deoxyinosine 5'-phosphate
+CHEBI:6771, Mersalyl acid
+CHEBI:5441, glyburide
+CHEBI:45260, 4-iodopyrazole
+CHEBI:6775, mesalamine
+CHEBI:45257, Ribostamycin
+CHEBI:10588, 1-(3-chlorophenyl)piperazine
+CHEBI:6761, Meprobamate
+CHEBI:6762, mepyramine
+CHEBI:5439, Glutethimide
+CHEBI:49627, N-(3-cyanophenyl)-2'-methyl-5'-(5-methyl-1,3,4-oxadiazol-2-yl)biphenyl-4-carboxamide
+CHEBI:63916, iloprost
+CHEBI:24344, 2-phosphoglyceric acid
+CHEBI:34543, Vasopressin
+CHEBI:33214, ethylmercurithiosalicylic acid
+CHEBI:34545, Azimilide
+CHEBI:33216, bisphenol A
+CHEBI:16714, codeine
+CHEBI:92426, 3-[[(2R)-2-[2-(4-methyl-1-piperidinyl)ethyl]-1-pyrrolidinyl]sulfonyl]phenol
+CHEBI:93752, (2S)-N1-[4-methyl-5-[2-(1,1,1-trifluoro-2-methylpropan-2-yl)-4-pyridinyl]-2-thiazolyl]pyrrolidine-1,2-dicarboxamide
+CHEBI:58506, Angiotensin II
+CHEBI:16709, pyridoxine
+CHEBI:16708, adenine
+CHEBI:5494, ritropirronium bromide
+CHEBI:16704, uridine
+CHEBI:46534, 3-fluoro-L-tyrosine
+CHEBI:26987, threonine derivative
+CHEBI:141473, S-METHYL-GLUTATHIONE
+CHEBI:46552, 3-fluoro-5-morpholin-4-yl-N-[1-(2-pyridin-4-ylethyl)-1H-indol-6-yl]benzamide
+CHEBI:45223, pyridine-2-thiol
+CHEBI:38927, pelitinib
+CHEBI:46548, zardaverine
+CHEBI:46565, 4-(2-AMINOETHYL)BENZENESULFONAMIDE
+CHEBI:93749, 4-hexylbenzene-1,3-diol
+CHEBI:8502, 6-propyl-2-thiouracil
+CHEBI:34584, boldenone
+CHEBI:38940, sunitinib
+CHEBI:46557, zoledronic acid
+CHEBI:16643, L-methionine
+CHEBI:94128, 4-[4-[[2-(4-chlorophenyl)-5,5-dimethyl-1-cyclohexenyl]methyl]-1-piperazinyl]-N-[4-[[(2R)-4-(4-morpholinyl)-1-(phenylthio)butan-2-yl]amino]-3-(trifluoromethylsulfonyl)phenyl]sulfonylbenzamide
+CHEBI:6832, methocarbamol
+CHEBI:61203, Anileridine
+CHEBI:6838, methotrimeprazine
+CHEBI:6839, methoxamine
+CHEBI:49575, diazepam
+CHEBI:9093, selenocysteine
+CHEBI:6823, methdilazine
+CHEBI:41607, crotonaldehyde
+CHEBI:28600, farnesol
+CHEBI:49585, 2-methyl-3,5,7,8-tetrahydro-4H-thiopyrano[4,3-d]pyrimidin-4-one
+CHEBI:3777, Coagulation Factor VIIa
+CHEBI:9086, Selegiline
+CHEBI:17945, N-cyclohexylformamide
+CHEBI:66910, axitinib
+CHEBI:136007, methylnaltrexone
+CHEBI:41611, 3-thiaoctanoyl-CoA
+CHEBI:41617, (S)-1-(2,5-xylyloxy)-3-morpholinopropan-2-ol
+CHEBI:66919, ruxolitinib
+CHEBI:6817, Methantheline
+CHEBI:25567, Nitrous acid
+CHEBI:50580, arbutamine
+CHEBI:66913, ingenol mebutate
+CHEBI:42944, galanthamine
+CHEBI:83469, fenofibric acid
+CHEBI:125354, 1-[[4-(1,4,8,11-tetrazacyclotetradec-1-ylmethyl)phenyl]methyl]-1,4,8,11-tetrazacyclotetradecane
+CHEBI:9073, Secobarbital
+CHEBI:17939, puromycin
+CHEBI:50567, levosimendan
+CHEBI:17933, calcidiol
+CHEBI:16610, spermidine
+CHEBI:17941, diisopropyl fluorophosphate
+CHEBI:66901, ivacaftor
+CHEBI:6801, Metformin
+CHEBI:6804, methacholine
+CHEBI:6807, methadone
+CHEBI:91083, semaxanib
+CHEBI:66903, vismodegib
+CHEBI:6809, methamphetamine
+CHEBI:28666, leukotriene D4
+CHEBI:37537, Alteplase
+CHEBI:138683, Heparin Disaccharide I-S
+CHEBI:69136, latrunculin A
+CHEBI:6872, methylene blue
+CHEBI:15355, acetylcholine
+CHEBI:15354, choline
+CHEBI:16684, atropine
+CHEBI:9907, ursodeoxycholic acid
+CHEBI:92386, N-(2,6-dimethylphenyl)-5,6-dihydro-4H-1,3-thiazin-2-amine
+CHEBI:60799, esketamine
+CHEBI:16680, S-adenosyl-L-homocysteine
+CHEBI:49519, 12-bromododecanoic acid
+CHEBI:37548, phenyl phosphate
+CHEBI:136010, dipyrithione
+CHEBI:36219, alpha-lactose
+CHEBI:15345, acetoacetyl-CoA
+CHEBI:15344, acetoacetic acid
+CHEBI:15346, coenzyme A
+CHEBI:136018, morniflumate
+CHEBI:5537, granisetron
+CHEBI:5539, Graphinone
+CHEBI:51860, Dexmethylphenidate
+CHEBI:136044, fimasartan
+CHEBI:136040, levomilnacipran
+CHEBI:16664, albendazole
+CHEBI:5520, gonadorelin
+CHEBI:136046, ripasudil
+CHEBI:5523, Goserelin
+CHEBI:16660, (S)-4-hydroxymandelonitrile
+CHEBI:136045, Albiglutide
+CHEBI:17992, sucrose
+CHEBI:42903, (4R,5R)-5-amino-1-[2-(1,3-benzodioxol-5-yl)ethyl]-4-(2,4,5-trifluorophenyl)piperidin-2-one
+CHEBI:92361, 4-[2-[[7-amino-2-(2-furanyl)-[1,2,4]triazolo[1,5-a][1,3,5]triazin-5-yl]amino]ethyl]phenol
+CHEBI:48220, 2,4-dichlorobenzyl alcohol
+CHEBI:49553, copper(II) chloride
+CHEBI:27300, Vitamin D
+CHEBI:136033, seractide
+CHEBI:17985, adenosine 3',5'-bismonophosphate
+CHEBI:6843, methoxyflurane
+CHEBI:136034, afamelanotide
+CHEBI:17980, 3'-phospho-5'-adenylyl sulfate
+CHEBI:6846, Methsuximide
+CHEBI:17981, O-acetyl-L-serine
+CHEBI:42917, Heparin Disaccharide Iii-S
+CHEBI:6847, Methyclothiazide
+CHEBI:73275, ospemifene
+CHEBI:73274, Canagliflozin
+CHEBI:27375, vincaleukoblastine
+CHEBI:64312, Memantine
+CHEBI:135530, Solifenacin
+CHEBI:15397, (S)-camphor
+CHEBI:64318, ergotamine
+CHEBI:64317, isoprenaline
+CHEBI:73284, N-ethyl-5'-carboxamidoadenosine
+CHEBI:73286, 3-iodobenzyl-5'-N-methylcarboxamidoadenosine
+CHEBI:31403, cinnarizine
+CHEBI:31401, cilostazol
+CHEBI:28694, Copper
+CHEBI:3723, citalopram
+CHEBI:3720, cisapride
+CHEBI:9011, salmeterol
+CHEBI:9014, salsalate
+CHEBI:18406, AICA ribonucleotide
+CHEBI:135521, captodiame
+CHEBI:64301, calcium cyanamide
+CHEBI:66964, Delta(9)-tetrahydrocannabinol
+CHEBI:61276, scopolamine methobromide
+CHEBI:131169, 8-chloro-2-phenyl-3-[(1S)-1-(7H-purin-6-ylamino)ethyl]-1-isoquinolinone
+CHEBI:135526, octocrylene
+CHEBI:51024, Metixene
+CHEBI:31414, Clobetasol propionate
+CHEBI:253342, Alosetron
+CHEBI:28689, dehydroepiandrosterone
+CHEBI:31413, clobazam
+CHEBI:31412, Clinofibrate
+CHEBI:28680, cytarabine
+CHEBI:18405, pyridoxal 5'-phosphate
+CHEBI:135556, ketazolam
+CHEBI:44722, 2-(beta-D-glucosyl)-5-methyl-1,3,4-oxadiazole
+CHEBI:135552, prucalopride
+CHEBI:15375, D-erythro-7,8-dihydrobiopterin
+CHEBI:52360, 1,2-dioleoyl-sn-glycero-3-phosphocholine(1+)
+CHEBI:31425, Clotiazepam
+CHEBI:73266, fradafiban
+CHEBI:51015, fusicoccin
+CHEBI:28674, tetryzoline
+CHEBI:15367, all-trans-retinoic acid
+CHEBI:16698, cyanamide
+CHEBI:43405, para-isopropylaniline
+CHEBI:15365, acetylsalicylic acid
+CHEBI:135542, ridogrel
+CHEBI:16695, uridine 5'-monophosphate
+CHEBI:28669, bacitracin
+CHEBI:73237, (-)-noscapine
+CHEBI:3756, clonazepam
+CHEBI:2423, acetylleucyl-leucyl-norleucinal
+CHEBI:3752, Clomifene
+CHEBI:3750, clofibrate
+CHEBI:48273, rizatriptan
+CHEBI:86541, 2-hydroxyethyl salicylate
+CHEBI:40300, N-(3-cyano-4,5,6,7-tetrahydro-1-benzothien-2-yl)-2-fluorobenzamide
+CHEBI:40303, lovastatin
+CHEBI:41630, S-oxy-L-cysteine
+CHEBI:135574, nabilone
+CHEBI:3766, clozapine
+CHEBI:3764, clotrimazole
+CHEBI:3763, clorgyline
+CHEBI:3761, Clorazepic acid
+CHEBI:135566, rimexolone
+CHEBI:17126, carnitine
+CHEBI:135563, elcometrine
+CHEBI:140907, 4-[2-[(2-hydroxyphenyl)methylamino]ethyl]-2,5-dimethoxybenzonitrile;hydrochloride
+CHEBI:135569, arotinolol
+CHEBI:3738, Clemastine
+CHEBI:2401, acetophenazine
+CHEBI:3732, clarithromycin
+CHEBI:135593, ecabet
+CHEBI:52316, cordycepin triphosphate
+CHEBI:17115, L-serine
+CHEBI:41656, CCT-018159
+CHEBI:135594, limaprost
+CHEBI:17111, 5-O-phosphono-alpha-D-ribofuranosyl diphosphate
+CHEBI:40326, 5-iodo-2-(oxaloamino)benzoic acid
+CHEBI:3749, clofazimine
+CHEBI:3743, Clidinium
+CHEBI:41670, 6-ethyl-5-phenylpyrimidine-2,4-diamine
+CHEBI:135589, etoperidone
+CHEBI:40332, 2-(\{2-[(3-hydroxyphenyl)amino]pyrimidin-4-yl\}amino)benzamide
+CHEBI:31357, Carboxymethylcellulose
+CHEBI:29035, Manganese
+CHEBI:68642, Abiraterone
+CHEBI:29034, iron(3+)
+CHEBI:8452, 3,6-diaminoacridine
+CHEBI:8455, proguanil
+CHEBI:42007, N-(5,6-diphenylfuro[2,3-d]pyrimidin-4-yl)glycine
+CHEBI:8459, Promazine
+CHEBI:88249, PD 0325901
+CHEBI:44664, 1-ethoxy-2-(2-ethoxyethoxy)ethane
+CHEBI:68634, cortisol phosphate
+CHEBI:18385, thiamine(1+)
+CHEBI:17053, L-aspartic acid
+CHEBI:17050, 3-phosphoglyceric acid
+CHEBI:76279, 2''-O-acetyl-ADP-D-ribose
+CHEBI:52289, wortmannin
+CHEBI:9774, tubocurarine
+CHEBI:8448, Procyclidine
+CHEBI:17044, D-glucitol 6-phosphate
+CHEBI:55344, Amyl Nitrite
+CHEBI:144421, Tetraferric tricitrate decahydrate
+CHEBI:43362, immucillin H
+CHEBI:44692, phosphonoacetohydroxamic acid
+CHEBI:9763, Trovafloxacin
+CHEBI:8430, procaine
+CHEBI:8435, Prochlorperazine
+CHEBI:90544, N-cyclopropyl-2',6-dimethyl-4'-(5-methyl-1,3,4-oxadiazol-2-yl)biphenyl-3-carboxamide
+CHEBI:42027, 1,2-di-[(9Z,12Z)-octadecadienoyl]-sn-glycero-3-phosphocholine
+CHEBI:42023, duroquinone
+CHEBI:42024, N(6)-dansyl-L-lysine
+CHEBI:55352, (R)-atenolol
+CHEBI:17033, biliverdin
+CHEBI:29007, ceftriaxone
+CHEBI:76258, oxyphenbutazone
+CHEBI:5391, glucagon
+CHEBI:9753, troglitazone
+CHEBI:68647, regorafenib
+CHEBI:9757, Tropicamide
+CHEBI:9754, tris
+CHEBI:8426, probenecid
+CHEBI:8428, Procainamide
+CHEBI:17026, progesterone
+CHEBI:18357, (R)-noradrenaline
+CHEBI:8427, probucol
+CHEBI:77590, armodafinil
+CHEBI:76223, Ketorolac
+CHEBI:8491, Propiomazine
+CHEBI:8493, Propiverine
+CHEBI:143117, lorlatinib
+CHEBI:90529, 4-chloro-6-\{5-[(2-morpholin-4-ylethyl)amino]-1,2-benzisoxazol-3-yl\}benzene-1,3-diol
+CHEBI:90528, VX-745
+CHEBI:90527, N-cyclopropyl-3-\{4-[(cyclopropylmethyl)carbamoyl]phenyl\}-4-methylbenzamide
+CHEBI:8499, Propranolol
+CHEBI:29073, L-ascorbic acid
+CHEBI:31317, bufexamac
+CHEBI:85176, finafloxacin
+CHEBI:66899, tafluprost
+CHEBI:88206, Esmolol
+CHEBI:66895, peginesatide acetate
+CHEBI:45951, Trifluoperazine
+CHEBI:53579, pholcodine
+CHEBI:31324, Buserelin acetate
+CHEBI:29069, phthalic acid
+CHEBI:144434, Tetraferric tricitrate decahydrate
+CHEBI:8481, Propantheline
+CHEBI:88220, (S)-2-methyl-1-(4-methylisoquinoline-5-sulfonyl)-1,4-diazepane
+CHEBI:8485, Proparacaine
+CHEBI:29063, Mimosine
+CHEBI:40279, allopurinol
+CHEBI:44632, (S)-pyrrolidin-2-ylmethylamine
+CHEBI:64227, ciglitazone
+CHEBI:77572, tranilast
+CHEBI:45969, tricarballylic acid
+CHEBI:45981, 5-hydroxymethyl-5,6-dihydrofolic acid
+CHEBI:45980, tacrine
+CHEBI:85161, Palonosetron
+CHEBI:85164, nintedanib
+CHEBI:40290, DAS869
+CHEBI:85155, Netupitant
+CHEBI:68610, linagliptin
+CHEBI:40287, 7-NITROINDAZOLE
+CHEBI:17076, streptomycin
+CHEBI:143120, 2-(6-methylpyridin-2-yl)-N-(pyridin-4-yl)quinazolin-4-amine
+CHEBI:31348, capecitabine
+CHEBI:10429, beta-lapachone
+CHEBI:77543, ebselen
+CHEBI:57952, L-Alpha-Glycerophosphorylethanolamine
+CHEBI:45993, benzothiazole
+CHEBI:29042, alpha-D-glucose 1-phosphate
+CHEBI:44661, OLOMOUCINE
+CHEBI:8461, Promethazine
+CHEBI:44658, okadaic acid
+CHEBI:68606, rilpivirine
+CHEBI:40297, 5-[4-(dimethylamino)phenyl]-6-[(6-morpholin-4-ylpyridin-3-yl)ethynyl]pyrimidin-4-amine
+CHEBI:44653, N~2~,N~2~-DIMETHYL-N~1~-(6-OXO-5,6-DIHYDROPHENANTHRIDIN-2-YL)GLYCINAMIDE
+CHEBI:18397, 2-phenylethylamine
+CHEBI:68609, Eritoran
+CHEBI:47780, Clomipramine
+CHEBI:47781, Desipramine
+CHEBI:71416, phenazopyridine
+CHEBI:71417, Procarbazine
+CHEBI:103932, (4R)-2,6-dimethyl-4-(3-nitrophenyl)-1,4-dihydropyridine-3,5-dicarboxylic acid O5-[3-(4,4-diphenyl-1-piperidinyl)propyl] ester O3-methyl ester
+CHEBI:103931, (4S)-2,6-dimethyl-4-(3-nitrophenyl)-1,4-dihydropyridine-3,5-dicarboxylic acid O5-[3-(4,4-diphenyl-1-piperidinyl)propyl] ester O3-methyl ester
+CHEBI:9701, Tridihexethyl
+CHEBI:45116, Ro 320-1195
+CHEBI:59773, cromoglycic acid
+CHEBI:59771, 8-chlorotheophylline
+CHEBI:520985, Almotriptan
+CHEBI:45127, phorbol 13-acetate
+CHEBI:37510, Anthralin
+CHEBI:46475, 6-hydroxy-1,3-benzothiazole-2-sulfonamide
+CHEBI:59788, Diphenylpyraline
+CHEBI:7982, pentazocine
+CHEBI:6651, malathion
+CHEBI:7983, pentobarbital
+CHEBI:7986, Pentoxifylline
+CHEBI:34496, 9(S)-HODE
+CHEBI:22450, (6aR,11aS,11bR)-10-acetyl-11-hydroxy-7,7-dimethyl-2,6,6a,7,11a,11b-hexahydro-9H-pyrrolo[1',2':2,3]isoindolo[4,5,6-cd]indol-9-one
+CHEBI:71404, beta-D-GlcpNAc-(1->4)-beta-D-GlcpNAc-(1->4)-beta-D-GlcpNAc
+CHEBI:6640, Magnesium salicylate
+CHEBI:29081, synephrine
+CHEBI:60761, floxuridine
+CHEBI:59781, dimethylthiambutene
+CHEBI:31399, cilnidipine
+CHEBI:31397, Ciclesonide
+CHEBI:43385, 5-(2-methylpiperazine-1-sulfonyl)isoquinoline
+CHEBI:17929, N(omega),N(omega)-dimethyl-L-arginine
+CHEBI:5383, glimepiride
+CHEBI:9741, Tripelennamine
+CHEBI:5384, glipizide
+CHEBI:4046, Cyproheptadine
+CHEBI:8412, primidone
+CHEBI:93636, 4-(diphenylmethylene)-1,1-dimethylpiperidin-1-ium
+CHEBI:43379, S-ISOPROPYL-ISOTHIOUREA
+CHEBI:93635, 5-methyl-N'-(phenylmethyl)-3-isoxazolecarbohydrazide
+CHEBI:472805, ouabain
+CHEBI:46406, 6-hydroxy-5-undecyl-1,3-benzothiazole-4,7-dione
+CHEBI:47738, N-(6-AMINOHEXYL)-5-CHLORO-1-NAPHTHALENESULFONAMIDE
+CHEBI:78011, (S)-wiskostatin
+CHEBI:59714, Delta(1)-dihydrotestosterone
+CHEBI:80330, peptide YY
+CHEBI:4055, cytisine
+CHEBI:8404, prilocaine
+CHEBI:9738, trimipramine
+CHEBI:8405, primaquine
+CHEBI:9737, trimetrexate
+CHEBI:46416, virginiamycin S1
+CHEBI:6690, Maprotiline
+CHEBI:4027, Cyclophosphamide
+CHEBI:9720, Trihexyphenidyl
+CHEBI:4024, Cyclopentolate
+CHEBI:6698, (-)-matairesinol
+CHEBI:9727, Trimethadione
+CHEBI:9728, trimethaphan
+CHEBI:76290, PhIP
+CHEBI:9725, Trimeprazine
+CHEBI:42068, idarubicin
+CHEBI:59750, Diflorasone
+CHEBI:82978, paliperidone
+CHEBI:82975, naloxegol
+CHEBI:82976, Pembrolizumab
+CHEBI:45113, 2-isobutyl-3-methoxypyrazine
+CHEBI:42088, alpha-L-Fucp-(1->2)-beta-D-Galp-(1->4)-beta-D-GlcpNAc
+CHEBI:141346, solabegron
+CHEBI:93626, 1-(4-fluorophenyl)-4-(4-methyl-1-piperidinyl)-1-butanone
+CHEBI:4031, cyclosporin A
+CHEBI:9711, Triflupromazine
+CHEBI:47767, (S)-1,2-distearoylphosphatidylethanolamine
+CHEBI:28502, tolazoline
+CHEBI:45081, Pentamidine
+CHEBI:125204, 4-guanidinobenzoic acid
+CHEBI:50438, phenprocoumon
+CHEBI:74405, (R)-3-hydroxydecanoyl-CoA
+CHEBI:135491, acetylmethadol
+CHEBI:553827, Bambuterol
+CHEBI:17846, (S)-naringenin
+CHEBI:16521, lanosterol
+CHEBI:16523, D-serine
+CHEBI:6710, meclofenamic acid
+CHEBI:63748, N-(4-\{hydroxy[(4-nitrobenzyl)oxy]phosphoryl\}butanoyl)glycine
+CHEBI:6716, Medroxyprogesterone acetate
+CHEBI:6717, mefenamic acid
+CHEBI:25461, myxothiazol
+CHEBI:30830, gamma-Hydroxybutyric acid
+CHEBI:6702, Mazindol
+CHEBI:87723, Prasugrel
+CHEBI:6704, mebendazole
+CHEBI:6706, Mecamylamine
+CHEBI:6709, Meclizine
+CHEBI:95341, 2-[1-ethylsulfonyl-3-[4-(7H-pyrrolo[2,3-d]pyrimidin-4-yl)-1-pyrazolyl]-3-azetidinyl]acetonitrile
+CHEBI:168396, mycophenolic acid
+CHEBI:48131, nonanedioic acid
+CHEBI:30842, oxomalonic acid
+CHEBI:3655, chlorzoxazone
+CHEBI:3654, chlorthalidone
+CHEBI:17825, 7-methylguanosine 5'-phosphate(1+)
+CHEBI:3650, chlorpropamide
+CHEBI:17823, calcitriol
+CHEBI:17824, propan-2-ol
+CHEBI:85990, Panobinostat
+CHEBI:17833, gentamycin
+CHEBI:42820, guanidine
+CHEBI:85993, palbociclib
+CHEBI:85994, Lenvatinib
+CHEBI:29806, fumarate(2-)
+CHEBI:29805, glycolate
+CHEBI:72690, pomalidomide
+CHEBI:30851, keto-phenylpyruvic acid
+CHEBI:49477, arsanilic acid
+CHEBI:51771, coumarin 120
+CHEBI:3668, Choline salicylate
+CHEBI:17816, 1D-myo-inositol 1,4-bisphosphate
+CHEBI:75725, Tramadol
+CHEBI:4995, felbamate
+CHEBI:37495, quinalizarin
+CHEBI:28544, digitoxin
+CHEBI:46371, uracil-6-ylacetic acid
+CHEBI:46372, ubiquinone-2
+CHEBI:71336, 3'-O-(N-methylanthraniloyl)adenosine 5'-diphosphate
+CHEBI:102524, butalbital
+CHEBI:6754, Meperidine
+CHEBI:6755, mephentermine
+CHEBI:85973, Edoxaban
+CHEBI:17895, L-tyrosine
+CHEBI:45039, 2-[(5,6-diphenylfuro[2,3-d]pyrimidin-4-yl)amino]ethanol
+CHEBI:6757, mephenytoin
+CHEBI:137236, ilomastat
+CHEBI:6758, mephobarbital
+CHEBI:16563, tetrahydropalmatine
+CHEBI:6759, Mepivacaine
+CHEBI:85979, isavuconazole
+CHEBI:59692, Cycrimine
+CHEBI:83329, Orciprenaline
+CHEBI:45058, 2-(ethoxymethyl)-4-(4-fluorophenyl)-3-[2-(2-hydroxyphenoxy)pyrimidin-4-yl]isoxazol-5(2H)-one
+CHEBI:238698, bevantolol
+CHEBI:85980, eluxadoline
+CHEBI:6741, meloxicam
+CHEBI:16556, CMP-N-acetyl-beta-neuraminic acid
+CHEBI:95304, 4-amino-5-bromo-N-[2-(diethylamino)ethyl]-2-methoxybenzamide
+CHEBI:16552, N-formyl-L-methionine
+CHEBI:5417, glucosamine
+CHEBI:28527, rutin
+CHEBI:33070, indole-3-butyric acid
+CHEBI:126598, cinalukast
+CHEBI:84622, (Rp)-cAMPS
+CHEBI:45068, 6-\{4-[hydroxy-(4-nitrophenoxy)phosphoryl]butyrylamino\}hexanoic acid
+CHEBI:3699, Cimetidine
+CHEBI:30805, dodecanoic acid
+CHEBI:3698, Cilazapril
+CHEBI:3697, Cilastatin
+CHEBI:92246, Ranitidine
+CHEBI:28518, alpha-D-xylose
+CHEBI:149226, Fenoterol
+CHEBI:2379, Acebutolol
+CHEBI:17858, glutathione disulfide
+CHEBI:2376, acarbose
+CHEBI:30813, decanoic acid
+CHEBI:16533, L-tryptophanamide
+CHEBI:6723, Megestrol acetate
+CHEBI:16530, 3-methyl-2-oxobutanoic acid
+CHEBI:85966, ivabradine
+CHEBI:28507, cytidine 2'-phosphate
+CHEBI:28584, gossypol
+CHEBI:18305, hydroquinone O-beta-D-glucopyranoside
+CHEBI:18303, phosphatidyl-L-serine
+CHEBI:135413, protokylol
+CHEBI:18304, deamido-NAD(+)
+CHEBI:18300, maleic acid
+CHEBI:45919, tridecanoic acid
+CHEBI:73167, concanamycin A
+CHEBI:28572, rescinnamine
+CHEBI:45924, trimethoprim
+CHEBI:40237, sitagliptin
+CHEBI:85146, Carboxymethylcellulose
+CHEBI:16595, 1D-myo-inositol 1,4,5-trisphosphate
+CHEBI:45928, 5-(4-methoxybiphenyl-3-yl)-1,2,5-thiadiazolidin-3-one 1,1-dioxide
+CHEBI:45927, triethyl phosphate
+CHEBI:4907, Etidronic acid
+CHEBI:28568, Piperazine
+CHEBI:4903, 17alpha-ethynylestradiol
+CHEBI:4902, Ethylmorphine
+CHEBI:66880, florbetapir F-18
+CHEBI:66876, avanafil
+CHEBI:64213, cantharidin
+CHEBI:64212, sulindac sulfone
+CHEBI:16584, isopentenyl diphosphate
+CHEBI:64216, metergoline
+CHEBI:16586, 6-aminohexanoic acid
+CHEBI:16581, pregnenolone
+CHEBI:4917, eugenol
+CHEBI:31302, Bromazepam
+CHEBI:4913, etretinate
+CHEBI:4912, etorphine
+CHEBI:4911, etoposide
+CHEBI:4910, etomidate
+CHEBI:41593, (2R,3R,4S)-3-(4-hydroxyphenyl)-4-methyl-2-[4-(2-pyrrolidin-1-ylethoxy)phenyl]chroman-6-ol
+CHEBI:40262, 7-pyridin-2-yl-N-(3,4,5-trimethoxyphenyl)-7H-pyrrolo[2,3-d]pyrimidin-2-amine
+CHEBI:135422, progabide
+CHEBI:86453, 3-cyano-4-phenyl-6-(3-bromo-6-hydroxyphenyl)-2-pyridone
+CHEBI:44612, 3-oxo-N-[(3S)-2-oxopyrrolidin-3-yl]dodecanamide
+CHEBI:40255, 5-hydroxy-2-(4-hydroxyphenyl)-1-benzofuran-7-carbonitrile
+CHEBI:4909, etodolac
+CHEBI:44616, afimoxifene
+CHEBI:48153, D-erythrose 4-phosphate
+CHEBI:49484, 3-mercuri-4-aminobenzenesulfonamide
+CHEBI:3638, Chloroquine
+CHEBI:3636, Chloroprocaine
+CHEBI:63791, lenalidomide
+CHEBI:101278, Diltiazem
+CHEBI:42843, glycinamide
+CHEBI:18349, N(1)-(5-phospho-D-ribosyl)glycinamide
+CHEBI:135456, formebolone
+CHEBI:134126, picrotoxin
+CHEBI:18347, L-norleucine
+CHEBI:17015, riboflavin
+CHEBI:18344, kynurenic acid
+CHEBI:17013, dTMP
+CHEBI:3647, Chlorpromazine
+CHEBI:50464, cis-vaccenic acid
+CHEBI:4975, famotidine
+CHEBI:3641, chlorotrianisene
+CHEBI:3640, chlorothiazide
+CHEBI:18329, 5alpha-androstane-3beta,17beta-diol
+CHEBI:135446, medrogestone
+CHEBI:135440, rociverine
+CHEBI:18335, pyridoxamine 5'-phosphate
+CHEBI:18332, Levothyroxine
+CHEBI:30887, isocitric acid
+CHEBI:3619, chlormezanone
+CHEBI:3611, Chlordiazepoxide
+CHEBI:135470, indoramin
+CHEBI:87732, Warfarin
+CHEBI:18320, 1,4-dithiothreitol
+CHEBI:87738, (S)-warfarin
+CHEBI:41539, 1-(3-O-sulfo-beta-D-galactosyl)-N-[(15Z)-tetracos-15-enoyl]sphingosine
+CHEBI:28591, guaiacol
+CHEBI:4953, exemestane
+CHEBI:610092, beta-D-Gal-(1->4)-beta-D-Glc-OMe
+CHEBI:28592, ricinoleic acid
+CHEBI:28593, quinidine
+CHEBI:18307, UDP-D-galactose
+CHEBI:135466, nafamostat
+CHEBI:41545, N-[4-(2,4-dimethyl-1,3-thiazol-5-yl)pyrimidin-2-yl]-N'-hydroxyimidoformamide
+CHEBI:240107, Bromfenac
+CHEBI:45906, suramin
+CHEBI:34741, equol
+CHEBI:34745, Estradiol 17beta-cyclopentylpropionate
+CHEBI:28062, 2-deoxy-2,3-dehydro-N-acetylneuraminic acid
+CHEBI:92624, 2-[2-[[[4-(2-chlorophenyl)-2-thiazolyl]amino]-oxomethyl]-1-indolyl]acetic acid
+CHEBI:41037, 5-benzyl-1-(2-hydroxyethoxymethyl)uracil
+CHEBI:135810, atrasentan
+CHEBI:41033, benzamidine
+CHEBI:92623, Molsidomine
+CHEBI:135811, pinaverium
+CHEBI:78330, huperzine A
+CHEBI:77006, 17beta-estradiol 3-benzoate
+CHEBI:53013, 3'-CMP
+CHEBI:28052, acetohexamide
+CHEBI:42383, ethyl dihydrogen phosphate
+CHEBI:7476, Naproxen
+CHEBI:7478, Naratriptan
+CHEBI:6149, Levobupivacaine
+CHEBI:132774, roxadustat
+CHEBI:34762, Ferrous gluconate
+CHEBI:189669, 2,5-dimethoxy-4-bromophenethylamine
+CHEBI:135804, hexafluronium
+CHEBI:21412, L-tyrosinamide
+CHEBI:135806, benidipine
+CHEBI:77013, beta-naphthoflavone
+CHEBI:45409, ritonavir
+CHEBI:29377, sodium carbonate
+CHEBI:92607, Methylergometrine
+CHEBI:7465, Naltrexone
+CHEBI:41060, IBANDRONATE
+CHEBI:7467, Nandrolone decanoate
+CHEBI:41059, bisindolylmaleimide III
+CHEBI:7468, Nandrolone phenpropionate
+CHEBI:41055, butyrylthiocholine
+CHEBI:16069, 1H-imidazole
+CHEBI:32111, saccharin
+CHEBI:17395, cis-caffeic acid
+CHEBI:3090, bicalutamide
+CHEBI:46746, triazolopyridine
+CHEBI:75283, miltefosine
+CHEBI:80630, Irinotecan
+CHEBI:46763, tat-BP
+CHEBI:6121, Ketamine
+CHEBI:7451, naftifine
+CHEBI:7454, Nalbuphine
+CHEBI:6123, ketanserin
+CHEBI:6125, Ketobemidone
+CHEBI:135820, cortivazol
+CHEBI:135821, tocopherol succinate
+CHEBI:204928, Cefotaxime
+CHEBI:7457, Nalmefene
+CHEBI:6128, ketoprofen
+CHEBI:45425, 5-O-phosphono-beta-D-ribofuranose
+CHEBI:7459, Naloxone
+CHEBI:16057, prenyl diphosphate
+CHEBI:17381, porphobilinogen
+CHEBI:34706, ergoloid mesylate
+CHEBI:31675, Hydrocortisone butyrate propionate
+CHEBI:31674, cortisol 17-butyrate
+CHEBI:42330, 2,2,2-trifluoroethanol
+CHEBI:135859, efonidipine
+CHEBI:75261, arotinoid acid
+CHEBI:34718, 1-chloro-2,4-dinitrobenzene
+CHEBI:31684, Ibudilast
+CHEBI:9212, sparfloxacin
+CHEBI:135841, antrafenine
+CHEBI:43666, (2S)-2-cyano-1-(4-phenyl-L-phenylalanyl)pyrrolidine
+CHEBI:44995, 3H-pyrazolo[4,3-d]pyrimidin-7-ol
+CHEBI:135849, manidipine
+CHEBI:75273, Sodium Tetradecyl Sulfate
+CHEBI:90891, Imino-Tryptophan
+CHEBI:135845, rapacuronium
+CHEBI:75275, tetradecyl sulfonic acid
+CHEBI:135847, biricodar
+CHEBI:34727, domoic acid
+CHEBI:31699, Inositol nicotinate
+CHEBI:28088, genistein
+CHEBI:9200, soraphen A
+CHEBI:90863, sonidegib
+CHEBI:135876, valrubicin
+CHEBI:90865, flibanserin
+CHEBI:75246, rifaximin
+CHEBI:28078, 4-chlorophenol
+CHEBI:3901, cosyntropin
+CHEBI:7492, Nedocromil
+CHEBI:7494, Nefazodone
+CHEBI:90879, tipiracil
+CHEBI:28077, rifampicin
+CHEBI:34736, Emopamil
+CHEBI:28073, chromium atom
+CHEBI:42359, (3R)-3-(fluoromethyl)-7-(thiomorpholin-4-ylsulfonyl)-1,2,3,4-tetrahydroisoquinoline
+CHEBI:42355, Erythromycin
+CHEBI:16919, creatine
+CHEBI:49840, purvalanol B
+CHEBI:32168, Sulpiride
+CHEBI:16914, salicylic acid
+CHEBI:50838, drospirenone
+CHEBI:3032, benzonatate
+CHEBI:32171, Sultiame
+CHEBI:8734, Quisqualic acid
+CHEBI:94402, 1-[(4-chlorophenyl)-phenylmethyl]-4-methylpiperazine
+CHEBI:94405, 2-[(2-ethoxyphenoxy)methyl]morpholine
+CHEBI:127342, Atomoxetine
+CHEBI:337298, abarelix
+CHEBI:16908, NADH
+CHEBI:48520, xaliproden
+CHEBI:83766, olaparib
+CHEBI:45496, 11alpha-hydroxyprogesterone hemisuccinate
+CHEBI:3048, Benzatropine
+CHEBI:3047, benzthiazide
+CHEBI:45492, (2E,3S)-3-hydroxy-5'-[(4-hydroxypiperidin-1-yl)sulfonyl]-3-methyl-1,3-dihydro-2,3'-biindol-2'(1'H)-one
+CHEBI:5693, hexachlorophene
+CHEBI:3044, benzphetamine
+CHEBI:32181, tamibarotene
+CHEBI:32184, tazarotene
+CHEBI:91389, N-(1,3-benzodioxol-5-ylmethyl)-4-(4-benzofuro[3,2-d]pyrimidinyl)-1-piperazinecarbothioamide
+CHEBI:32188, Tegafur
+CHEBI:94411, Mepenzolate
+CHEBI:48518, 3-isobutyl-1-methylxanthine
+CHEBI:91383, 5-(2-phenyl-3-pyrazolo[1,5-a]pyridinyl)-2H-pyrazolo[3,4-c]pyridazin-3-amine
+CHEBI:50851, Hydrocortamate
+CHEBI:69478, cannabidiol
+CHEBI:3013, Bendroflumethiazide
+CHEBI:50859, bexarotene
+CHEBI:3011, Benazepril
+CHEBI:32192, tenoxicam
+CHEBI:8711, quinacrine
+CHEBI:32195, Tesaglitazar
+CHEBI:8713, quinapril
+CHEBI:8716, quinestrol
+CHEBI:91351, (2S)-1-(1H-indol-3-yl)-3-[[5-(3-methyl-2H-indazol-5-yl)-3-pyridinyl]oxy]-2-propanamine
+CHEBI:8717, quinethazone
+CHEBI:50841, Loxapine
+CHEBI:44188, 5-aminonaphthalene-2-sulfonic acid
+CHEBI:44185, Methotrexate
+CHEBI:4356, Deferoxamine
+CHEBI:3023, benzbromarone
+CHEBI:91366, 4-[[9-chloro-7-(2,6-difluorophenyl)-5H-pyrimido[5,4-d][2]benzazepin-2-yl]amino]benzoic acid
+CHEBI:91368, 3-(1-methyl-3-indolyl)-4-[1-[1-(2-pyridinylmethyl)-4-piperidinyl]-3-indolyl]pyrrole-2,5-dione
+CHEBI:8707, Quetiapine
+CHEBI:48538, Apomorphine
+CHEBI:28940, calciol
+CHEBI:79699, Temsirolimus
+CHEBI:32123, Scopolamine butylbromide
+CHEBI:45441, N-acetyl-L-serine
+CHEBI:32126, Seratrodast
+CHEBI:8772, Raloxifene
+CHEBI:109558, N-[2-(2-iodo-5-methoxy-1H-indol-3-yl)ethyl]acetamide
+CHEBI:80680, Phenylpropanolamine
+CHEBI:8774, ramipril
+CHEBI:7443, nabumetone
+CHEBI:3077, Betamethasone
+CHEBI:7445, Nafarelin
+CHEBI:7444, nadolol
+CHEBI:34791, Hexylcaine
+CHEBI:3070, Bestatin
+CHEBI:28939, N-acetyl-L-cysteine
+CHEBI:27609, coproporphyrin III
+CHEBI:28934, Vitamin D;vitamin D2
+CHEBI:46784, diglyme
+CHEBI:138033, dotarizine
+CHEBI:44120, L-methionine (S)-S-oxide residue
+CHEBI:41094, 2,5-di-tert-butylbenzene-1,4-diol
+CHEBI:109549, N-[2-[(8S)-2,6,7,8-tetrahydro-1H-cyclopenta[e]benzofuran-8-yl]ethyl]propanamide
+CHEBI:49809, 2,2',5,5'-tetrachloro-4,4'-bis(methylsulfonyl)biphenyl
+CHEBI:91348, 6-[[5-fluoro-2-(3,4,5-trimethoxyanilino)-4-pyrimidinyl]amino]-2,2-dimethyl-4H-pyrido[3,2-b][1,4]oxazin-3-one
+CHEBI:8764, mycophenolate mofetil
+CHEBI:3084, Bethanechol
+CHEBI:41089, mellitic acid
+CHEBI:44115, 3-(N-morpholino)propanesulfonic acid
+CHEBI:3082, Betaxolol
+CHEBI:8768, rabeprazole
+CHEBI:109540, 3,4-dichloro-2-benzopyran-1-one
+CHEBI:15607, (2S,3R)-3-hydroxybutane-1,2,3-tricarboxylic acid
+CHEBI:32149, sodium sulfate
+CHEBI:50815, norgestimate
+CHEBI:15603, L-leucine
+CHEBI:291342, desloratadine
+CHEBI:132767, ferric pyrophosphate
+CHEBI:46788, 2-ethoxyethanol
+CHEBI:28918, Epinephrine
+CHEBI:556075, radicicol
+CHEBI:37845, growth hormone
+CHEBI:16927, L-saccharopine
+CHEBI:91326, 4-(2,6-dichlorobenzamido)-N-(piperidin-4-yl)-pyrazole-3-carboxamide
+CHEBI:3061, bepridil
+CHEBI:44138, (2S)-4-(2,5-difluorophenyl)-N-methyl-2-phenyl-N-piperidin-4-yl-2,5-dihydro-1H-pyrrole-1-carboxamide
+CHEBI:4391, demecarium bromide
+CHEBI:8746, (R)-salbutamol
+CHEBI:91325, 5-[2-methyl-5-[oxo-[3-(trifluoromethyl)anilino]methyl]anilino]-3-pyridinecarboxamide
+CHEBI:49823, p-mercuribenzenesulfonic acid
+CHEBI:25879, pentaerythritol tetranitrate
+CHEBI:28865, taurocholic acid
+CHEBI:47144, 6-[(5-chloro-3-methyl-1-benzofuran-2-yl)sulfonyl]pyridazin-3(2H)-one
+CHEBI:125562, 4-(dimethylamino)-N-[7-(hydroxyamino)-7-oxoheptyl]benzamide
+CHEBI:28862, dGDP
+CHEBI:15553, prostaglandin F2alpha
+CHEBI:15555, prostaglandin D2
+CHEBI:15552, prostaglandin I2
+CHEBI:15551, prostaglandin E2
+CHEBI:5747, Homatropine
+CHEBI:93036, 4-[6-(diaminomethylideneamino)-1-oxohexoxy]benzoic acid ethyl ester
+CHEBI:50782, 11-deoxycorticosterone pivalate
+CHEBI:28850, dUDP
+CHEBI:50789, (3S)-3-hydroxy-L-asparagine
+CHEBI:16867, D-methionine
+CHEBI:157175, enoxacin
+CHEBI:15544, prostaglandin E1
+CHEBI:16870, choline alfoscerate
+CHEBI:61432, Alteplase
+CHEBI:379896, 17beta-hydroxy-17-methylestra-4,9,11-trien-3-one
+CHEBI:59120, thioproperazine
+CHEBI:130910, (Z)-3-(4-iodophenyl)-2-mercaptoacrylic acid
+CHEBI:408174, arformoterol
+CHEBI:47163, (11S)-8-chloro-11-[1-(methylsulfonyl)piperidin-4-yl]-6-piperazin-1-yl-11H-benzo[5,6]cyclohepta[1,2-b]pyridine
+CHEBI:28842, octadecanoic acid
+CHEBI:32902, gibberellin A4
+CHEBI:73410, nisoxetine
+CHEBI:47169, N-[(1S)-2-amino-1-(2,4-dichlorobenzyl)ethyl]-5-[2-(methylamino)pyrimidin-4-yl]thiophene-2-carboxamide
+CHEBI:2687, amsacrine
+CHEBI:100241, Ciprofloxacin
+CHEBI:2686, Amrinone
+CHEBI:16856, glutathione
+CHEBI:100246, norfloxacin
+CHEBI:16857, L-threonine
+CHEBI:15532, myristoyl-CoA
+CHEBI:40520, (S)-2-amino-6-boronohexanoic acid
+CHEBI:16865, gamma-aminobutyric acid
+CHEBI:15533, octanoyl-CoA
+CHEBI:28839, 3-disulfanyl-L-alanine
+CHEBI:28834, deoxycholic acid
+CHEBI:28837, octanoic acid
+CHEBI:28831, propan-1-ol
+CHEBI:28833, gibberellin A3
+CHEBI:32918, 1-naphthylacetic acid
+CHEBI:39548, Atorvastatin
+CHEBI:40532, adenosine 5'-[beta,gamma-methylene]triphosphate
+CHEBI:41865, sebacic acid
+CHEBI:40538, benzylamine
+CHEBI:47101, 1-(2,6-dichlorophenyl)-5-(2,4-difluorophenyl)-7-piperidin-4-yl-3,4-dihydroquinolin-2(1H)-one
+CHEBI:27575, adenosine 5'-[gamma-thio]triphosphate
+CHEBI:4445, desflurane
+CHEBI:3112, Biperiden
+CHEBI:5783, Hydrocortisone cypionate
+CHEBI:5784, hydroflumethiazide
+CHEBI:94329, 2-(2-cyclohexyl-2-hydroxy-1-oxo-2-phenylethoxy)ethyl-diethyl-methylammonium
+CHEBI:57398, prostaglandin A1(1-)
+CHEBI:27565, 4-aminosalicylic acid
+CHEBI:28898, P(1),P(5)-bis(5'-adenosyl) pentaphosphate
+CHEBI:28895, 3'-UMP
+CHEBI:3127, Bisoprolol
+CHEBI:37788, O(4)-phospho-L-tyrosine
+CHEBI:50743, Cyproterone acetate
+CHEBI:50749, Calcipotriol
+CHEBI:4453, desogestrel
+CHEBI:5770, huperzine b
+CHEBI:4450, Desmopressin
+CHEBI:5775, Hydralazine
+CHEBI:8802, Remifentanil
+CHEBI:5778, hydrochlorothiazide
+CHEBI:8803, Remikiren
+CHEBI:5779, Hydrocodone
+CHEBI:41804, (5-pyridin-3-ylfuran-2-yl)methanamine
+CHEBI:8805, Repaglinide
+CHEBI:93004, 1-(2,6-difluorophenyl)sulfonyl-4-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)piperazine
+CHEBI:8809, Resiniferatoxin
+CHEBI:50777, etonogestrel
+CHEBI:68063, kabiramide C
+CHEBI:584020, methysergide
+CHEBI:1391, 3,4-methylenedioxymethamphetamine
+CHEBI:26216, potassium atom
+CHEBI:28878, dodecan-1-ol
+CHEBI:41814, 4,4'-dipyridyl disulfide
+CHEBI:28874, phosphatidylinositol
+CHEBI:28875, tetradecanoic acid
+CHEBI:27540, hexanoyl-CoA
+CHEBI:39505, 1-(1-phenylcyclopentyl)methylamine
+CHEBI:94314, 7-[2-hydroxy-3-[2-hydroxyethyl(methyl)amino]propyl]-1,3-dimethylpurine-2,6-dione
+CHEBI:609827, L-2-Amino-4-(Guanidinooxy)Butyric Acid
+CHEBI:94316, 6-methoxy-N-[(1-prop-2-enyl-2-pyrrolidinyl)methyl]-2H-benzotriazole-5-carboxamide
+CHEBI:47129, 5-(aminomethyl)-6-(2,4-dichlorophenyl)-2-(3,5-dimethoxyphenyl)pyrimidin-4-amine
+CHEBI:28869, menadione
+CHEBI:27539, isatin
+CHEBI:2627, Ambenonium
+CHEBI:207229, dihydroartemisinin
+CHEBI:31632, fondaparinux sodium
+CHEBI:51246, propidium
+CHEBI:31638, fulvestrant
+CHEBI:107736, Metoclopramide
+CHEBI:347401, Pentolinium
+CHEBI:90841, cangrelor
+CHEBI:17336, all-trans-retinol
+CHEBI:135771, temocapril
+CHEBI:16000, ethanolamine
+CHEBI:44940, 4-nitrophenyl methylphosphonate
+CHEBI:90844, selexipag
+CHEBI:135779, amrubicin
+CHEBI:43616, K-252a
+CHEBI:2639, Amiloride
+CHEBI:51230, bimatoprost
+CHEBI:2636, amifostine
+CHEBI:51235, Carphenazine
+CHEBI:3962, curcumin
+CHEBI:90851, Cobimetinib
+CHEBI:43621, 6-[1-(3,5,5,8,8-PENTAMETHYL-5,6,7,8-TETRAHYDRONAPHTHALEN-2-YL)CYCLOPROPYL]PYRIDINE-3-CARBOXYLIC ACID
+CHEBI:135769, pipotiazine palmitate
+CHEBI:31654, gliclazide
+CHEBI:31652, Gimeracil
+CHEBI:9241, spironolactone
+CHEBI:135791, prednicarbate
+CHEBI:17306, maltose
+CHEBI:102029, sorbinil
+CHEBI:43636, 5-iodouracil
+CHEBI:17311, N(6),N(6),N(6)-trimethyl-L-lysine
+CHEBI:135793, barnidipine
+CHEBI:17310, pyridoxal
+CHEBI:31660, Glymidine sodium
+CHEBI:42309, equilin
+CHEBI:138828, Anatibant
+CHEBI:42306, 5-(3-hydroxyphenyl)isothiazol-3(2H)-one 1,1-dioxide
+CHEBI:2618, Amantadine
+CHEBI:27584, aldosterone
+CHEBI:31663, Halcinonide
+CHEBI:2611, alprazolam
+CHEBI:31669, hexestrol
+CHEBI:17303, Morphine
+CHEBI:43645, indirubin-3'-monoxime
+CHEBI:64562, D-thioproline
+CHEBI:135783, etiprednol dicloacetate
+CHEBI:47188, N-cyclopropyl-4-[4-(3,4-dichlorophenyl)-2-(1-methylpiperidin-4-yl)-1-propylimidazol-5-yl]pyrimidin-2-amine
+CHEBI:273574, O-hydroxy(phenyl)phosphinoyl ecgonine methyl ester
+CHEBI:2668, Amlodipine
+CHEBI:2666, amitriptyline
+CHEBI:3996, Cyclobenzaprine
+CHEBI:2663, amiodarone
+CHEBI:77837, 5-fluorotryptophan
+CHEBI:3994, Cyclizine
+CHEBI:51209, Pseudoephedrine
+CHEBI:59173, bivalirudin
+CHEBI:59170, betazole
+CHEBI:5700, Hexamethonium
+CHEBI:41872, dequalinium
+CHEBI:39567, 12-hydroxylauric acid
+CHEBI:5706, hexobarbital
+CHEBI:5707, Hexocyclium
+CHEBI:40547, 1-aminocyclopentanecarboxylic acid
+CHEBI:59177, Bromodiphenhydramine
+CHEBI:44903, 2,3,4,5,6-pentafluorobenzyl alcohol
+CHEBI:41879, dexamethasone
+CHEBI:47196, 4-[4-(1-amino-1-methylethyl)phenyl]-5-chloro-N-[4-(2-morpholin-4-ylethyl)phenyl]pyrimidin-2-amine
+CHEBI:28013, beta-D-fructofuranose 1,6-bisphosphate
+CHEBI:31608, Ferrous gluconate
+CHEBI:2674, Amodiaquine
+CHEBI:2675, amoxapine
+CHEBI:31607, Ferrous fumarate
+CHEBI:47193, 1-(5-chloro-2,4-dimethoxyphenyl)-3-(5-cyanopyrazin-2-yl)urea
+CHEBI:2673, amobarbital
+CHEBI:16038, phosphatidylethanolamine
+CHEBI:39576, 3,6,9,12,15,18-hexaoxaicosane
+CHEBI:113556, (1R,2S)-2-(dimethylamino)-1-phenyl-1-propanol
+CHEBI:17368, hypoxanthine
+CHEBI:41883, 2,3-difluorobenzyl alcohol
+CHEBI:439329, Dexfenfluramine
+CHEBI:44919, 6,7-dimethoxy-4-[(3R)-3-(2-naphthyloxy)pyrrolidin-1-yl]quinazoline
+CHEBI:17361, cytidine 5'-monophosphate
+CHEBI:44915, propofol
+CHEBI:31611, Fidarestat
+CHEBI:94392, Halofantrine
+CHEBI:31618, fludiazepam
+CHEBI:9288, streptozocin
+CHEBI:16027, adenosine 5'-monophosphate
+CHEBI:138865, AMD 070
+CHEBI:39585, Carbidopa
+CHEBI:59193, Imino-Tryptophan
+CHEBI:39589, (R)-bicalutamide
+CHEBI:41899, decylamine-N,N-dimethyl-N-oxide
+CHEBI:94385, (2R,4R)-1-[(2S)-5-(diaminomethylideneamino)-2-[(3-methyl-1,2,3,4-tetrahydroquinolin-8-yl)sulfonylamino]-1-oxopentyl]-4-methyl-2-piperidinecarboxylic acid
+CHEBI:51211, Alprenolol
+CHEBI:31624, fluorescein
+CHEBI:31623, fluocinolone acetonide
+CHEBI:31622, Flunitrazepam
+CHEBI:31620, flumethasone pivalate
+CHEBI:2659, aminophylline
+CHEBI:3988, cyclandelate
+CHEBI:73468, masoprocol
+CHEBI:2654, Aminoglutethimide
+CHEBI:84116, Triprolidine
+CHEBI:84115, antazoline
+CHEBI:31625, Fluorometholone
+CHEBI:44934, pentaglyme
+CHEBI:43602, obeticholic acid
+CHEBI:16015, L-glutamic acid
+CHEBI:601027, aliskiren
+CHEBI:44932, acepromazine
+CHEBI:17347, Testosterone
+CHEBI:44930, N-(p-nitrophenylphosphobutanoyl)glycine
+CHEBI:17345, guanosine 5'-monophosphate
+CHEBI:44939, p-nitrobenzyl glutaryl glycinic acid
+CHEBI:75179, trifluridine
+CHEBI:31597, biphenyl-4-ylacetic acid
+CHEBI:31596, Febuxostat
+CHEBI:6030, isoniazide
+CHEBI:8694, Quazepam
+CHEBI:43580, 3-(1H-indol-3-yl)propanoic acid
+CHEBI:43575, N(6)-carboxy-L-lysine
+CHEBI:17296, aniline
+CHEBI:75183, 3',5'-cyclic dTMP
+CHEBI:17295, L-phenylalanine
+CHEBI:30270, E64
+CHEBI:59912, dihydroergocristine
+CHEBI:59919, dihydro-alpha-ergocryptine
+CHEBI:10650, Sumatriptan
+CHEBI:17289, homoserine lactone
+CHEBI:92511, ketotifen
+CHEBI:17287, N-phosphocreatine
+CHEBI:17285, L-cysteic acid
+CHEBI:47943, aniracetam
+CHEBI:46631, clonidine
+CHEBI:8673, pyrimethamine
+CHEBI:6015, isoflurane
+CHEBI:93829, 4-[1-hydroxy-2-[4-(phenylmethyl)-1-piperidinyl]propyl]phenol
+CHEBI:107660, 5,7-dichloro-4-oxo-1H-quinoline-2-carboxylic acid
+CHEBI:8665, Pyridostigmine
+CHEBI:45307, seliciclib
+CHEBI:6005, Isoetharine
+CHEBI:17268, myo-inositol
+CHEBI:17263, estrone
+CHEBI:697724, Filaminast
+CHEBI:110423, clodronic acid
+CHEBI:51164, Lisuride
+CHEBI:6073, Isradipine
+CHEBI:68840, gabapentin enacarbil
+CHEBI:6076, itraconazole
+CHEBI:32888, gamma-hexachlorocyclohexane
+CHEBI:6078, ivermectin
+CHEBI:135731, glisoxepide
+CHEBI:42202, daidzein 7-O-beta-D-glucoside
+CHEBI:43533, 1,5,5-trimethylpyrrolidin-2-one
+CHEBI:31561, Estradiol valerate
+CHEBI:135738, clevidipine
+CHEBI:51173, Dextropropoxyphene
+CHEBI:135736, sitaxentan
+CHEBI:135737, lacidipine
+CHEBI:6060, Isosorbide
+CHEBI:6061, isosorbide dinitrate
+CHEBI:6062, isosorbide mononitrate
+CHEBI:6067, isotretinoin
+CHEBI:135720, deflazacort
+CHEBI:43561, N-[2-(methylamino)ethyl]isoquinoline-5-sulfonamide
+CHEBI:90748, O-(chloroacetylcarbamoyl)fumagillol
+CHEBI:84069, pentanal
+CHEBI:59909, dihydroergocornine
+CHEBI:34605, CX-516
+CHEBI:42223, emodin
+CHEBI:31583, Etizolam
+CHEBI:31580, ethynodiol diacetate
+CHEBI:135756, spirapril
+CHEBI:35940, protirelin
+CHEBI:6043, Isopropamide
+CHEBI:135741, testosterone undecanoate
+CHEBI:68845, Azilsartan medoxomil
+CHEBI:87103, 2-tert-butyl-9-fluoro-1,6-dihydrobenzo[h]imidazo[4,5-f]isoquinolin-7-one
+CHEBI:44897, phosphoenolpyruvic acid
+CHEBI:135746, hydrocortisone aceponate
+CHEBI:135747, dexloxiglumide
+CHEBI:45360, pyruvoyl group
+CHEBI:518413, Alverine
+CHEBI:9943, Venlafaxine
+CHEBI:78291, iron dextran
+CHEBI:49713, lithium(1+)
+CHEBI:32061, Propentofylline
+CHEBI:141517, tyloxapol
+CHEBI:5576, guvacine
+CHEBI:9937, Vasopressin
+CHEBI:45367, rifabutin
+CHEBI:9939, Vecuronium
+CHEBI:50730, montelukast
+CHEBI:141552, forasartan
+CHEBI:44052, isopropyl dihydrogen phosphate
+CHEBI:80581, Morphine-6-glucuronide
+CHEBI:6896, Metiamide
+CHEBI:6897, Metipranolol
+CHEBI:9927, valsartan
+CHEBI:50722, nitrosoethane
+CHEBI:45395, pyrithiamine pyrophosphate
+CHEBI:5551, Guaifenesin
+CHEBI:5553, Guanabenz
+CHEBI:5555, Guanadrel
+CHEBI:50729, Mitoxantrone
+CHEBI:6887, methylphenidate
+CHEBI:5557, Guanethidine
+CHEBI:32087, Ramatroban
+CHEBI:6888, 6alpha-methylprednisolone
+CHEBI:5558, Guanfacine
+CHEBI:48416, olmesartan
+CHEBI:28821, piperine
+CHEBI:80566, Isophosphamide mustard
+CHEBI:34665, Debrisoquine
+CHEBI:16836, 4-nitrophenol
+CHEBI:8654, pyrantel
+CHEBI:34671, Deoxycorticosterone acetate
+CHEBI:28812, (aminomethyl)phosphonic acid
+CHEBI:28814, piceatannol
+CHEBI:16827, corticosterone
+CHEBI:32015, Piretanide
+CHEBI:16828, L-tryptophan
+CHEBI:32016, pirfenidone
+CHEBI:16831, 3-hydroxy-3-methylglutaric acid
+CHEBI:32020, Pitavastatin
+CHEBI:46659, Ipratropium
+CHEBI:724125, methyl 5-aminolevulinate
+CHEBI:28803, pyridoxine 5'-phosphate
+CHEBI:32024, Polaprezinc
+CHEBI:32029, potassium acetate
+CHEBI:34690, dichlorvos
+CHEBI:93856, 2-(tert-butylamino)-1-(2-chlorophenyl)ethanol
+CHEBI:32036, potassium sulfate
+CHEBI:45353, phosphoramidon
+CHEBI:164200, triclosan
+CHEBI:49703, latrunculin B
+CHEBI:503442, gallamine
+CHEBI:50670, N-acetyl-beta-D-glucosaminyl-(1->4)-N-acetyl-beta-D-glucosamine
+CHEBI:50673, methimazole
+CHEBI:15428, glycine
+CHEBI:6950, mirtazapine
+CHEBI:41710, S-hydroxy-L-cysteine
+CHEBI:36373, vindesine
+CHEBI:6954, Mitotane
+CHEBI:15430, protoporphyrin
+CHEBI:6958, Mivacurium
+CHEBI:27404, 5,6-dihydroxyindole
+CHEBI:47032, 1,4-dioxane
+CHEBI:75984, Flecainide
+CHEBI:50663, zanamivir
+CHEBI:50662, marimastat
+CHEBI:39408, 2-(N-morpholiniumyl)ethanesulfonate
+CHEBI:75988, teniposide
+CHEBI:15414, S-adenosyl-L-methionine
+CHEBI:15422, ATP
+CHEBI:36386, dichloroacetic acid
+CHEBI:16755, chenodeoxycholic acid
+CHEBI:6942, minoxidil
+CHEBI:35056, adenosine 5'-[alpha,beta-methylene]triphosphate
+CHEBI:5613, haloperidol
+CHEBI:16750, guanosine
+CHEBI:5615, halothane
+CHEBI:50694, Minocycline
+CHEBI:50693, Milrinone
+CHEBI:50692, mifepristone
+CHEBI:2569, alfentanil
+CHEBI:2567, Alendronic acid
+CHEBI:15407, (-)-ephedrine
+CHEBI:3897, Cortisone acetate
+CHEBI:15409, (-)-menthol
+CHEBI:3892, corticotropin
+CHEBI:35064, alpha-Zearalanol
+CHEBI:16742, orotic acid
+CHEBI:41733, 2-hydroxy-5-nitrophenyl hydrogen sulfate
+CHEBI:6931, Midazolam
+CHEBI:6933, Midodrine
+CHEBI:5603, Halazepam
+CHEBI:6935, Miglitol
+CHEBI:91198, 4-(3-Pyridin-2-Yl-1h-Pyrazol-4-Yl)Quinoline
+CHEBI:25681, Omega-3 fatty acids
+CHEBI:40413, 5-[(4-nitrobenzyl)(phosphonomethyl)amino]valeric acid
+CHEBI:6920, Mibefradil
+CHEBI:28787, nitroglycerin
+CHEBI:28783, zinc protoporphyrin
+CHEBI:49644, p-hydroxymercuribenzoic acid
+CHEBI:6997, moricizine
+CHEBI:125482, 2-acetyloxybenzoic acid [3-(nitrooxymethyl)phenyl] ester
+CHEBI:28775, hesperidin
+CHEBI:27446, Phenoxymethylpenicillin
+CHEBI:3002, Beclomethasone dipropionate
+CHEBI:251412, adinazolam
+CHEBI:16796, melatonin
+CHEBI:251408, Edrophonium
+CHEBI:16792, oxidized Photinus luciferin
+CHEBI:16794, Scopolamine
+CHEBI:49662, indometacin
+CHEBI:27436, methyltestosterone
+CHEBI:27432, alpha-linolenic acid
+CHEBI:4305, dacarbazine
+CHEBI:83531, moclobemide
+CHEBI:50659, dronedarone
+CHEBI:6970, Mometasone
+CHEBI:16783, 1D-myo-inositol 1,3,4,5-tetrakisphosphate
+CHEBI:49659, mercury diiodide
+CHEBI:28757, fructose
+CHEBI:4317, Dantrolene
+CHEBI:4315, danazol
+CHEBI:75922, nepafenac
+CHEBI:50648, 9-cis-retinoic acid
+CHEBI:6960, Moexipril
+CHEBI:6965, Molindone
+CHEBI:48339, Ketoconazole
+CHEBI:28748, doxorubicin
+CHEBI:9141, Silver
+CHEBI:31515, domperidone
+CHEBI:39485, fkb-001
+CHEBI:135652, Flunarizine
+CHEBI:17211, geranyl diphosphate
+CHEBI:90721, N-[3-(aminomethyl)benzyl]acetamidine
+CHEBI:44828, 4-hydroxy-1,2,5-oxadiazole-3-carboxylic acid
+CHEBI:39484, (S)-2-[(R)-3-amino-4-(2-fluorophenyl)butyryl]-1,2,3,4-tetrahydroisoquinoline-3-carboxamide
+CHEBI:53776, Alclometasone
+CHEBI:31524, droxidopa
+CHEBI:53778, Almitrine
+CHEBI:53773, 3'''-O-acetyldigitoxin
+CHEBI:9130, sevoflurane
+CHEBI:31529, ecgonine methyl ester
+CHEBI:9137, sibutramine
+CHEBI:31527, dydrogesterone
+CHEBI:60072, erythrityl tetranitrate
+CHEBI:40477, L-arginine amide(1+)
+CHEBI:135642, cinitapride
+CHEBI:9139, sildenafil
+CHEBI:61397, neratinib
+CHEBI:17203, L-proline
+CHEBI:17202, IMP
+CHEBI:61399, canertinib
+CHEBI:17200, UDP-alpha-D-glucuronic acid
+CHEBI:27478, deserpidine
+CHEBI:77733, Verapamil
+CHEBI:77734, dexverapamil
+CHEBI:27470, folic acid
+CHEBI:9122, sertindole
+CHEBI:9123, Sertraline
+CHEBI:44842, triglyme
+CHEBI:135673, rupatadine
+CHEBI:133013, brivaracetam
+CHEBI:133017, pimavanserin
+CHEBI:135679, Levocabastine
+CHEBI:28797, Alpha-Aminobutyric Acid
+CHEBI:31547, eplerenone
+CHEBI:51137, Mianserin
+CHEBI:28794, coumarin
+CHEBI:53796, (S)-amlodipine
+CHEBI:28790, serotonin
+CHEBI:135666, tasosartan
+CHEBI:9118, Sermorelin
+CHEBI:135660, omapatrilat
+CHEBI:63115, fingolimod
+CHEBI:31550, epothilone B
+CHEBI:51141, Alfuzosin
+CHEBI:94291, 2-(butan-2-yldisulfanyl)-1H-imidazole
+CHEBI:2549, albuterol
+CHEBI:48390, cinacalcet
+CHEBI:135697, sarpogrelate
+CHEBI:40421, 3-(4-amino-1-tert-butyl-1H-pyrazolo[3,4-d]pyrimidin-3-yl)phenol
+CHEBI:6912, alpha-methyl-L-tyrosine
+CHEBI:135696, altropane
+CHEBI:59059, methyl isocyanate
+CHEBI:6916, Mexiletine
+CHEBI:10607, n-propyl gallate
+CHEBI:32816, pyruvic acid
+CHEBI:133023, lifitegrast
+CHEBI:135686, alvimopan
+CHEBI:40432, 5,6-diphenyl-N-(2-piperazin-1-ylethyl)furo[2,3-d]pyrimidin-4-amine
+CHEBI:133021, venetoclax
+CHEBI:41766, 1-(3-(2,4-dimethylthiazol-5-yl)-4-oxo-2,4-dihydroindeno[1,2-c]pyrazol-5-yl)-3-(4-methylpiperazin-1-yl)urea
+CHEBI:17245, carbon monoxide
+CHEBI:6900, Metocurine
+CHEBI:6901, Metocurine Iodide
+CHEBI:17241, 1H-pyrazole
+CHEBI:6904, metoprolol
+CHEBI:35092, p-Cumylphenol
+CHEBI:6909, Metronidazole
+CHEBI:53766, acenocoumarol
+CHEBI:53760, eszopiclone
+CHEBI:75998, Trametinib
+CHEBI:53763, 3-Methylthiofentanyl
+CHEBI:9168, sirolimus
+CHEBI:47083, 2-chlorophenol
+CHEBI:61390, Afatinib
+CHEBI:40444, 9-(4-hydroxyphenyl)-2,7-phenanthroline
+CHEBI:41774, Tamoxifen
+CHEBI:17231, m-cresol
+CHEBI:53770, aceprometazine
+CHEBI:39462, pilocarpine
+CHEBI:44804, 6,7-dimethoxy-4-[(3R)-3-(quinoxalin-2-yloxy)pyrrolidin-1-yl]quinazoline
+CHEBI:47097, lonafarnib
+CHEBI:31502, Dinoprost tromethamine
+CHEBI:9150, simvastatin
+CHEBI:41791, calyculin a
+CHEBI:44811, Platelet Activating Factor
+CHEBI:113454, 1-methyl-1H-imidazole
+CHEBI:32321, alpha-Tocopherol acetate
+CHEBI:5062, finasteride
+CHEBI:41285, [(R)-1-L-prolylpyrrolidin-2-yl]boronic acid
+CHEBI:421707, abacavir
+CHEBI:45636, \{3-[(1,3,2-dioxaborolan-2-yl)oxy]propyl\}guanidine
+CHEBI:134720, imidafenacin
+CHEBI:134721, cetilistat
+CHEBI:44303, 3-Tyrosine
+CHEBI:18026, 2,3-dihydroxybenzoic acid
+CHEBI:44302, N-cyclohexyl-2-aminoethanesulfonic acid
+CHEBI:34992, Talampanel
+CHEBI:134709, pitolisant
+CHEBI:45652, Succinylcholine
+CHEBI:71940, tadalafil
+CHEBI:5050, fexofenadine
+CHEBI:71941, Tolmetin
+CHEBI:6384, latanoprost
+CHEBI:18019, L-lysine
+CHEBI:90217, quizartinib
+CHEBI:92875, 5-(2-chloroethyl)-4-methylthiazole
+CHEBI:22984, calcium atom
+CHEBI:134716, brexpiprazole
+CHEBI:134718, safinamide
+CHEBI:134713, menadiol sodium diphosphate
+CHEBI:134714, sacubitril
+CHEBI:78544, GSK3-XIII
+CHEBI:78543, ponatinib
+CHEBI:78549, pipamperone
+CHEBI:53289, Donepezil
+CHEBI:43000, guanosine 5'-[gamma-thio]triphosphate
+CHEBI:44332, N-(CARBOXYCARBONYL)-D-PHENYLALANINE
+CHEBI:36706, resiquimod
+CHEBI:6375, lansoprazole
+CHEBI:36704, imiquimod
+CHEBI:45658, S-methylcysteine
+CHEBI:53292, (R)-donepezil
+CHEBI:44343, (1R,2S)-1,2-dihydronaphthalene-1,2-diol
+CHEBI:43012, phenyl [1-(N-succinylamino)pentyl]phosphonate
+CHEBI:6367, lamotrigine
+CHEBI:16296, D-tryptophan
+CHEBI:134736, vintafolide
+CHEBI:50199, Pefloxacin
+CHEBI:9460, testolactone
+CHEBI:9463, testosterone cypionate
+CHEBI:41241, (R)-2-benzylsuccinic acid
+CHEBI:42570, (3R,4R,5R)-5-(hydroxymethyl)-1-(3-phenylpropyl)piperidine-3,4-diol
+CHEBI:9464, testosterone enanthate
+CHEBI:9467, tetrabenazine
+CHEBI:34945, RU-0211
+CHEBI:9466, Testosterone propionate
+CHEBI:9468, tetracaine
+CHEBI:42566, 3,5-difluorobenzenesulfonamide
+CHEBI:134765, isometheptene
+CHEBI:42567, fisetin
+CHEBI:42564, alpha-D-fucose
+CHEBI:10100, zafirlukast
+CHEBI:43896, alpha-D-mannose 6-phosphate
+CHEBI:18067, phylloquinone
+CHEBI:78539, zofenopril
+CHEBI:78538, tafamidis
+CHEBI:9453, Terfenadine
+CHEBI:104017, N'-[(4-methoxyphenyl)methyl]-N,N-dimethyl-N'-(2-pyrimidinyl)ethane-1,2-diamine
+CHEBI:92833, 2-[4-(1,3-benzodioxol-5-ylmethyl)-1-piperazinyl]pyrimidine
+CHEBI:18058, oxamic acid
+CHEBI:78540, apremilast
+CHEBI:46936, nonivamide
+CHEBI:18050, L-glutamine
+CHEBI:32300, Voglibose
+CHEBI:41263, 4-piperidin-4-ylbutanal
+CHEBI:78508, N-cyclohexyl-4-(imidazo[1,2-a]pyridin-3-yl)-N-methylpyrimidin-2-amine
+CHEBI:9445, Terazosin
+CHEBI:5088, Flavoxate
+CHEBI:34967, SR 141716
+CHEBI:9449, terbutaline
+CHEBI:42589, beta-L-fucose
+CHEBI:9448, Terbinafine
+CHEBI:134783, propylhexedrine
+CHEBI:18047, dihydrolipoic acid
+CHEBI:45619, (R)-monothioglycerol
+CHEBI:2814, arecoline
+CHEBI:78510, dorsomorphin
+CHEBI:567361, cladribine
+CHEBI:45630, 4-oxopentanoic acid
+CHEBI:32315, Zopiclone
+CHEBI:32316, zotepine
+CHEBI:9434, telmisartan
+CHEBI:41268, 4-hydroxybutan-2-one
+CHEBI:9435, Temazepam
+CHEBI:8107, phenytoin
+CHEBI:27810, resorcinol
+CHEBI:80003, Fexaramine
+CHEBI:480999, Vinorelbine
+CHEBI:35434, 3,3',5,5'-tetrachlorobiphenyl-4,4'-diol
+CHEBI:43065, (S)-3-phenyllactic acid
+CHEBI:44394, m-trimethylammonio(2,2,2-trifluoro-1,1-dihydroxyethyl)benzene
+CHEBI:7640, nortriptyline
+CHEBI:15831, geranylgeranyl diphosphate
+CHEBI:267413, Balsalazide
+CHEBI:27808, heroin
+CHEBI:94646, N-[2-amino-6-[(4-fluorophenyl)methylamino]-3-pyridinyl]carbamic acid ethyl ester
+CHEBI:36773, camphor
+CHEBI:47417, N(2)-carbamimidoyl-N-\{2-[4-(3-\{4-[(5-carboxyfuran-2-yl)methoxy]-2,3-dichlorophenyl\}-1-methyl-1H-pyrazol-5-yl)piperidin-1-yl]-2-oxoethyl\}-D-leucinamide
+CHEBI:681850, Conivaptan
+CHEBI:48765, Cacodylic acid
+CHEBI:43078, hexane-1,6-diol
+CHEBI:10125, Zolpidem
+CHEBI:10124, zolmitriptan
+CHEBI:15816, D-arginine
+CHEBI:15811, O-phospho-L-serine
+CHEBI:43074, (3S)-3-hydroxy-3-methylglutaryl-CoA(5-)
+CHEBI:73726, GW 501516
+CHEBI:7630, Norgestrel
+CHEBI:3286, cabergoline
+CHEBI:10127, zonisamide
+CHEBI:351346, phenethyl isothiocyanate
+CHEBI:681848, Doxapram
+CHEBI:18099, cyclohexanol
+CHEBI:79033, florbetaben ((18)F)
+CHEBI:47426, furosemide
+CHEBI:90295, PLX-4720
+CHEBI:43081, 8-benzyl-7-hydroxy-4,10-dioxo-1-phenyl-6-oxa-3,9-diaza-7-phosphatetradecan-14-oic acid 7-oxide
+CHEBI:82647, 4-(1-hydroxy-2-\{[4-(4-hydroxyphenyl)butan-2-yl]amino\}ethyl)phenol
+CHEBI:43088, N(5)-[(hydroxyamino)(imino)methyl]-L-ornithine
+CHEBI:3258, CB3717
+CHEBI:10112, zileuton
+CHEBI:10119, Ziprasidone
+CHEBI:4582, dihydroresveratrol
+CHEBI:36791, escitalopram
+CHEBI:7627, norethisterone
+CHEBI:36795, (S)-duloxetine
+CHEBI:91591, N,N-dimethyl-3-phenyl-3-(2-pyridinyl)-1-propanamine
+CHEBI:46122, 4-[(5-isopropyl-1,3-thiazol-2-yl)amino]benzenesulfonamide
+CHEBI:47454, haloxyfop-P
+CHEBI:10102, zaleplon
+CHEBI:4591, dihydrotachysterol
+CHEBI:10110, zidovudine
+CHEBI:39831, 4-(1,3-benzodioxol-5-yloxy)-2-[4-(1H-imidazol-1-yl)phenoxy]-6-methylpyrimidine
+CHEBI:18077, dTTP
+CHEBI:46117, 1H-benzimidazole-2-carboxylic acid
+CHEBI:18075, dTDP
+CHEBI:40813, 4-methoxybenzoic acid
+CHEBI:44348, N-ethylsuccinimide
+CHEBI:32374, trans-4-coumaric acid
+CHEBI:27849, toluene-4-sulfonic acid
+CHEBI:90241, vinflunine
+CHEBI:15854, Quinine
+CHEBI:6343, labetalol
+CHEBI:44356, N-tris(hydroxymethyl)methyl-2-aminoethanesulfonic acid
+CHEBI:82602, zofenoprilat
+CHEBI:43040, hadacidin
+CHEBI:15843, arachidonic acid
+CHEBI:5000, Fenfluramine
+CHEBI:71958, XL765
+CHEBI:5001, fenofibrate
+CHEBI:90225, rubitecan
+CHEBI:5002, fenoldopam
+CHEBI:15851, 3-(uracil-1-yl)-L-alanine
+CHEBI:5004, Fenoprofen
+CHEBI:44369, duvoglustat
+CHEBI:5008, Fenoxaprop ethyl
+CHEBI:6339, etoricoxib
+CHEBI:48723, (-)-lobeline
+CHEBI:204734, desonide
+CHEBI:134700, etelcalcetide
+CHEBI:134702, lorpiprazole
+CHEBI:134703, fluciclovine (18F)
+CHEBI:15837, isoamylol
+CHEBI:43053, Heparin Disaccharide I-S
+CHEBI:43051, 4-[(4-imidazo[1,2-a]pyridin-3-ylpyrimidin-2-yl)amino]benzenesulfonamide
+CHEBI:8988, SN-38
+CHEBI:90237, tandutinib
+CHEBI:27777, acetohydroxamic acid
+CHEBI:71013, perampanel
+CHEBI:4646, Dipivefrin
+CHEBI:81297, Heptabarbital
+CHEBI:3312, Calcium Chloride
+CHEBI:71019, omacetaxine mepesuccinate
+CHEBI:47381, Diclofenac
+CHEBI:86990, Fluoxetine
+CHEBI:15792, malonate(2-)
+CHEBI:25107, magnesium atom
+CHEBI:71023, alcaftadine
+CHEBI:4659, disulfiram
+CHEBI:71025, ulipristal acetate
+CHEBI:4657, disopyramide
+CHEBI:71028, carglumic acid
+CHEBI:4653, dipyridamole
+CHEBI:4650, Diprenorphine
+CHEBI:15784, N-acetyl-D-glucosamine 6-phosphate
+CHEBI:85662, lixisenatide
+CHEBI:10093, yohimbine
+CHEBI:135123, bupranolol
+CHEBI:31810, fleroxacin
+CHEBI:27754, methacrylyl-CoA
+CHEBI:72323, Alogliptin
+CHEBI:22065, S-palmitoyl-L-cysteine
+CHEBI:15768, 3,5-diiodo-L-tyrosine
+CHEBI:39785, 3,4-Dihydro-2h-Pyrrolium-5-Carboxylate
+CHEBI:10082, Xylometazoline
+CHEBI:135156, ramosetron
+CHEBI:64735, lithium citrate (anhydrous)
+CHEBI:27747, L-homoarginine
+CHEBI:31821, Mequitazine
+CHEBI:27744, glyphosate
+CHEBI:4639, Diphenoxylate
+CHEBI:4638, diphenidol
+CHEBI:3306, calcitonin
+CHEBI:4636, Diphenhydramine
+CHEBI:31827, Metharbital
+CHEBI:15756, hexadecanoic acid
+CHEBI:4631, diosmin
+CHEBI:15765, L-dopa
+CHEBI:5959, irbesartan
+CHEBI:119915, fentanyl
+CHEBI:47344, Alvocidib
+CHEBI:72305, Teduglutide
+CHEBI:160129, 7,8-dichloro-1,2,3,4-tetrahydroisoquinoline
+CHEBI:3354, candoxatrilat
+CHEBI:3353, Candoxatril
+CHEBI:4682, Dolasetron
+CHEBI:4681, dofetilide
+CHEBI:7726, octreotide
+CHEBI:48669, tranexamic acid
+CHEBI:40701, ALRESTATIN
+CHEBI:94561, Dolasetron
+CHEBI:46020, tetramethylammonium
+CHEBI:40719, L-2-amino-4-methoxy-cis-but-3-enoic acid
+CHEBI:46024, trichostatin A
+CHEBI:72312, pasireotide
+CHEBI:2038, 5-azacytidine
+CHEBI:39727, N-[2-(1,3-benzodioxol-5-yl)ethyl]-1-[2-(1H-imidazol-1-yl)-6-methylpyrimidin-4-yl]-D-prolinamide
+CHEBI:72317, cabozantinib
+CHEBI:17515, L-gamma-glutamyl-L-cysteine
+CHEBI:40710, N-BUTYL-11-[(7R,8R,9S,13S,14S,17S)-3,17-DIHYDROXY-13-METHYL-7,8,9,11,12,13,14,15,16,17-DECAHYDRO-6H-CYCLOPENTA[A]PHENANTHREN-7-YL]-N-METHYLUNDECANAMIDE
+CHEBI:62964, magnesium acetate
+CHEBI:46032, benzene-1,3,5-tricarboxylic acid
+CHEBI:126237, enprofylline
+CHEBI:17509, 5'-S-methyl-5'-thioadenosine
+CHEBI:135193, fospropofol
+CHEBI:39745, dihydrogenphosphate
+CHEBI:39742, 6-ethyl-5-[9-(3-methoxypropyl)-9H-carbazol-2-yl]pyrimidine-2,4-diamine
+CHEBI:27786, hydroxocobalamin
+CHEBI:47379, N-acetyl-L-phenylalanyl-4-[difluoro(phosphono)methyl]-L-phenylalaninamide
+CHEBI:135183, isothipendyl
+CHEBI:3347, candesartan
+CHEBI:4670, Dobutamine
+CHEBI:62984, zinc acetate
+CHEBI:94557, N-[(7S)-1,2-dimethoxy-10-(methylthio)-9-oxo-3-[[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)-2-oxanyl]oxy]-6,7-dihydro-5H-benzo[a]heptalen-7-yl]acetamide
+CHEBI:94559, 2-[2-[4-[(R)-(4-chlorophenyl)-phenylmethyl]-1-piperazinyl]ethoxy]acetic acid
+CHEBI:27779, griseofulvin
+CHEBI:25194, mercuribenzoic acid
+CHEBI:16247, Omega-3 fatty acids
+CHEBI:16243, quercetin
+CHEBI:134689, Rucaparib
+CHEBI:50161, motexafin gadolinium
+CHEBI:43858, L-vinylglycine
+CHEBI:34914, phenolphthalein
+CHEBI:34918, phenyl salicylate
+CHEBI:2877, aspartame
+CHEBI:34911, permethrin
+CHEBI:16236, ethanol
+CHEBI:17568, uracil
+CHEBI:16235, guanine
+CHEBI:16238, FAD
+CHEBI:63452, midostaurin
+CHEBI:42534, epitestosterone
+CHEBI:134677, crisaborole
+CHEBI:17562, cytidine
+CHEBI:22907, bleomycin
+CHEBI:17561, L-Cysteine
+CHEBI:42539, (R)-3-hydroxytetradecanoic acid
+CHEBI:95067, 4-iodo-3-nitrobenzamide
+CHEBI:142290, Anagrelide
+CHEBI:31897, nateglinide
+CHEBI:74104, 3-[(2-hydroxyethyl)disulfanyl]-L-alanine
+CHEBI:30563, silicon dioxide
+CHEBI:16217, D-glucono-1,5-lactone
+CHEBI:17549, Aminolevulinic acid
+CHEBI:63486, 8-azaguanine
+CHEBI:43876, (S)-alpha-methyl-4-carboxyphenylglycine
+CHEBI:17553, O-phosphoethanolamine
+CHEBI:17552, GDP
+CHEBI:41218, mercaptoethanol
+CHEBI:42548, alpha-L-fucose
+CHEBI:42549, 3-(5-fluorouracil-1-yl)-L-alanine
+CHEBI:50169, brexanolone
+CHEBI:134699, opicapone
+CHEBI:50173, all-trans-acitretin
+CHEBI:95044, (2S)-2-[[(2R)-2-[(1S)-1-hydroxy-2-(hydroxyamino)-2-oxoethyl]-4-methyl-1-oxopentyl]amino]-2-phenylacetic acid cyclopentyl ester
+CHEBI:46099, (S,S)-trans-1-isopropyl-2,3,3,5-tetramethyl-6-succinylindane
+CHEBI:4604, dimenhydrinate
+CHEBI:76749, bopindolol
+CHEBI:31837, Methyprylon
+CHEBI:83033, Dulaglutide
+CHEBI:43812, (4R)-limonene 1alpha,2alpha-epoxide
+CHEBI:16283, L-cystine
+CHEBI:16284, dATP
+CHEBI:95013, 4-[[4-[(4-methoxy-2-pyridinyl)amino]-1-piperidinyl]-oxomethyl]benzonitrile
+CHEBI:49132, 2-deoxy-2-fluoro-alpha-D-glucose
+CHEBI:52768, hycanthone
+CHEBI:5931, insulin (human)
+CHEBI:87407, S-(4-nitrobenzyl)glutathione
+CHEBI:5937, Interferon alfa-2a
+CHEBI:5938, Interferon beta-1b
+CHEBI:5939, Interferon gamma-1b
+CHEBI:29579, epothilone D
+CHEBI:50131, 5-aza-2'-deoxycytidine
+CHEBI:28241, papaverine
+CHEBI:50138, lonidamine
+CHEBI:31859, modafinil
+CHEBI:132084, SU11652
+CHEBI:16264, UDP-N-acetyl-alpha-D-glucosamine
+CHEBI:43830, 3,7-bis(dimethylamino)phenothiazin-5-ium
+CHEBI:17596, inosine
+CHEBI:17594, hydroquinone
+CHEBI:50122, Rosiglitazone
+CHEBI:51450, Bosentan
+CHEBI:2896, astemizole
+CHEBI:28230, hesperetin
+CHEBI:104872, rolipram
+CHEBI:102216, Methohexital
+CHEBI:135101, pipradrol
+CHEBI:135929, silodosin
+CHEBI:42492, fluorescin
+CHEBI:91418, N1'-[3-fluoro-4-[[6-methoxy-7-[3-(4-morpholinyl)propoxy]-4-quinolinyl]oxy]phenyl]-N1-(4-fluorophenyl)cyclopropane-1,1-dicarboxamide
+CHEBI:42491, flavone
+CHEBI:91414, 1-[6-(2-hydroxypropan-2-yl)-2-pyridinyl]-6-[4-(4-methyl-1-piperazinyl)anilino]-2-prop-2-enyl-3-pyrazolo[3,4-d]pyrimidinone
+CHEBI:135930, lercanidipine
+CHEBI:135931, dexlansoprazole
+CHEBI:135937, enzacamene
+CHEBI:135938, lasofoxifene
+CHEBI:135939, lacosamide
+CHEBI:338412, (-)-anisomycin
+CHEBI:135935, tapentadol
+CHEBI:28177, theophylline
+CHEBI:135919, Nesiritide
+CHEBI:28172, harmaline
+CHEBI:7596, nitroprusside
+CHEBI:135920, fesoterodine
+CHEBI:62088, Metamizole
+CHEBI:16199, urea
+CHEBI:32221, tiaprofenic acid
+CHEBI:91424, 2-(2-fluoro-4-iodoanilino)-N-(2-hydroxyethoxy)-1,5-dimethyl-6-oxo-3-pyridinecarboxamide
+CHEBI:135925, lisdexamfetamine
+CHEBI:135926, udenafil
+CHEBI:135927, epicriptine
+CHEBI:16196, oleic acid
+CHEBI:135922, pramlintide
+CHEBI:135923, migalastat
+CHEBI:78425, Albiglutide
+CHEBI:75399, NU 1025
+CHEBI:41183, Biopterin
+CHEBI:32223, tibolone
+CHEBI:7582, nitrendipine
+CHEBI:7581, nitrazepam
+CHEBI:34888, Niflumic acid
+CHEBI:65148, 3-O-sulfo-beta-D-galactose
+CHEBI:135952, zucapsaicin
+CHEBI:34892, nocodazole
+CHEBI:135954, bilastine
+CHEBI:78432, ceritinib
+CHEBI:135956, vernakalant
+CHEBI:135957, voclosporin
+CHEBI:34895, Norethynodrel
+CHEBI:32234, titanium dioxide
+CHEBI:7573, nilutamide
+CHEBI:7575, nimodipine
+CHEBI:7577, nisoldipine
+CHEBI:32241, Tofisopam
+CHEBI:41189, butane-1,4-diol
+CHEBI:32243, tolfenamic acid
+CHEBI:135947, bazedoxifene
+CHEBI:135948, amifampridine
+CHEBI:135949, ambrisentan
+CHEBI:34829, Medrysone
+CHEBI:2704, anastrozole
+CHEBI:31797, gadopentetate dimeglumine
+CHEBI:31793, magnesium carbonate
+CHEBI:9342, sulfinpyrazone
+CHEBI:78408, guanosine 5'-[beta,gamma-imido]triphosphate
+CHEBI:135973, calcitonin (human synthetic)
+CHEBI:41117, N-benzylformamide
+CHEBI:42444, (5S)-3-anilino-5-(2,4-difluorophenyl)-5-methyl-1,3-oxazolidine-2,4-dione
+CHEBI:135976, menthyl salicylate
+CHEBI:75384, (S)-monastrol
+CHEBI:34838, Drostanolone
+CHEBI:75388, (S)-blebbistatin
+CHEBI:49093, keto-D-tagatose 1,6-bisphosphate
+CHEBI:9332, sulfamethoxazole
+CHEBI:9334, sulfasalazine
+CHEBI:247956, Cinchocaine
+CHEBI:135961, degarelix
+CHEBI:135962, dapoxetine
+CHEBI:62043, 3beta-hydroxy-5alpha-pregnan-20-one hemisuccinate
+CHEBI:593538, N,N'-bis(pyridin-3-ylmethyl)pyrimidine-4,6-dicarboxamide
+CHEBI:75393, Y-27632
+CHEBI:135967, casopitant
+CHEBI:34849, mibolerone
+CHEBI:34848, mevastatin
+CHEBI:42471, forskolin
+CHEBI:42465, ethanesulfonic acid
+CHEBI:41135, 4-phenoxy-N-(pyridin-2-ylmethyl)benzamide
+CHEBI:28195, 3alpha-hydroxy-5beta-androstan-17-one
+CHEBI:9313, Sucralfate
+CHEBI:135983, teriparatide
+CHEBI:9316, sufentanil
+CHEBI:135981, estradiol acetate
+CHEBI:21557, N-acetyl-L-methionine
+CHEBI:49960, vandetanib
+CHEBI:15708, trans-aconitate(3-)
+CHEBI:10014, Voacamine
+CHEBI:174690, Clenbuterol
+CHEBI:15702, Alteplase
+CHEBI:94525, N-(2-aminophenyl)-4-[[[4-(3-pyridinyl)-2-pyrimidinyl]amino]methyl]benzamide
+CHEBI:4496, calcium hydrogenphosphate dihydrate
+CHEBI:4495, diazoxide
+CHEBI:3160, Botulinum toxin type A
+CHEBI:135089, propacetamol
+CHEBI:7514, neostigmine
+CHEBI:44278, N-acetyl-alpha-D-glucosamine
+CHEBI:48635, fumagillin
+CHEBI:47320, 2-amino-6-chloropyrazine
+CHEBI:47322, N-(2-aminoethyl)-5-chloroisoquinoline-8-sulfonamide
+CHEBI:4469, Dextroamphetamine
+CHEBI:44296, tetraethylammonium
+CHEBI:4466, dexmedetomidine
+CHEBI:4465, Dexchlorpheniramine maleate
+CHEBI:3133, Bitolterol
+CHEBI:7508, framycetin
+CHEBI:49976, zinc dichloride
+CHEBI:7507, neomycin
+CHEBI:131517, (1R,2S)-tranylcypromine(1+)
+CHEBI:585948, felodipine
+CHEBI:82530, Saccharated iron oxide
+CHEBI:5790, Hydromorphone
+CHEBI:39708, 8-anilinonaphthalene-1-sulfonic acid
+CHEBI:4474, dezocine
+CHEBI:4470, dextromethorphan
+CHEBI:94513, Methazolamide
+CHEBI:8825, Rhein
+CHEBI:94514, hexadecyl-[2-[(4-methoxyphenyl)methyl-(2-pyrimidinyl)amino]ethyl]-dimethylammonium
+CHEBI:94510, 3-[[oxo(pyridin-4-yl)methyl]hydrazo]-N-(phenylmethyl)propanamide
+CHEBI:131504, PD 168393
+CHEBI:27732, Caffeine
+CHEBI:65173, iloperidone
+CHEBI:45564, 5-hydroxypentanoic acid
+CHEBI:65172, ximelagatran
+CHEBI:32246, Tolvaptan
+CHEBI:37931, 10H-phenothiazine
+CHEBI:8890, Ropivacaine
+CHEBI:37937, Bethanidine
+CHEBI:45560, sucrose octasulfate
+CHEBI:50915, PP121
+CHEBI:15746, spermine
+CHEBI:44229, naphthalene-2-sulfonic acid
+CHEBI:7565, nifedipine
+CHEBI:37941, Clopidogrel
+CHEBI:41198, 4-[3-(3-nitrophenyl)-1,2,4-oxadiazol-5-yl]butanoic acid
+CHEBI:32254, Trapidil
+CHEBI:91451, 1-methyl-5-[[2-[5-(trifluoromethyl)-1H-imidazol-2-yl]-4-pyridinyl]oxy]-N-[4-(trifluoromethyl)phenyl]-2-benzimidazolamine
+CHEBI:91452, 2-[[5-chloro-2-[2-methoxy-4-(4-morpholinyl)anilino]-4-pyrimidinyl]amino]-N-methylbenzamide
+CHEBI:15738, staurosporine
+CHEBI:45573, 4-(4-styrylphenylcarbamoyl)butyric acid
+CHEBI:44241, metyrapone
+CHEBI:140478, pavinetant
+CHEBI:45571, heptanoic acid
+CHEBI:7550, Nicardipine
+CHEBI:8884, Rocuronium
+CHEBI:15741, succinic acid
+CHEBI:32260, trilostane
+CHEBI:8888, ropinirole
+CHEBI:8887, rofecoxib
+CHEBI:10055, Xamoterol
+CHEBI:45565, 7-benzyl-1,3-dimethyl-8-piperazin-1-yl-3,7-dihydropurine-2,6-dione
+CHEBI:23359, Colchicine
+CHEBI:23357, cofactor
+CHEBI:50931, Chlorprothixene
+CHEBI:15729, L-ornithine
+CHEBI:32269, Tropisetron
+CHEBI:8871, risperidone
+CHEBI:8872, Ritodrine
+CHEBI:3176, brinzolamide
+CHEBI:3175, Brimonidine
+CHEBI:8874, Rivastigmine
+CHEBI:32270, Trospium chloride
+CHEBI:3172, Bretylium
+CHEBI:91433, 3-(4-quinolinylmethylamino)-N-[4-(trifluoromethoxy)phenyl]-2-thiophenecarboxamide
+CHEBI:91435, linifanib
+CHEBI:135910, ganirelix
+CHEBI:135913, secretin human
+CHEBI:27704, S-hexylglutathione
+CHEBI:50922, Eletriptan
+CHEBI:50924, Sorafenib
+CHEBI:8862, Rilmenidine
+CHEBI:15713, UTP
+CHEBI:8863, Riluzole
+CHEBI:3183, Brompheniramine
+CHEBI:92774, 1-(2,3-dihydro-1,4-benzodioxin-6-ylsulfonyl)-4-(4-methoxyphenyl)sulfonylpiperazine
+CHEBI:3181, bromocriptine
+CHEBI:90117, indigo carmine (acid form)
+CHEBI:8869, Risedronic acid
+CHEBI:135905, terlipressin
+CHEBI:135906, mifamurtide
+CHEBI:135901, lanreotide
+CHEBI:28984, aluminium atom
+CHEBI:27656, camptothecin
+CHEBI:4527, diethylcarbamazine
+CHEBI:39637, (1S)-2-[(2S,5R)-2-(aminomethyl)-5-prop-1-yn-1-ylpyrrolidin-1-yl]-1-cyclopentyl-2-oxoethanamine
+CHEBI:135010, enoximone
+CHEBI:16998, D-phenylalanine
+CHEBI:5864, ifosfamide
+CHEBI:15672, D-tartaric acid
+CHEBI:94489, 6-(N-carbamoyl-2,6-difluoroanilino)-2-(2,4-difluorophenyl)-3-pyridinecarboxamide
+CHEBI:59254, (S)-betaxolol
+CHEBI:27647, prostaglandin G2
+CHEBI:94484, 1-phenyl-1-cyclopentanecarboxylic acid 2-[2-(diethylamino)ethoxy]ethyl ester
+CHEBI:116735, benzocaine
+CHEBI:47273, 5-(5-chloro-2,4-dihydroxyphenyl)-N-ethyl-4-(4-methoxyphenyl)pyrazole-3-carboxamide
+CHEBI:28971, Ampicillin
+CHEBI:3207, budesonide
+CHEBI:28972, (R)-propane-1,2-diol
+CHEBI:3205, Buclizine
+CHEBI:74899, fluticasone furoate
+CHEBI:4530, Diethylpropion
+CHEBI:16995, oxalic acid
+CHEBI:41962, diethyl phosphonate
+CHEBI:135005, Milnacipran
+CHEBI:16997, propane-1,2-diol
+CHEBI:62880, veliparib
+CHEBI:5855, ibuprofen
+CHEBI:135002, irofulven
+CHEBI:39654, 1-BENZYL-1H-IMIDAZOLE
+CHEBI:5856, Ibutilide
+CHEBI:41965, (2S)-4'-hydroxyflavanone
+CHEBI:28969, N,N-dimethyltryptamine
+CHEBI:41967, diphenylacetic acid
+CHEBI:16977, L-alanine
+CHEBI:16978, leukotriene C4
+CHEBI:15647, leukotriene B4
+CHEBI:16985, 5beta-androstane-3,17-dione
+CHEBI:16982, (R,R)-butane-2,3-diol
+CHEBI:64610, tenocyclidine
+CHEBI:5847, ICI D1694
+CHEBI:28955, 2-methoxy-17beta-estradiol
+CHEBI:94461, 3-[3-acetyl-4-[3-(tert-butylamino)-2-hydroxypropoxy]phenyl]-1,1-diethylurea
+CHEBI:41977, daunorubicin
+CHEBI:4518, dienestrol
+CHEBI:4514, Dicyclomine
+CHEBI:4513, dicoumarol
+CHEBI:39669, diflunisal
+CHEBI:15641, 5-methyltetrahydrofolic acid
+CHEBI:15640, 5-formyltetrahydrofolic acid
+CHEBI:5834, hyperforin
+CHEBI:5835, hypericin
+CHEBI:59269, Dexbrompheniramine
+CHEBI:28946, theobromine
+CHEBI:3238, Butenafine
+CHEBI:27690, Acetazolamide
+CHEBI:74848, pentan-1-amine
+CHEBI:3231, butamben
+CHEBI:4562, Dihydroergotamine
+CHEBI:7601, nizatidine
+CHEBI:17411, N-Acetylglucosamine
+CHEBI:48549, tolrestat
+CHEBI:41917, 4-phospho-L-threonic acid
+CHEBI:41911, 5-heptyl-6-hydroxy-1,3-benzothiazole-4,7-dione
+CHEBI:50861, Treprostinil
+CHEBI:50867, ciprofibrate
+CHEBI:50865, cortisol 17-valerate
+CHEBI:4575, Dihydromorphine
+CHEBI:3242, Butorphanol
+CHEBI:5893, indapamide
+CHEBI:94458, 3,4,5-trimethoxybenzoic acid [2-(dimethylamino)-2-phenylbutyl] ester
+CHEBI:39610, 2-amino-2-deoxy-beta-D-galactopyranose
+CHEBI:8927, S-(2,4-dinitrophenyl)glutathione
+CHEBI:59204, carbetocin
+CHEBI:41928, 3,4-dihydro-5-methylisoquinolinone
+CHEBI:41922, diethylstilbestrol
+CHEBI:48574, phenylbutazone
+CHEBI:3219, bupropion
+CHEBI:3216, Buprenorphine
+CHEBI:140420, eribaxaban
+CHEBI:140421, betrixaban
+CHEBI:3213, bumetanide
+CHEBI:135076, setiptiline
+CHEBI:41931, (2R)-1-[(5,6-diphenyl-7H-pyrrolo[2,3-d]pyrimidin-4-yl)amino]propan-2-ol
+CHEBI:15698, 2'-deoxycytidine
+CHEBI:91399, N-(5-\{[(5-tert-butyl-1,3-oxazol-2-yl)methyl]sulfanyl\}-1,3-thiazol-2-yl)piperidine-4-carboxamide
+CHEBI:91398, LSM-1131
+CHEBI:41934, decamethonium
+CHEBI:27666, actinomycin D
+CHEBI:59219, ceruletide
+CHEBI:50885, fludrocortisone
+CHEBI:27662, benzquinamide
+CHEBI:3228, butabarbital
+CHEBI:3223, Buspirone
+CHEBI:4551, digoxin
+CHEBI:94435, 1-(1,3-benzodioxol-5-yl)-4,4-dimethyl-1-penten-3-ol
+CHEBI:39634, N-\{5-[4-(4-methylpiperazin-1-yl)phenyl]-1H-pyrrolo[2,3-b]pyridin-3-yl\}nicotinamide
+CHEBI:41948, eflornithine
+CHEBI:47249, 1-(3-tert-butyl-1-methylpyrazol-5-yl)-3-(4-chlorophenyl)urea
+CHEBI:59224, Cetrorelix
+CHEBI:40618, aminoguanidine
+CHEBI:51364, zuclopenthixol
+CHEBI:51368, lofexidine
+CHEBI:8050, phenacetin
+CHEBI:521033, dutasteride
+CHEBI:102166, Thiopental
+CHEBI:102167, N-\{4-[2-ethyl-1-(1,2,4-triazol-1-yl)butyl]phenyl\}-1,3-benzothiazol-2-amine
+CHEBI:49040, ezetimibe
+CHEBI:16118, berberine
+CHEBI:8059, Phendimetrazine
+CHEBI:8058, phencyclidine
+CHEBI:90960, tiotropium
+CHEBI:17456, dithioerythritol
+CHEBI:17455, N-(2,3-dihydroxybenzoyl)-L-serine
+CHEBI:135899, atosiban
+CHEBI:79700, Ridaforolimus
+CHEBI:16108, dihydroxyacetone phosphate
+CHEBI:17439, cyanocob(III)alamin
+CHEBI:16109, propane-1,3-diol
+CHEBI:8049, Phenacemide
+CHEBI:43741, \{[5-(5-nitro-2-furyl)-1,3,4-oxadiazol-2-yl]thio\}acetic acid
+CHEBI:16113, cholesterol
+CHEBI:135883, canfosfamide
+CHEBI:17440, 4-nitrophenyl phosphate
+CHEBI:135888, pimecrolimus
+CHEBI:43748, 6-ethyl-5-[(2S)-1-(3-methoxypropyl)-2-phenyl-1,2,3,4-tetrahydroquinolin-7-yl]pyrimidine-2,4-diamine
+CHEBI:9362, suprofen
+CHEBI:125628, 4-[[9-chloro-7-(2-fluoro-6-methoxyphenyl)-5H-pyrimido[5,4-d][2]benzazepin-2-yl]amino]-2-methoxybenzoic acid
+CHEBI:9367, swainsonine
+CHEBI:43755, lisinopril
+CHEBI:90943, osimertinib
+CHEBI:17431, agmatine
+CHEBI:42429, 2,6-difluorobenzenesulfonamide
+CHEBI:2739, anisotropine methylbromide
+CHEBI:72296, apixaban
+CHEBI:72297, lomitapide
+CHEBI:31784, Loteprednol etabonate
+CHEBI:31783, lornoxicam
+CHEBI:9352, sulindac
+CHEBI:8024, Perindopril
+CHEBI:90951, lumacaftor
+CHEBI:8028, Perphenazine
+CHEBI:43765, 3-fluoro-5-morpholin-4-yl-N-[3-(2-pyridin-4-ylethyl)-1H-indol-5-yl]benzamide
+CHEBI:43769, dodecyl beta-D-maltoside
+CHEBI:51380, doxylamine
+CHEBI:28148, sodium stibogluconate
+CHEBI:8093, Phenylephrine
+CHEBI:2788, Apraclonidine
+CHEBI:90929, lesinurad
+CHEBI:39686, [5-hydroxy-2-(4-hydroxyphenyl)-1-benzofuran-7-yl]acetonitrile
+CHEBI:39688, (3R)-1-acetyl-3-methylpiperidine
+CHEBI:16163, S-carboxymethyl-L-cysteine
+CHEBI:59297, benzylpenicilloyl polylysine
+CHEBI:59296, alpha-L-Fucp-(1->2)-beta-D-Galp-(1->3)-beta-D-GlcpNAc
+CHEBI:8080, Phentermine
+CHEBI:75303, lauryl sulfobetaine
+CHEBI:8081, phentolamine
+CHEBI:90936, Alectinib
+CHEBI:2791, aprobarbital
+CHEBI:17489, 3',5'-cyclic AMP
+CHEBI:40677, 3-(10-methyl-9-anthryl)propanoic acid
+CHEBI:90933, Cariprazine
+CHEBI:17486, (S)-atropine
+CHEBI:90930, aripiprazole lauroxil
+CHEBI:5812, Hydroxyprogesterone caproate
+CHEBI:64628, somatostatin
+CHEBI:5818, Hydroxyzine
+CHEBI:49026, N-acetyl-alpha-neuraminic acid
+CHEBI:28125, all-cis-docosa-4,7,10,13,16,19-hexaenoic acid
+CHEBI:76607, macitentan
+CHEBI:8077, Phenoxybenzamine
+CHEBI:28121, harmine
+CHEBI:17474, Estrone sulfate
+CHEBI:5801, hydroxychloroquine
+CHEBI:49033, methionine S-oxide
+CHEBI:8060, Phenelzine
+CHEBI:76611, flutemetamol ((18)F)
+CHEBI:691037, desoximetasone
+CHEBI:8064, phenformin
+CHEBI:8066, phenindione
+CHEBI:8065, Phenindamine
+CHEBI:8067, phenmetrazine
+CHEBI:9398, Tamsulosin
+CHEBI:8069, phenobarbital
+CHEBI:40697, (1S)-2-[(2S,5R)-2-(aminomethyl)-5-ethynylpyrrolidin-1-yl]-1-cyclopentyl-2-oxoethanamine
+CHEBI:37050, 3-hydroxybutanoyl-CoA
