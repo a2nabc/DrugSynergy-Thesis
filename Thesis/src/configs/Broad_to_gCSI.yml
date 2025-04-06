@@ -24,6 +24,14 @@ default:
   target.screens: !expr c('GDSC2', 'gCSI')
   name.ccl.file: "ccl_data.csv"
   figs.dir: "./figs/"
-  results.pagerank.features.dir: "pagerank_genes/"
+  results.pagerank.features.dir: "pagerank_genes/"         #innecessari, crec
   drugbank.data.file: "drugbank/AffectedGenesByDrug.txt"
+  results.pagerank.output: "results/pagerank_output/"
+  drugbank.subfolder: "drugbank/"
+  results.cv.performance: "results/cv_performance/"
+  results.cv.random.subdir: "results/cv_performance/random_pagerank_input/"
+  results.cv.lasso.subdir: "results/cv_performance/lasso_pagerank_input/"
+  results.cv.lasso.gdsc: "results/cv_performance/lasso_pagerank_input/GDSC2"
+  results.cv.lasso.gcsi: "results/cv_performance/lasso_pagerank_input/gCSI"
+  results.cv.drugbank.subdir: "results/cv_performance/drugtargets_drugbank_pagerank_input/"
   

@@ -350,14 +350,9 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
 }
 
 
-process.results.pagerank <- function(path_lasso, path_drugbank, drug, feature_size, source_data, target_data) {
-  path_lasso_nfeatures <- paste0(path_lasso, "_", feature_size, ".txt")
-  path_drugbank_nfeatures <- paste0(path_drugbank, "_", feature_size, ".txt")
-  print(paste0("Starting cv for lasso vs random vs drugbank input for ", feature_size, " features"))
-  results_pagerank_lasso <- compute.cv.for.pagerank.input(path_lasso_nfeatures, source_data, target_data, drug, 10) # 10 is num_folds
-  results_pagerank_drugbank <- compute.cv.for.pagerank.input(path_drugbank_nfeatures, source_data, target_data, drug, 10)
-  results_random <- compute.cv.for.random.input(source_data, target_data, drug, 10, feature_size)
-  print(paste0("Finished cv for lasso vs random vs drugbank input for ", feature_size, " features"))
-  return(list(lasso = results_pagerank_lasso, random = results_random, drugbank = results_pagerank_drugbank))
+process.results.pagerank <- function(path_pagerank_output, drug, feature_size, source_data, target_data) {
+  pagerank_output <- paste0(path_pagerank_output, "_", feature_size, ".txt")
+  results_cv <- compute.cv.for.pagerank.input(pagerank_output, source_data, target_data, drug, 10) # 10 is num_foldsç
+  return(results_cv)
 }
 

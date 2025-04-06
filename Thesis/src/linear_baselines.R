@@ -75,7 +75,7 @@ target_data <- filter_cell_lines(config$experiment.type.is.positive, source_data
 
 # Read drug universe and initialize list and folders to store results
 common_drugs <- readLines(config$drugs) 
-results.subdir <- create_output_folders(config$target.screen, config$models, config$experiment.type.is.positive, config$results.dir, config$results.features.dir, config$results.eval.dir, config$results.correlations.dir, config$results.cv.dir)
+results.subdir <- create_output_folders(config$target.screen, config$models, config$experiment.type.is.positive, config$results.dir, config$results.features.dir, config$results.eval.dir, config$results.correlations.dir, config$results.cv.random.subdir, config$results.cv.lasso.subdir, config$results.cv.lasso.gdsc, config$results.cv.lasso.gcsi, config$results.cv.drugbank.subdir,  config$results.cv.dir)
 data_dimensions_metadata <- create_df_metadata(config$results.dir, config$results.metadata.dir)
 model_results <- list()
 debug <- list()
@@ -122,34 +122,44 @@ for (screen in config$target.screens){
 feature_sizes <- c(10, 20, 50)
 results <- list()
 
+
 for (screen in config$target.screens) {
-  # Initialize result lists for each feature size
+  # Initialize lasso results per screen + size
   for (size in feature_sizes) {
-    results[[paste0("lasso_", size)]] <- list()
-    results[[paste0("random_", size)]] <- list()
-    results[[paste0("drugbank_", size)]] <- list()
+    results[[paste0("lasso_", screen, "_", size)]] <- list()
   }
   
   for (drug in common_drugs) {
     for (size in feature_sizes) {
-      # Process results for the current drug and feature size
-      path_lasso <- paste0(config$results.dir, screen, "/positive/lasso/", config$results.pagerank.features.dir, drug)
-      path_drugbank <- paste0(config$results.dir, "pagerank_genes/pagerank_drugbank_", drug)
-      result <- process.results.pagerank(path_lasso, path_drugbank, drug, size, source_data, target_data)
-      #results/pagerank_genes/pagerank_drugbank_5-Fluorouracil_50.txt
-      
-      # Append results to the corresponding lists
-      results[[paste0("lasso_", size)]] <- rbind(results[[paste0("lasso_", size)]], result$lasso)
-      results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], result$random)
-      results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result$drugbank)
+      path_lasso <- paste0(config$results.pagerank.output, "lasso/", screen, "/positive/", drug)
+      result <- process.results.pagerank(path_lasso, drug, size, source_data, target_data)
+      results[[paste0("lasso_", screen, "_", size)]] <- rbind(results[[paste0("lasso_", screen, "_", size)]], result)
     }
   }
-  
-  # Write results to CSV files
+
   for (size in feature_sizes) {
-    write.csv(results[[paste0("pagerank_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_top_", size, "_features.csv"))
-    write.csv(results[[paste0("random_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/random_performance_", size, "_features.csv"))
-    write.csv(results[[paste0("drugbank_", size)]], paste0(config$results.dir, screen, "/positive/lasso", "/pagerank_performance_drugbank_", size, "_features.csv"))
+    write.csv(results[[paste0("lasso_", screen, "_", size)]], paste0(config$results.cv.lasso.subdir, "/", screen, "/lasso_performance_top_", size, "_features.csv"))
   }
 }
 
+# Initialize random and drugbank results (shared across screens)
+for (size in feature_sizes) {
+  results[[paste0("random_", size)]] <- list()
+  results[[paste0("drugbank_", size)]] <- list()
+}
+  
+for (drug in common_drugs) {
+  for (size in feature_sizes) {
+    # Process results for the current drug and feature size
+    path_drugbank <- paste0(config$results.pagerank.output, config$drugbank.subfolder, drug)
+    result <- process.results.pagerank(path_drugbank, drug, size, source_data, target_data)
+    results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result)
+    
+    
+    results_random <- compute.cv.for.random.input(source_data, target_data, drug, 10, size)
+    results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], results_random)
+  }
+}
+  
+  # Write results to CSV files
+  

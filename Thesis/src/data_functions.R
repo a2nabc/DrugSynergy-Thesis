@@ -17,9 +17,14 @@ load_data <- function(expression_path, response_path) {
   return(list(expression = expression_data, response = response_data))
 }
 
-create_output_folders <- function(target_set, model_types, experiment_positive, results_dir, features_dir, eval_dir, correlations_dir, cv_dir) {
+create_output_folders <- function(target_set, model_types, experiment_positive, results_dir, features_dir, eval_dir, correlations_dir, cv_random, cv_lasso, cv_lasso_gdsc, cv_lasso_gcsi, cv_drugbank, cv_dir) {
   results_subdir <- if (experiment_positive == "true") paste0(target_set, "/positive/") else paste0(target_set, "/negative/")
   dir.create(results_dir, showWarnings = FALSE)
+  dir.create(cv_random, recursive=TRUE)
+  #dir.create(cv_lasso, recursive=TRUE)
+  dir.create(cv_lasso_gdsc, recursive=TRUE)
+  dir.create(cv_lasso_gcsi, recursive=TRUE)
+  dir.create(cv_drugbank, recursive=TRUE)
   dir.create(paste0(results_dir, target_set, "/"), showWarnings = FALSE)
   dir.create(paste0(results_dir, results_subdir), showWarnings = FALSE)
   dir.create(paste0(results_dir, results_subdir, "metadata/"), showWarnings = FALSE)

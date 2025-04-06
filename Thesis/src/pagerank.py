@@ -68,7 +68,7 @@ def save_top_genes(pagerank_scores, file_name):
     print(f"{file_name}_20.txt")
     print(f"{file_name}_50.txt")
 
-def process_all_features(base_path, G, output_folder):
+def process_all_features(base_path, dataset, condition, method, G, output_folder):
     """Iterate through all feature files and compute PageRank results."""
     for root, _, files in os.walk(base_path):
         if "features" in root:
@@ -79,8 +79,9 @@ def process_all_features(base_path, G, output_folder):
             for file in files:
                 if file.endswith(".txt"):
                     input_path = os.path.join(root, file)
-                    base_name = os.path.splitext(file)[0]  # Strip the file extension from the file name
-                    output_file = os.path.join(save_path, base_name)  # Final output file for pagerank results
+                    base_name = os.path.basename(input_path)  # Get the parent folder name --> drugname
+                    drug_name = os.path.splitext(base_name)[0]  # Strip the file extension from the file name ---> basename is the drug
+                    output_file = os.path.join(output_folder, method, dataset, condition, drug_name)  # Final output file for pagerank results
 
                     print(f"Processing {input_path}...")
 
@@ -89,23 +90,6 @@ def process_all_features(base_path, G, output_folder):
 
                     results = process_gene_list(G, gene_list)
                     save_top_genes(results, output_file)
-
-# Paths
-graphml_path = "data/g_KEGG_UNION_LINCS.graphml"  # Change as needed
-base_results_path = "results"  # Base path for results
-
-# Load the graph and extract the largest connected component
-G = load_graph(graphml_path)
-G_largest = get_largest_connected_component(G)
-
-# Iterate through datasets (gCSI, GDSC2), conditions (negative, positive), and methods (en, ridge, lasso)
-#for dataset in ["gCSI", "GDSC2"]:
-#    for condition in ["negative", "positive"]:
-#        for method in ["en", "ridge", "lasso"]:
-#            features_path = os.path.join(base_results_path, dataset, condition, method, "features")
-#            if os.path.exists(features_path):
-#                process_all_features(features_path, G_largest, "pagerank_genes")
-
 
 def run_pagerank_from_drugbank(path_drugbank_genes, G):
 
@@ -124,13 +108,33 @@ def run_pagerank_from_drugbank(path_drugbank_genes, G):
 
         # Compute PageRank scores
         results = process_gene_list(G, gene_list)
-        output_path = os.path.join("results", "pagerank_genes", f"pagerank_drugbank_{drug}")
+        output_path = os.path.join(base_results_path, "drugbank", f"{drug}")
         save_top_genes(results, output_path)
 
         # Save results
         #save_top_genes(pagerank_scores, os.path.join("results", "pagerank_genes", f"pagerank_{drug}"))
 
-    return 
+    
+
+
+# Paths
+graphml_path = "data/g_KEGG_UNION_LINCS.graphml"  # Change as needed
+base_results_path = os.path.join("results", "pagerank_output")  # Base path for results
+results_path = "results"  # Base path for results
+
+# Load the graph and extract the largest connected component
+G = load_graph(graphml_path)
+G_largest = get_largest_connected_component(G)
+
+# Iterate through datasets (gCSI, GDSC2), conditions (negative, positive), and methods (en, ridge, lasso)
+for dataset in ["gCSI", "GDSC2"]:
+    for condition in ["negative", "positive"]:
+        for method in ["en", "ridge", "lasso"]:
+            features_path = os.path.join(results_path, dataset, condition, method, "features")
+            if os.path.exists(features_path):
+                process_all_features(features_path, dataset, condition, method, G_largest, base_results_path)
+
+
 
 path_drugbank_info = "results/drugbank/AffectedGenesByDrug.txt"
 drugs_path = "data/common_drugs.txt"
