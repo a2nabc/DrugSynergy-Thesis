@@ -81,3 +81,10 @@ load_pagerank_feature_list <- function(gene_list_path) {
     return(NULL)
   }
 }
+
+# Function to load and annotate one file
+load_cv_performance_and_annotate <- function(file_path, method_label, size) {
+  read.csv(file_path) %>%
+    mutate(Method = method_label,
+           FEATURE_SIZE = size)
+}

@@ -356,3 +356,73 @@ process.results.pagerank <- function(path_pagerank_output, drug, feature_size, s
   return(results_cv)
 }
 
+# pagerank_cv_helpers.R
+
+init.results <- function(results, methods, screens, sizes) {
+  for (method in methods) {
+    for (size in sizes) {
+      if (method == "lasso") {
+        for (screen in screens) {
+          key <- paste0("lasso_", screen, "_", size)
+          results[[key]] <- list()
+        }
+      } else {
+        key <- paste0(method, "_", size)
+        results[[key]] <- list()
+      }
+    }
+  }
+  return(results)
+}
+run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data, config) {
+  for (drug in drugs) {
+    for (size in sizes) {
+      #cat("Processing drug:", drug, "with size:", size, "\n")  # ✅ ADD THIS
+      path <- file.path(paste0(config$results.pagerank.output, "lasso"), screen, "positive", drug)
+      result <- process.results.pagerank(path, drug, size, source_data, target_data)
+      key <- paste0("lasso_", screen, "_", size)
+      results[[key]] <- rbind(results[[key]], result)
+    }
+  }
+  return(results)
+}
+
+
+write.lasso.results <- function(results, screens, sizes, config) {
+  for (screen in screens) {
+    for (size in sizes) {
+      key <- paste0("lasso_", screen, "_", size)
+      out_path <- file.path(config$results.cv.lasso.subdir, screen, paste0("lasso_performance_top_", size, "_features.csv"))
+      print(out_path)
+      write.csv(results[[key]], out_path, row.names = FALSE)
+    }
+  }
+}
+
+run.other.cv <- function(results, sizes, drugs, source_data, target_data, config) {
+  for (drug in drugs) {
+    for (size in sizes) {
+      # Drugbank
+      db_path <- paste0(config$results.pagerank.output, config$drugbank.subfolder, drug)
+      result_db <- process.results.pagerank(db_path, drug, size, source_data, target_data)
+      results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result_db)
+      
+      # Random
+      result_rand <- compute.cv.for.random.input(source_data, target_data, drug, 10, size)
+      results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], result_rand)
+    }
+  }
+  return(results)
+}
+
+write.other.results <- function(results, sizes, config) {
+  for (size in sizes) {
+    write.csv(results[[paste0("drugbank_", size)]],
+              file.path(config$results.cv.drugbank.subdir, paste0("drugbank_performance_top_", size, "_features.csv")),
+              row.names = FALSE)
+    
+    write.csv(results[[paste0("random_", size)]],
+              file.path(config$results.cv.random.subdir, paste0("random_performance_", size, "_features.csv")),
+              row.names = FALSE)
+  }
+}

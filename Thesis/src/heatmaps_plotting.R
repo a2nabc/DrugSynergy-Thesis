@@ -15,6 +15,7 @@ generate_model_heatmaps <- function(screen_path, correlations_subdir, drugs, plo
     en_path <- paste0(subfolder, "/en/", correlations_subdir)
     ridge_path <- paste0(subfolder, "/ridge/", correlations_subdir)
     output_folder_path <- paste0(plot_dir, "/", basename(subfolder))
+    print(lasso_path)
     
     generate_experiment_heatmaps(lasso_path, en_path, ridge_path, drugs, output_folder_path)
     

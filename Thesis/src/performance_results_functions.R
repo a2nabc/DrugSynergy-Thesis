@@ -3,33 +3,6 @@ library(ggplot2)
 library(dplyr)
 library(pheatmap)
 
-# Function to plot a venn diagram with cell_lines across the datasets 
-# ccl_data_list is a list with an entry for each screen
-venn_plot <- function(ccl_data_list, output_file) {
-  
-  data_cell_lines <- list()
-  for (file in ccl_data_list){
-    dataset_name <- basename(dirname(file))
-    sample_data <- read.csv(file)
-    data_cell_lines[[dataset_name]] <- sample_data$sampleid
-  }
-  
-  # Generate the Venn diagram
-  venn.plot <- venn.diagram(
-    x = data_cell_lines,
-    category.names = names(data_cell_lines),
-    filename = output_file,
-    output = TRUE,
-    fill = c("red", "blue", "green"), 
-    alpha = 0.5,
-    cat.col = c("red", "blue", "green"),
-    cat.cex = 1.2,
-    margin = 0.1
-  )
-  
-  message("Venn diagram saved at: ", output_file)
-}
-
 generate_tables_one_experiment <- function(file_path, output_folder_path) {
   final_results <- read.csv(file_path)
   final_results <- final_results %>%
@@ -102,6 +75,7 @@ generate_violin_plots <- function(csv_path, csv_name, plot_dir) {
     
     generate_one_violin(file_path, output_folder_path)
   }
+  print("DONE VIOLIN")
 }
 
 compute_jaccard_index <- function(set1, set2) {
