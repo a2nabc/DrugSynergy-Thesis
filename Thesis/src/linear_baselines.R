@@ -126,12 +126,12 @@ results <- init.results(results, c("lasso", "random", "drugbank"), config$target
 
 # Lasso
 for (screen in config$target.screens) {
-  results <- run.lasso.cv(results, screen, feature_sizes, common_drugs, source_data, target_data, config)
+  results <- run.lasso.cv(results, screen, feature_sizes, common_drugs, source_data, target_data, config, 10)
 }
 write.lasso.results(results, config$target.screens, feature_sizes, config)
 
 # Random + Drugbank
-results <- run.other.cv(results, feature_sizes, common_drugs, source_data, target_data, config)
+results <- run.other.cv(results, feature_sizes, common_drugs, source_data, target_data, config, 10)
 write.other.results(results, feature_sizes, config)
 
 ############################# PLOTS FOR PAGERANK VS RANDOM PERFORMANCES #############################
@@ -142,14 +142,14 @@ combined <- load_all_performance_data(feature_sizes, config)
 filtered_combined <- filter_valid_drugs(combined)
 
 # Barplots
-plot_pearson_barplot(filtered_combined, 10, "RdYlGn")
-plot_pearson_barplot(filtered_combined, 20, "RdBu")
-plot_pearson_barplot(filtered_combined, 50, "PuOr")
+plot_pearson_barplot(filtered_combined, 10, "figs/Barplot_10_features.png", "RdYlGn")
+plot_pearson_barplot(filtered_combined, 20,  "figs/Barplot_20_features.png", "RdBu")
+plot_pearson_barplot(filtered_combined, 50,  "figs/Barplot_50_features.png", "PuOr")
 
 # Boxplots
-plot_pearson_boxplot(filtered_combined, 10)
-plot_pearson_boxplot(filtered_combined, 20)
-plot_pearson_boxplot(filtered_combined, 50)
+plot_pearson_boxplot(filtered_combined, 10, "figs/Boxplot_10_features.png")
+plot_pearson_boxplot(filtered_combined, 20, "figs/Boxplot_20_features.png")
+plot_pearson_boxplot(filtered_combined, 50, "figs/Boxplot_50_features.png")
 
 # Wilcoxon test results
 wilcoxon_results <- run_wilcoxon_tests(filtered_combined, 50)

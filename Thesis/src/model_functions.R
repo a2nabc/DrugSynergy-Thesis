@@ -350,9 +350,9 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
 }
 
 
-process.results.pagerank <- function(path_pagerank_output, drug, feature_size, source_data, target_data) {
+process.results.pagerank <- function(path_pagerank_output, drug, feature_size, source_data, target_data, num_folds) {
   pagerank_output <- paste0(path_pagerank_output, "_", feature_size, ".txt")
-  results_cv <- compute.cv.for.pagerank.input(pagerank_output, source_data, target_data, drug, 10) # 10 is num_foldsç
+  results_cv <- compute.cv.for.pagerank.input(pagerank_output, source_data, target_data, drug, num_folds) # 10 is num_foldsç
   return(results_cv)
 }
 
@@ -374,12 +374,12 @@ init.results <- function(results, methods, screens, sizes) {
   }
   return(results)
 }
-run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data, config) {
+run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data, config, num_folds) {
   for (drug in drugs) {
     for (size in sizes) {
       #cat("Processing drug:", drug, "with size:", size, "\n")  # ✅ ADD THIS
       path <- file.path(paste0(config$results.pagerank.output, "lasso"), screen, "positive", drug)
-      result <- process.results.pagerank(path, drug, size, source_data, target_data)
+      result <- process.results.pagerank(path, drug, size, source_data, target_data, num_folds)
       key <- paste0("lasso_", screen, "_", size)
       results[[key]] <- rbind(results[[key]], result)
     }
@@ -399,16 +399,16 @@ write.lasso.results <- function(results, screens, sizes, config) {
   }
 }
 
-run.other.cv <- function(results, sizes, drugs, source_data, target_data, config) {
+run.other.cv <- function(results, sizes, drugs, source_data, target_data, config, num_folds) {
   for (drug in drugs) {
     for (size in sizes) {
       # Drugbank
       db_path <- paste0(config$results.pagerank.output, config$drugbank.subfolder, drug)
-      result_db <- process.results.pagerank(db_path, drug, size, source_data, target_data)
+      result_db <- process.results.pagerank(db_path, drug, size, source_data, target_data, num_folds)
       results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result_db)
       
       # Random
-      result_rand <- compute.cv.for.random.input(source_data, target_data, drug, 10, size)
+      result_rand <- compute.cv.for.random.input(source_data, target_data, drug, num_folds, size)
       results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], result_rand)
     }
   }

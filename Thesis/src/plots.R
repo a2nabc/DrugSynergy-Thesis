@@ -60,7 +60,7 @@ filter_valid_drugs <- function(data) {
   return(data %>% filter(Drug %in% valid_drugs))
 }
 
-plot_pearson_barplot <- function(data, size, palette = "Set2") {
+plot_pearson_barplot <- function(data, size, output_path, palette = "Set2", width = 10, height = 6) {
   p <- data %>%
     filter(FEATURE_SIZE == size) %>%
     ggplot(aes(x = Drug, y = PEARSON_Mean, fill = Method)) +
@@ -70,10 +70,11 @@ plot_pearson_barplot <- function(data, size, palette = "Set2") {
          y = "Pearson Correlation", x = "Drug") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     scale_fill_brewer(palette = palette)
+  ggsave(output_path, plot = p, width = width, height = height)
   return(p)
 }
 
-plot_pearson_boxplot <- function(data, size) {
+plot_pearson_boxplot <- function(data, size, output_path, width = 10, height = 6) {
   p <- data %>%
     filter(FEATURE_SIZE == size) %>%
     ggplot(aes(x = Method, y = PEARSON_Mean, fill = Method)) +
@@ -82,6 +83,7 @@ plot_pearson_boxplot <- function(data, size) {
     labs(title = paste("Distribution of Pearson Correlation (Top", size, "Features)"),
          y = "Pearson Correlation", x = "Method") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  ggsave(output_path, plot = p, width = width, height = height)
   return(p)
 }
 
