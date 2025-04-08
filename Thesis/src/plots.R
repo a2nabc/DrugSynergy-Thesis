@@ -29,97 +29,81 @@ venn_plot <- function(ccl_data_list, output_file) {
   message("Venn diagram saved at: ", output_file)
 }
 
+# ============================== pagerank_analysis_utils.R ==============================
 
-
-
-library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 library(RColorBrewer)
-library(purrr)
 
-### --- Helper Function: Load and Annotate Performance Data --- ###
-load_performance_data <- function(size, config) {
-  list(
-    lasso_gdsc = load_cv_performance_and_annotate(
-      file = paste0(config$results.cv.lasso.subdir, "GDSC2/lasso_performance_top_", size, "_features.csv"),
-      method_name = "Lasso_gdsc_Pagerank", size = size
-    ),
-    lasso_gcsi = load_cv_performance_and_annotate(
-      file = paste0(config$results.cv.lasso.subdir, "gCSI/lasso_performance_top_", size, "_features.csv"),
-      method_name = "Lasso_gcsi_Pagerank", size = size
-    ),
-    drugbank = load_cv_performance_and_annotate(
-      file = paste0(config$results.cv.drugbank.subdir, "drugbank_performance_top_", size, "_features.csv"),
-      method_name = "Drugbank_Pagerank", size = size
-    ),
-    random = load_cv_performance_and_annotate(
-      file = paste0(config$results.cv.random.subdir, "random_performance_", size, "_features.csv"),
-      method_name = "Random", size = size
-    )
-  )
+load_and_label <- function(size, dataset, method, subdir, prefix = "lasso_performance_top_") {
+  file <- paste0(subdir, ifelse(dataset != "", paste0(dataset, "/"), ""), prefix, size, "_features.csv")
+  return(load_cv_performance_and_annotate(file, method, size))
 }
 
-### --- Combine All Performance Data --- ###
-combine_all_performances <- function(feature_sizes, config) {
-  all_data <- feature_sizes %>%
-    map(~ load_performance_data(.x, config)) %>%
-    flatten() %>%
-    bind_rows()
-  return(all_data)
+load_all_performance_data <- function(feature_sizes, config) {
+  all_data <- list()
+  for (size in feature_sizes) {
+    all_data[[paste0("lasso_gdsc_", size)]] <- load_and_label(size, "GDSC2", "Lasso_gdsc_Pagerank", config$results.cv.lasso.subdir)
+    all_data[[paste0("lasso_gcsi_", size)]] <- load_and_label(size, "gCSI", "Lasso_gcsi_Pagerank", config$results.cv.lasso.subdir)
+    all_data[[paste0("drugbank_", size)]]   <- load_and_label(size, "", "Drugbank_Pagerank", config$results.cv.drugbank.subdir, "drugbank_performance_top_")
+    all_data[[paste0("random_", size)]]     <- load_and_label(size, "", "Random", config$results.cv.random.subdir, prefix = "random_performance_")
+  }
+  return(bind_rows(all_data))
 }
 
-### --- Filter Valid Drugs --- ###
-get_valid_drugs <- function(data) {
-  data %>%
+filter_valid_drugs <- function(data) {
+  valid_drugs <- data %>%
     filter(Method == "Drugbank_Pagerank") %>%
     pull(Drug) %>%
     unique()
+  return(data %>% filter(Drug %in% valid_drugs))
 }
 
-### --- Plot Pearson Barplot per Feature Size --- ###
-plot_pearson_bars <- function(data, size) {
-  data %>%
+plot_pearson_barplot <- function(data, size, palette = "Set2") {
+  p <- data %>%
     filter(FEATURE_SIZE == size) %>%
     ggplot(aes(x = Drug, y = PEARSON_Mean, fill = Method)) +
     geom_bar(stat = "identity", position = "dodge") +
     theme_minimal() +
-    labs(
-      title = paste("Pearson Correlation per Drug (Top", size, "Features)"),
-      y = "Pearson Correlation", x = "Drug"
-    ) +
+    labs(title = paste("Pearson Correlation per Drug (Top", size, "Features)"),
+         y = "Pearson Correlation", x = "Drug") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    scale_fill_brewer(palette = "Set2")
+    scale_fill_brewer(palette = palette)
+  return(p)
 }
 
-### --- Plot Pearson Boxplot per Feature Size --- ###
 plot_pearson_boxplot <- function(data, size) {
-  data %>%
+  p <- data %>%
     filter(FEATURE_SIZE == size) %>%
     ggplot(aes(x = Method, y = PEARSON_Mean, fill = Method)) +
     geom_boxplot() +
     theme_minimal() +
-    labs(
-      title = paste("Distribution of Pearson Correlation (Top", size, "Features)"),
-      y = "Pearson Correlation", x = "Method"
-    ) +
+    labs(title = paste("Distribution of Pearson Correlation (Top", size, "Features)"),
+         y = "Pearson Correlation", x = "Method") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  return(p)
 }
 
-### --- Wilcoxon Test Wrapper --- ###
 run_wilcoxon_tests <- function(data, size) {
-  wide_data <- data %>%
-    filter(FEATURE_SIZE == size) %>%
+  data_filtered <- data %>% filter(FEATURE_SIZE == size)
+  pearson_wide <- data_filtered %>%
     select(Drug, Method, PEARSON_Mean) %>%
     pivot_wider(names_from = Method, values_from = PEARSON_Mean)
   
-  cat("Wilcoxon test results (Top", size, "features):\n")
-  list(
-    Lasso_GDSC_vs_Drugbank = wilcox.test(wide_data$Lasso_gdsc_Pagerank, wide_data$Drugbank_Pagerank, paired = TRUE),
-    Lasso_gCSI_vs_Drugbank = wilcox.test(wide_data$Lasso_gcsi_Pagerank, wide_data$Drugbank_Pagerank, paired = TRUE),
-    Lasso_GDSC_vs_gCSI     = wilcox.test(wide_data$Lasso_gdsc_Pagerank, wide_data$Lasso_gcsi_Pagerank, paired = TRUE),
-    Random_vs_Drugbank     = wilcox.test(wide_data$Random, wide_data$Drugbank_Pagerank, paired = TRUE),
-    Lasso_GDSC_vs_Random   = wilcox.test(wide_data$Lasso_gdsc_Pagerank, wide_data$Random, paired = TRUE),
-    Lasso_gCSI_vs_Random   = wilcox.test(wide_data$Lasso_gcsi_Pagerank, wide_data$Random, paired = TRUE)
-  )
+  methods <- c("Lasso_gdsc_Pagerank", "Lasso_gcsi_Pagerank", "Drugbank_Pagerank", "Random")
+  
+  comparisons <- combn(methods, 2, simplify = FALSE)
+  results <- lapply(comparisons, function(pair) {
+    test <- wilcox.test(pearson_wide[[pair[1]]], pearson_wide[[pair[2]]], paired = TRUE)
+    data.frame(Comparison = paste(pair, collapse = " vs "), P_Value = test$p.value)
+  })
+  
+  # Combine the results
+  results_df <- bind_rows(results)
+  
+  # Apply FDR correction using the Benjamini-Hochberg method
+  results_df$FDR_P_Value <- p.adjust(results_df$P_Value, method = "BH")
+  
+  return(results_df)
 }

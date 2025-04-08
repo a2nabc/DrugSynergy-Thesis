@@ -137,129 +137,21 @@ write.other.results(results, feature_sizes, config)
 ############################# PLOTS FOR PAGERANK VS RANDOM PERFORMANCES #############################
 # First we group the lasso_GDSC, lasso_GCSI, drugbank and random performances in a single table:
 
-all_data <- list()
+# Load all data
+combined <- load_all_performance_data(feature_sizes, config)
+filtered_combined <- filter_valid_drugs(combined)
 
-# Loop through each feature size
-for (size in feature_sizes) {
-  lasso_gdsc_file <- paste0(config$results.cv.lasso.subdir,  "GDSC2", "/lasso_performance_top_", size, "_features.csv")
-  lasso_gcsi_file <- paste0(config$results.cv.lasso.subdir,  "gCSI", "/lasso_performance_top_", size, "_features.csv")
-  drugbank_file   <- paste0(config$results.cv.drugbank.subdir, "drugbank_performance_top_", size, "_features.csv")
-  random_file     <- paste0(config$results.cv.random.subdir, "random_performance_", size, "_features.csv")
-  
-  # Load and label
-  all_data[[paste0("lasso_gdsc_", size)]] <- load_cv_performance_and_annotate(lasso_gdsc_file, paste0("Lasso_gdsc_Pagerank"), size)
-  all_data[[paste0("lasso_gcsi_", size)]] <- load_cv_performance_and_annotate(lasso_gcsi_file, paste0("Lasso_gcsi_Pagerank"), size)
-  all_data[[paste0("drugbank_", size)]]   <- load_cv_performance_and_annotate(drugbank_file, "Drugbank_Pagerank", size)
-  all_data[[paste0("random_", size)]]     <- load_cv_performance_and_annotate(random_file, "Random", size)
-}
+# Barplots
+plot_pearson_barplot(filtered_combined, 10, "RdYlGn")
+plot_pearson_barplot(filtered_combined, 20, "RdBu")
+plot_pearson_barplot(filtered_combined, 50, "PuOr")
 
-# Combine everything into one long tibble
-combined <- bind_rows(all_data)
+# Boxplots
+plot_pearson_boxplot(filtered_combined, 10)
+plot_pearson_boxplot(filtered_combined, 20)
+plot_pearson_boxplot(filtered_combined, 50)
 
-valid_drugs <- combined %>%
-  filter(Method == "Drugbank_Pagerank") %>%
-  pull(Drug) %>%
-  unique()
-
-# Filter combined to only include those drugs
-filtered_combined <- combined %>%
-  filter(Drug %in% valid_drugs)
-
-library(reshape2)
-
-# Example: Only keep metrics of interest
-metrics_long <- combined %>%
-  select(Drug, Method, PEARSON_Mean, RMSE_Mean, MAE_Mean) %>%
-  pivot_longer(cols = c(PEARSON_Mean, RMSE_Mean, MAE_Mean),
-               names_to = "Metric", values_to = "Value")
-
-# Then we do a grouped barplot of pearson (per drug)
-library(ggplot2)
-library(dplyr)
-library(RColorBrewer)
-
-filtered_combined %>%
-  filter(FEATURE_SIZE == 50) %>%
-  ggplot(aes(x = Drug, y = PEARSON_Mean, fill = Method)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  theme_minimal() +
-  labs(title = "Pearson Correlation per Drug (Top 50 Features)",
-       y = "Pearson Correlation", x = "Drug") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_brewer(palette = "PuOr")  # Change to your desired palette
-
-
-filtered_combined %>%
-  filter(FEATURE_SIZE == 20) %>%
-  ggplot(aes(x = Drug, y = PEARSON_Mean, fill = Method)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  theme_minimal() +
-  labs(title = "Pearson Correlation per Drug (Top 20 Features)",
-       y = "Pearson Correlation", x = "Drug") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_brewer(palette = "RdBu")  # Change to your desired palette
-
-filtered_combined %>%
-  filter(FEATURE_SIZE == 10) %>%
-  ggplot(aes(x = Drug, y = PEARSON_Mean, fill = Method)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  theme_minimal() +
-  labs(title = "Pearson Correlation per Drug (Top 10 Features)",
-       y = "Pearson Correlation", x = "Drug") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_brewer(palette = "RdYlGn")  # Change to your desired palette
-
-ggplot((filtered_combined %>%
-          filter(FEATURE_SIZE == 10)), aes(x = Method, y = PEARSON_Mean, fill = Method)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(title = "Distribution of Pearson Correlation (Top 10 Features)",
-       y = "Pearson Correlation", x = "Method") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot((filtered_combined %>%
-          filter(FEATURE_SIZE == 20)), aes(x = Method, y = PEARSON_Mean, fill = Method)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(title = "Distribution of Pearson Correlation (Top 20 Features)",
-       y = "Pearson Correlation", x = "Method") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot((filtered_combined %>%
-          filter(FEATURE_SIZE == 50)), aes(x = Method, y = PEARSON_Mean, fill = Method)) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(title = "Distribution of Pearson Correlation (Top 50 Features)",
-       y = "Pearson Correlation", x = "Method") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-################################################## wicloxon test
-filtered_combined_50 <- filtered_combined %>%
-  filter(FEATURE_SIZE == 50)
-
-# Pivot to wide format for paired testing
-pearson_wide <- filtered_combined_50 %>%
-  select(Drug, Method, PEARSON_Mean) %>%
-  pivot_wider(names_from = Method, values_from = PEARSON_Mean)
-
-# Check available method columns
-colnames(pearson_wide)
-
-# Lasso GDSC vs Drugbank
-wilcox.test(pearson_wide$Lasso_gdsc_Pagerank, pearson_wide$Drugbank_Pagerank, paired = TRUE)
-
-# Lasso gCSI vs Drugbank
-wilcox.test(pearson_wide$Lasso_gcsi_Pagerank, pearson_wide$Drugbank_Pagerank, paired = TRUE)
-
-# Lasso gCSI vs Lasso GDSC
-wilcox.test(pearson_wide$Lasso_gdsc_Pagerank, pearson_wide$Lasso_gcsi_Pagerank, paired = TRUE)
-
-# Random vs Drugbank
-wilcox.test(pearson_wide$Random, pearson_wide$Drugbank_Pagerank, paired = TRUE)
-
-# Lasso GDSC vs Random
-wilcox.test(pearson_wide$Lasso_gdsc_Pagerank, pearson_wide$Random, paired = TRUE)
-
-# Lasso gCSI vs Random
-wilcox.test(pearson_wide$Lasso_gcsi_Pagerank, pearson_wide$Random, paired = TRUE)
-
+# Wilcoxon test results
+wilcoxon_results <- run_wilcoxon_tests(filtered_combined, 50)
+write.csv(wilcoxon_results, file = "results/cv_performance/wilcoxon_fdr_results.csv", row.names = FALSE)
+print(wilcoxon_results)
