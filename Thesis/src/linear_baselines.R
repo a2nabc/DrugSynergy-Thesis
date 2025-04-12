@@ -63,6 +63,8 @@ target_data <- load_data(config$target.expression, config$target.response)
 keep_genes <- get_gene_union(config$gene.sets, config$gene.sets.path)
 keep_genes <- keep_genes[keep_genes %in% colnames(source_data$expression)]
 
+writeLines(keep_genes, "data/background_genes.txt")
+
 source_data$expression <- source_data$expression %>% select(c("Cell_line", keep_genes))
 target_data$expression <- target_data$expression %>% select(c("Cell_line", keep_genes))
 
