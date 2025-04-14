@@ -1,0 +1,103 @@
+SARS-CoV-2 targets PDZ proteins in cell-cell junction
+Microtubule-dependent trafficking of connexons from Golgi to the plasma membrane
+Membrane Trafficking
+Chaperonin-mediated protein folding
+Cilium Assembly
+Transport of connexons to the plasma membrane
+Cooperation of Prefoldin and TriC/CCT  in actin and tubulin folding
+MHC class II antigen presentation
+Translocation of SLC2A4 (GLUT4) to the plasma membrane
+RHO GTPases activate KTN1
+The role of GTSE1 in G2/M progression after G2 checkpoint
+Kinesins
+Keratinization
+ER to Golgi Anterograde Transport
+Intraflagellar transport
+Signaling by Rho GTPases, Miro GTPases and RHOBTB3
+Intra-Golgi and retrograde Golgi-to-ER traffic
+Signaling by Rho GTPases
+Golgi-to-ER retrograde transport
+Gap junction trafficking and regulation
+Gap junction trafficking
+Gap junction assembly
+PKR-mediated signaling
+Insulin processing
+RHO GTPases activate IQGAPs
+Recycling pathway of L1
+Selective autophagy
+Formation of tubulin folding intermediates by CCT/TriC
+Formation of the cornified envelope
+Recruitment of NuMA to mitotic centrosomes
+Factors involved in megakaryocyte development and platelet production
+RUNX1 regulates expression of components of tight junctions
+Sealing of the nuclear envelope (NE) by ESCRT-III
+Transport to the Golgi and subsequent modification
+HSP90 chaperone cycle for steroid hormone receptors (SHR) in the presence of ligand
+COPI-mediated anterograde transport
+Cell-cell junction organization
+Apoptotic cleavage of cell adhesion  proteins
+Nuclear Envelope (NE) Reassembly
+Prefoldin mediated transfer of substrate  to CCT/TriC
+Organelle biogenesis and maintenance
+Post-chaperonin tubulin folding pathway
+COPI-dependent Golgi-to-ER retrograde traffic
+COPI-independent Golgi-to-ER retrograde traffic
+Aggrephagy
+Carboxyterminal post-translational modifications of tubulin
+Assembly and cell surface presentation of NMDA receptors
+Activation of AMPK downstream of NMDARs
+Vesicle-mediated transport
+Protein folding
+RHO GTPase Effectors
+EML4 and NUDC in mitotic spindle formation
+HCMV Early Events
+Post NMDA receptor activation events
+L1CAM interactions
+Activation of NMDA receptors and postsynaptic events
+RHO GTPases Activate Formins
+HCMV Infection
+Separation of Sister Chromatids
+Hemostasis
+Macroautophagy
+Antiviral mechanism by IFN-stimulated genes
+Resolution of Sister Chromatid Cohesion
+Autophagy
+G2/M Transition
+Neurotransmitter receptors and postsynaptic signal transmission
+Mitotic Prometaphase
+Mitotic G2-G2/M phases
+Asparagine N-linked glycosylation
+Hedgehog 'off' state
+Transmission across Chemical Synapses
+Adaptive Immune System
+Mitotic Anaphase
+Mitotic Metaphase and Anaphase
+Neuronal System
+Apoptotic cleavage of cellular proteins
+Signaling by Hedgehog
+M Phase
+Interferon Signaling
+Apoptotic execution phase
+Developmental Biology
+Axon guidance
+Viral Infection Pathways
+Nervous system development
+Immune System
+Infectious disease
+Signal Transduction
+Peptide hormone metabolism
+Cell Cycle, Mitotic
+Cell junction organization
+Centrosome maturation
+Loss of proteins required for interphase microtubule organization from the centrosome
+Loss of Nlp from mitotic centrosomes
+Recruitment of mitotic centrosome proteins and complexes
+RHO GTPase cycle
+TGF-beta receptor signaling in EMT (epithelial to mesenchymal transition)
+AURKA Activation by TPX2
+Anchoring of the basal body to the plasma membrane
+Cell Cycle
+Apoptosis
+RHOB GTPase cycle
+Programmed Cell Death
+Metabolism of proteins

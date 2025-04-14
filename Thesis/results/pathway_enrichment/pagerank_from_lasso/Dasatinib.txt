@@ -1,0 +1,17 @@
+TGFBR1 KD Mutants in Cancer
+SMAD2/3 Phosphorylation Motif Mutants in Cancer
+Loss of Function of TGFBR1 in Cancer
+Signaling by TGF-beta Receptor Complex in Cancer
+Loss of Function of SMAD2/3 in Cancer
+Hemostasis
+Trafficking of GluR2-containing AMPA receptors
+TGFBR2 Kinase Domain Mutants in Cancer
+TGFBR1 LBD Mutants in Cancer
+Loss of Function of TGFBR2 in Cancer
+Platelet activation, signaling and aggregation
+Downregulation of TGF-beta receptor signaling
+Diseases of signal transduction by growth factor receptors and second messengers
+Signaling by TGFBR3
+TGF-beta receptor signaling in EMT (epithelial to mesenchymal transition)
+Disinhibition of SNARE formation
+TGFBR3 regulates TGF-beta signaling

@@ -1,0 +1,151 @@
+The role of GTSE1 in G2/M progression after G2 checkpoint
+Intraflagellar transport
+Recycling pathway of L1
+Sealing of the nuclear envelope (NE) by ESCRT-III
+RHOBTB GTPase Cycle
+Antiviral mechanism by IFN-stimulated genes
+Selective autophagy
+Uptake and function of diphtheria toxin
+Prefoldin mediated transfer of substrate  to CCT/TriC
+Cooperation of Prefoldin and TriC/CCT  in actin and tubulin folding
+Post-chaperonin tubulin folding pathway
+Microtubule-dependent trafficking of connexons from Golgi to the plasma membrane
+Recruitment of NuMA to mitotic centrosomes
+Assembly and cell surface presentation of NMDA receptors
+Inhibition of replication initiation of damaged DNA by RB1/E2F1
+Gap junction assembly
+Formation of tubulin folding intermediates by CCT/TriC
+Aggrephagy
+DARPP-32 events
+Activation of AMPK downstream of NMDARs
+Gap junction trafficking
+Gap junction trafficking and regulation
+MASTL Facilitates Mitotic Progression
+EML4 and NUDC in mitotic spindle formation
+Platelet sensitization by LDL
+HSP90 chaperone cycle for steroid hormone receptors (SHR) in the presence of ligand
+Carboxyterminal post-translational modifications of tubulin
+Transport of connexons to the plasma membrane
+PKR-mediated signaling
+Chaperone Mediated Autophagy
+Regulation of glycolysis by fructose 2,6-bisphosphate metabolism
+RHO GTPases activate IQGAPs
+Kinesins
+COPI-independent Golgi-to-ER retrograde traffic
+G2/M Transition
+Nuclear Envelope (NE) Reassembly
+Mitotic G2-G2/M phases
+Separation of Sister Chromatids
+MHC class II antigen presentation
+Resolution of Sister Chromatid Cohesion
+RHO GTPases Activate Formins
+Mitotic Anaphase
+Mitotic Metaphase and Anaphase
+Protein folding
+Chaperonin-mediated protein folding
+Mitotic Prometaphase
+Cilium Assembly
+Autophagy
+Translocation of SLC2A4 (GLUT4) to the plasma membrane
+Interferon Signaling
+Intrinsic Pathway for Apoptosis
+Macroautophagy
+M Phase
+COPI-dependent Golgi-to-ER retrograde traffic
+COPI-mediated anterograde transport
+Organelle biogenesis and maintenance
+Factors involved in megakaryocyte development and platelet production
+Programmed Cell Death
+Apoptosis
+Cell Cycle, Mitotic
+ER to Golgi Anterograde Transport
+Golgi-to-ER retrograde transport
+Transport to the Golgi and subsequent modification
+Truncations of AMER1 destabilize the destruction complex
+Signaling by AXIN mutants
+Signaling by APC mutants
+AXIN missense mutants destabilize the destruction complex
+APC truncation mutants have impaired AXIN binding
+Signaling by AMER1 mutants
+Cytokine Signaling in Immune system
+Post NMDA receptor activation events
+HCMV Early Events
+Activation of NMDA receptors and postsynaptic events
+Signaling by GSK3beta mutants
+Signaling by CTNNB1 phospho-site mutants
+CTNNB1 S37 mutants aren't phosphorylated
+CTNNB1 S33 mutants aren't phosphorylated
+CTNNB1 T41 mutants aren't phosphorylated
+CTNNB1 S45 mutants aren't phosphorylated
+Cellular responses to stimuli
+RHO GTPase Effectors
+Cell Cycle
+Signaling by Rho GTPases
+L1CAM interactions
+Signaling by Rho GTPases, Miro GTPases and RHOBTB3
+Regulated Necrosis
+Co-inhibition by CTLA4
+BH3-only proteins associate with and inactivate anti-apoptotic BCL-2 members
+HCMV Infection
+Hemostasis
+Beta-catenin phosphorylation cascade
+Adaptive Immune System
+Intra-Golgi and retrograde Golgi-to-ER traffic
+Activation of BH3-only proteins
+Neurotransmitter receptors and postsynaptic signal transmission
+Immune System
+Asparagine N-linked glycosylation
+Transmission across Chemical Synapses
+Transcriptional Regulation by TP53
+TP53 Regulates Transcription of Genes Involved in Cytochrome C Release
+Pyroptosis
+Platelet homeostasis
+Axon guidance
+Viral Infection Pathways
+Neuronal System
+Nervous system development
+Regulation of TP53 Expression and Degradation
+Regulation of TP53 Degradation
+Cellular responses to stress
+Vesicle-mediated transport
+ERKs are inactivated
+Signaling by WNT in cancer
+Semaphorin interactions
+Hedgehog 'off' state
+Co-stimulation by CD28
+Nuclear Events (kinase and transcription factor activation)
+E2F mediated regulation of DNA replication
+Cyclin A/B1/B2 associated events during G2/M transition
+Caspase-mediated cleavage of cytoskeletal proteins
+CRMPs in Sema3A signaling
+Release of apoptotic factors from the mitochondria
+Regulation of TP53 Activity
+Regulation of T cell activation by CD28 family
+Disease
+Degradation of beta-catenin by the destruction complex
+Amplification  of signal from unattached  kinetochores via a MAD2  inhibitory signal
+Amplification of signal from the kinetochores
+Disassembly of the destruction complex and recruitment of AXIN to the membrane
+Cellular responses to mechanical stimuli
+Negative regulation of MAPK pathway
+TP53 Regulates Transcription of Cell Death Genes
+Mitotic Spindle Checkpoint
+Loss of Nlp from mitotic centrosomes
+Loss of proteins required for interphase microtubule organization from the centrosome
+Turbulent (oscillatory, disturbed) flow shear stress activates signaling by PIEZO1 and integrins in endothelial cells
+ERK/MAPK targets
+Centrosome maturation
+Recruitment of mitotic centrosome proteins and complexes
+Membrane Trafficking
+Signaling by Hedgehog
+Initiation of Nuclear Envelope (NE) Reformation
+Anchoring of the basal body to the plasma membrane
+AURKA Activation by TPX2
+Diseases of programmed cell death
+Toll Like Receptor 10 (TLR10) Cascade
+Toll Like Receptor 5 (TLR5) Cascade
+MyD88 cascade initiated on plasma membrane
+Infectious disease
+RAF activation
+Apoptotic factor-mediated response
+Nucleotide-binding domain, leucine rich repeat containing receptor (NLR) signaling pathways

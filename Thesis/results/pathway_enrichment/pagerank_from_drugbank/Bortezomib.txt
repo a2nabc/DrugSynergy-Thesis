@@ -1,0 +1,169 @@
+ABC transporter disorders
+Neddylation
+Negative regulation of NOTCH4 signaling
+Nervous system development
+Nuclear events mediated by NFE2L2
+Orc1 removal from chromatin
+Oxygen-dependent proline hydroxylation of Hypoxia-inducible Factor Alpha
+PCP/CE pathway
+PIP3 activates AKT signaling
+PTEN Regulation
+Post-translational protein modification
+Prefoldin mediated transfer of substrate  to CCT/TriC
+Programmed Cell Death
+Proteasome assembly
+RAF/MAP kinase cascade
+RHOBTB GTPase Cycle
+RUNX1 regulates transcription of genes involved in differentiation of HSCs
+Regulation of APC/C activators between G1/S and early anaphase
+NIK-->noncanonical NF-kB signaling
+Regulation of Apoptosis
+Mitotic Metaphase and Anaphase
+Mitotic G1 phase and G1/S transition
+Hh mutants are degraded by ERAD
+Host Interactions of HIV factors
+Innate Immune System
+Interleukin-1 family signaling
+Interleukin-1 signaling
+Intracellular signaling by second messengers
+KEAP1-NFE2L2 pathway
+M Phase
+MAPK family signaling cascades
+MAPK1/MAPK3 signaling
+MAPK6/MAPK4 signaling
+Metabolism of RNA
+Metabolism of amino acids and derivatives
+p53-Independent DNA Damage Response
+Metabolism of polyamines
+Metabolism of proteins
+Mitotic Anaphase
+Mitotic G2-G2/M phases
+Hh mutants abrogate ligand secretion
+Regulation of PTEN stability and activity
+Regulation of RUNX2 expression and activity
+TCF dependent signaling in response to WNT
+TCR signaling
+TNFR2 non-canonical NF-kB pathway
+The role of GTSE1 in G2/M progression after G2 checkpoint
+Transcriptional regulation by RUNX1
+Transcriptional regulation by RUNX2
+Transcriptional regulation by RUNX3
+Transport of small molecules
+UCH proteinases
+Ub-specific processing proteases
+Ubiquitin Mediated Degradation of Phosphorylated Cdc25A
+Ubiquitin-dependent degradation of Cyclin D
+Vif-mediated degradation of APOBEC3G
+Viral Infection Pathways
+Vpu mediated degradation of CD4
+p53-Dependent G1 DNA Damage Response
+p53-Dependent G1/S DNA damage checkpoint
+Synthesis of DNA
+Regulation of RAS by GAPs
+Switching of origins to a post-replicative state
+Somitogenesis
+Regulation of RUNX3 expression and activity
+Regulation of activated PAK-2p34 by proteasome mediated degradation
+Regulation of expression of SLITs and ROBOs
+Regulation of mRNA stability by proteins that bind AU-rich elements
+Regulation of mitotic cell cycle
+Regulation of ornithine decarboxylase (ODC)
+S Phase
+SCF(Skp2)-mediated degradation of p27/p21
+SCF-beta-TrCP mediated degradation of Emi1
+Separation of Sister Chromatids
+Signaling by Hedgehog
+Signaling by Interleukins
+Signaling by NOTCH
+Signaling by NOTCH4
+Signaling by ROBO receptors
+Signaling by WNT
+Signaling by the B Cell Receptor (BCR)
+Stabilization of p53
+Hedgehog ligand biogenesis
+p53-Independent G1/S DNA damage checkpoint
+Hedgehog 'off' state
+CLEC7A (Dectin-1) signaling
+Cargo trafficking to the periciliary membrane
+Cdc20:Phospho-APC/C mediated degradation of Cyclin A
+Cell Cycle
+Cell Cycle Checkpoints
+Cell Cycle, Mitotic
+Cellular response to chemical stress
+Cellular response to hypoxia
+Circadian clock
+Hedgehog 'on' state
+Cooperation of Prefoldin and TriC/CCT  in actin and tubulin folding
+Cross-presentation of soluble exogenous antigens (endosomes)
+Cyclin A:Cdk2-associated events at S phase entry
+Cyclin E associated events during G1/S transition
+Cytokine Signaling in Immune system
+DNA Replication
+DNA Replication Pre-Initiation
+Dectin-1 mediated noncanonical NF-kB signaling
+Defective CFTR causes cystic fibrosis
+CDK-mediated phosphorylation and removal of Cdc6
+Degradation of AXIN
+C-type lectin receptors (CLRs)
+BBSome-mediated cargo-targeting to cilium
+ABC-family proteins mediated transport
+APC/C-mediated degradation of cell cycle proteins
+APC/C:Cdc20 mediated degradation of Securin
+APC/C:Cdc20 mediated degradation of mitotic proteins
+APC/C:Cdh1 mediated degradation of Cdc20 and other APC/C:Cdh1 targeted proteins in late mitosis/early G1
+APC:Cdc20 mediated degradation of cell cycle proteins prior to satisfation of the cell cycle checkpoint
+AUF1 (hnRNP D0) binds and destabilizes mRNA
+Activation of APC/C and APC/C:Cdc20 mediated degradation of mitotic proteins
+Activation of NF-kappaB in B cells
+Adaptive Immune System
+Antigen processing-Cross presentation
+Antigen processing: Ub, ATP-independent proteasomal degradation
+Antigen processing: Ubiquitination & Proteasome degradation
+Apoptosis
+Assembly of the pre-replicative complex
+Asymmetric localization of PCP proteins
+Autodegradation of Cdh1 by Cdh1:APC/C
+Autodegradation of the E3 ubiquitin ligase COP1
+Axon guidance
+Beta-catenin independent WNT signaling
+Degradation of CRY and PER proteins
+Class I MHC mediated antigen processing & presentation
+Degradation of GLI1 by the proteasome
+G1/S Transition
+G1/S DNA Damage Checkpoints
+Formation of tubulin folding intermediates by CCT/TriC
+Formation of paraxial mesoderm
+Fc epsilon receptor (FCERI) signaling
+GLI3 is processed to GLI3R by the proteasome
+Degradation of DVL
+GSK3B and BTRC:CUL1-mediated-degradation of NFE2L2
+FCERI mediated NF-kB activation
+FBXL7 down-regulates AURKA during mitotic entry and in early mitosis
+ER-Phagosome pathway
+Downstream signaling events of B Cell Receptor (BCR)
+Downstream TCR signaling
+Gastrulation
+G2/M Checkpoints
+G2/M Transition
+Degradation of GLI2 by the proteasome
+Disorders of transmembrane transporters
+Degradation of beta-catenin by the destruction complex
+Deubiquitination
+HIV Infection
+Cellular responses to stress
+Infectious disease
+Diseases of signal transduction by growth factor receptors and second messengers
+Immune System
+Cellular responses to stimuli
+Developmental Biology
+Generic Transcription Pathway
+Metabolism
+RNA Polymerase II Transcription
+Gene expression (Transcription)
+Neutrophil degranulation
+Disease
+Cooperation of PDCL (PhLP1) and TRiC/CCT in G-protein beta folding
+Association of TriC/CCT with target proteins during biosynthesis
+Signal Transduction
+Chaperonin-mediated protein folding
+Protein folding
