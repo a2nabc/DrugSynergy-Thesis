@@ -125,14 +125,42 @@ results_path = "results"  # Base path for results
 # Load the graph and extract the largest connected component
 G = load_graph(graphml_path)
 G_largest = get_largest_connected_component(G)
+G_simple = nx.Graph(G_largest)
+
+# Compute basic graph theory measures
+deg = nx.degree_centrality(G_simple)
+print("Degree centrality computed")
+btw = nx.betweenness_centrality(G_simple)
+print("Betweenness centrality computed")
+eig = nx.eigenvector_centrality(G_simple, max_iter=1000)
+print("Eigenvector centrality computed")
+pr = nx.pagerank(G_simple, personalization=None)  # or just omit it
+
+def get_top_genes(centrality_dict, n=50):
+    return sorted(centrality_dict.items(), key=lambda x: x[1], reverse=True)[:n]
+
+centrality_dir = "results/centrality_measures"
+os.makedirs(centrality_dir, exist_ok=True)
+
+for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "eigenvector", "pagerank"]):
+    sorted_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)
+    top_genes_named = []
+    for node_id, score in sorted_nodes:
+        gene_name = G_simple.nodes[node_id].get("name", node_id)
+        top_genes_named.append((gene_name, score))
+    output_base = os.path.join(centrality_dir, f"{name}_top")
+    save_top_genes(top_genes_named, output_base)
+
+
+
 
 # Iterate through datasets (gCSI, GDSC2), conditions (negative, positive), and methods (en, ridge, lasso)
-for dataset in ["gCSI", "GDSC2"]:
-    for condition in ["negative", "positive"]:
-        for method in ["en", "ridge", "lasso"]:
-            features_path = os.path.join(results_path, dataset, condition, method, "features")
-            if os.path.exists(features_path):
-                process_all_features(features_path, dataset, condition, method, G_largest, base_results_path)
+#######for dataset in ["gCSI", "GDSC2"]:
+#######    for condition in ["negative", "positive"]:
+#######        for method in ["en", "ridge", "lasso"]:
+#######            features_path = os.path.join(results_path, dataset, condition, method, "features")
+#######            if os.path.exists(features_path):
+#######                process_all_features(features_path, dataset, condition, method, G_largest, base_results_path)
 
 
 
@@ -143,4 +171,4 @@ drugs_path = "data/common_drugs.txt"
 with open(drugs_path, "r") as f:
     drug_list = [line.strip() for line in f]
 
-pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
+#pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
