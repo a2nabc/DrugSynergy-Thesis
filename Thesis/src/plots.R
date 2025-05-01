@@ -6,7 +6,7 @@ source("src/heatmaps_plotting.R")
 # ccl_data_list is a list with an entry for each screen
 venn_plot <- function(ccl_data_list, output_file) {
   
-  data_cell_lines <- list()
+  data_cell_lines <- ccl_data_list
   for (file in ccl_data_list){
     dataset_name <- basename(dirname(file))
     sample_data <- read.csv(file)

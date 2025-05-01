@@ -7,7 +7,7 @@ default:
   source.response: !expr paste0("./data/processed/", source.screen, "/responses.csv")
   gene.sets: !expr c('KEGG', 'LINCS')
   gene.sets.path: "./data/gene_subsets/"
-  target.screen: "GDSC2"
+  target.screen: "gCSI"
   target.expression: !expr paste0("./data/processed/", target.screen, "/expression.csv")
   target.response: !expr paste0("./data/processed/", target.screen, "/responses.csv")
   models: !expr c('lasso','en','ridge')
@@ -34,4 +34,6 @@ default:
   results.cv.lasso.gdsc: "results/cv_performance/lasso_pagerank_input/GDSC2"
   results.cv.lasso.gcsi: "results/cv_performance/lasso_pagerank_input/gCSI"
   results.cv.drugbank.subdir: "results/cv_performance/drugtargets_drugbank_pagerank_input/"
+  drugbank.gene.set: "data/drugbank_gene_set.txt"
+  dtc.gene.set: "data/dtc_gene_set.txt"
   

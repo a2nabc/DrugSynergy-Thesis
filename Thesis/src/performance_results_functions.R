@@ -3,6 +3,101 @@ library(ggplot2)
 library(dplyr)
 library(pheatmap)
 
+compute_jaccard_index <- function(set1, set2) {
+  
+  intersection_size <- length(intersect(set1, set2))
+  union_size <- length(union(set1, set2))
+  jaccard_index <- intersection_size / union_size
+  
+  return(jaccard_index)
+}
+
+jaccard_db_dtc_lasso <- function(drugbank_genes, dtc_genes, lasso_genes, output_file) {
+  # Initialize results data frame
+  jaccard_results <- data.frame(
+    DRUG = character(),
+    J_DTC_DB = numeric(),
+    J_DTC_Lasso = numeric(),
+    J_DB_Lasso = numeric(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Get the unique list of all drugs
+  all_drugs <- unique(c(names(drugbank_genes), names(dtc_genes), names(lasso_genes)))
+  print(all_drugs)
+  for (drug in all_drugs) {
+    drug_sets <- list(
+      DrugBank = drugbank_genes[[drug]] %||% character(0),
+      DTC = dtc_genes[[drug]] %||% character(0),
+      Lasso = lasso_genes[[drug]] %||% character(0)
+    )
+    # Compute Jaccard indices for each pair
+    j_dtc_db <- if (length(drug_sets$DTC) > 0 && length(drug_sets$DrugBank) > 0) {
+      compute_jaccard_index(drug_sets$DTC, drug_sets$DrugBank)
+    } else {
+      NA
+    }
+    
+    j_dtc_lasso <- if (length(drug_sets$DTC) > 0 && length(drug_sets$Lasso) > 0) {
+      compute_jaccard_index(drug_sets$DTC, drug_sets$Lasso[[1]])
+    } else {
+      NA
+    }
+    
+    j_db_lasso <- if (length(drug_sets$DrugBank) > 0 && length(drug_sets$Lasso) > 0) {
+      compute_jaccard_index(drug_sets$DrugBank, drug_sets$Lasso[[1]])
+    } else {
+      NA
+    }
+    
+    # Add results to the data frame
+    jaccard_results <- rbind(jaccard_results, data.frame(
+      DRUG = drug,
+      J_DTC_DB = j_dtc_db,
+      J_DTC_Lasso = j_dtc_lasso,
+      J_DB_Lasso = j_db_lasso,
+      stringsAsFactors = FALSE
+    ))
+  }
+  
+  # Save results to a CSV file
+  write.csv(jaccard_results, output_file, row.names = FALSE)
+  
+  return(jaccard_results)
+}
+
+
+save_venn_plots_db_dtc_lasso <- function(drugbank_genes, dtc_genes, lasso_genes, name_output) {
+  
+  # Create a list of gene sets
+  gene_sets <- list(
+    Lasso = unique(lasso_genes),
+    DTC = unique(dtc_genes),
+    DrugBank = unique(drugbank_genes)
+  )
+  # Create the Venn diagram with custom colors
+  venn.plot <- venn.diagram(
+    x = gene_sets,
+    category.names = c("Lasso", "DTC", "DrugBank"),
+    filename = NULL,  # Don't specify a file to prevent immediate saving
+    col = "black",    # Color of the border
+    fill = c("red", "blue", "green"),  # Colors for each category (Lasso, DTC, DrugBank)
+    alpha = 0.5,      # Transparency (0 is fully transparent, 1 is fully opaque)
+    label.col = "black",  # Color of the labels
+    cex = 2,             # Font size of the labels
+    cat.col = c("red", "blue", "green"),  # Colors of the category labels
+    cat.cex = 2,      # Font size of the category labels
+    cat.dist = c(0.05, 0.05, 0.05),  # Category distance from the circle
+    margin = 0.1       # Margin between the diagram and the edges of the plot
+  )
+  
+  # Draw the plot
+  png(name_output, width = 800, height = 800)
+  grid.draw(venn.plot)
+  dev.off()  # Close the device
+}
+
+
 generate_tables_one_experiment <- function(file_path, output_folder_path) {
   final_results <- read.csv(file_path)
   final_results <- final_results %>%
@@ -67,7 +162,7 @@ generate_one_violin <- function(csv_path, plot_dir) {
 }
 
 generate_violin_plots <- function(csv_path, csv_name, plot_dir) {
-  #We need to generate tables for both experiments: positive and negative_
+  #We need to generate tables for both experiments: positive and negative
   subfolders <- list.dirs(csv_path, recursive = FALSE)
   for (subfolder in subfolders) {
     file_path <- paste0(subfolder, "/", csv_name)
@@ -78,14 +173,7 @@ generate_violin_plots <- function(csv_path, csv_name, plot_dir) {
   print("DONE VIOLIN")
 }
 
-compute_jaccard_index <- function(set1, set2) {
-  
-  intersection_size <- length(intersect(set1, set2))
-  union_size <- length(union(set1, set2))
-  jaccard_index <- intersection_size / union_size
-  
-  return(jaccard_index)
-}
+
 
 #computes the jaccard index for positive and negative experiments given a screen
 jaccard_index <- function(screen_path, features_subdir, drugs) {
@@ -138,4 +226,56 @@ jaccard_index <- function(screen_path, features_subdir, drugs) {
   
 }
 
-
+# Generalized function to compute the Jaccard index for different methods given a screen
+new_jaccard_index <- function(screen_path, features_subdir, drugs, methods) {
+  results <- data.frame(
+    DRUG = character(),
+    TYPE_OF_EXPERIMENT = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Dynamically create column names for pairwise comparisons
+  method_combinations <- combn(methods, 2, simplify = FALSE)
+  for (comb in method_combinations) {
+    col_name <- paste0("J_", comb[1], "_", comb[2])
+    results[[col_name]] <- numeric()
+  }
+  
+  subfolders <- list.dirs(screen_path, recursive = FALSE) # subfolders are positive and negative
+  for (subfolder in subfolders) {
+    method_features <- list()
+    
+    # Read features for each method
+    for (method in methods) {
+      method_features[[method]] <- list()
+      for (drug in drugs) {
+        method_features[[method]][[drug]] <- readLines(paste0(subfolder, "/", method, "/", features_subdir, drug, ".txt"))
+      }
+    }
+    
+    for (drug in drugs) {
+      row <- list(DRUG = drug, TYPE_OF_EXPERIMENT = basename(subfolder))
+      
+      # Compute Jaccard index for each pair of methods
+      for (comb in method_combinations) {
+        jaccard_index_value <- compute_jaccard_index(
+          method_features[[comb[1]]][[drug]],
+          method_features[[comb[2]]][[drug]]
+        )
+        col_name <- paste0("J_", comb[1], "_", comb[2])
+        row[[col_name]] <- jaccard_index_value
+      }
+      
+      # Append the row to the results data frame
+      results <- rbind(results, as.data.frame(row, stringsAsFactors = FALSE))
+    }
+  }
+  
+  results <- results %>% arrange(DRUG)
+  
+  # Generate the output file name based on the basename of the screen path
+  output_filename <- paste0(screen_path, "/", basename(screen_path), "_jaccard.csv")
+  
+  # Save the results to a CSV file
+  write.csv(results, file = output_filename, row.names = FALSE)
+}

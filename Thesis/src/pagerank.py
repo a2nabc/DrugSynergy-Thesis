@@ -136,11 +136,9 @@ eig = nx.eigenvector_centrality(G_simple, max_iter=1000)
 print("Eigenvector centrality computed")
 pr = nx.pagerank(G_simple, personalization=None)  # or just omit it
 
-def get_top_genes(centrality_dict, n=50):
-    return sorted(centrality_dict.items(), key=lambda x: x[1], reverse=True)[:n]
-
 centrality_dir = "results/centrality_measures"
 os.makedirs(centrality_dir, exist_ok=True)
+
 
 for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "eigenvector", "pagerank"]):
     sorted_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)
@@ -153,6 +151,7 @@ for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "ei
 
 
 
+################################################ RUN PAGERANK in features from lasso/en/rige #########################################
 
 # Iterate through datasets (gCSI, GDSC2), conditions (negative, positive), and methods (en, ridge, lasso)
 #######for dataset in ["gCSI", "GDSC2"]:
@@ -163,6 +162,7 @@ for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "ei
 #######                process_all_features(features_path, dataset, condition, method, G_largest, base_results_path)
 
 
+###################################################### RUN PAGERANK in drugbank genes ################################################
 
 path_drugbank_info = "results/drugbank/AffectedGenesByDrug.txt"
 drugs_path = "data/common_drugs.txt"

@@ -59,6 +59,26 @@ config <- config::get(file = "src/configs/Broad_to_gCSI.yml")
 source_data <- load_data(config$source.expression, config$source.response)
 target_data <- load_data(config$target.expression, config$target.response)
 
+source_data <- load_data(config$source.expression, config$source.response)
+target_data_GDSC2 <- load_data(config$target.expression, config$target.response)
+target_data_gCSI <-  load_data(config$target.expression, config$target.response)
+
+# Generate Venn plot for common cell lines
+ccl_list <- list(
+  GDSC2 = unique(target_data_GDSC2$expression$Cell_line),
+  gCSI = unique(target_data_gCSI$expression$Cell_line),
+  CTRPv2_CCLE = unique(source_data$expression$Cell_line)
+)
+venn_plot(ccl_list, paste0(config$figs.dir, "venn_plot_cell_lines.png"))
+
+# Generate Venn plot for common drugs
+drug_list <- list(
+  GDSC2 = unique(target_data_GDSC2$response$Drug),
+  gCSI = unique(target_data_gCSI$response$Drug),
+  CTRPv2_CCLE = unique(source_data$response$Drug)
+)
+venn_plot(drug_list, paste0(config$figs.dir, "venn_plot_drugs.png"))
+
 # filter source and target just with genes from KEGG and LINCS
 keep_genes <- get_gene_union(config$gene.sets, config$gene.sets.path)
 keep_genes <- keep_genes[keep_genes %in% colnames(source_data$expression)]
@@ -103,7 +123,7 @@ write.csv(data_dimensions_metadata, paste0(config$results.dir, results.subdir, c
 
 write.csv(summary_results, paste0(config$results.dir, results.subdir, "summary_results.csv"))
 
-############################# RESULTS AND PLOTS ###############################
+############################# RESULTS AND PLOTS TO COMPARE LASSO, EN AND RIDGE ###############################
 ccl_list <- list()
 for (screen in config$screens) {
   ccl_list <- rbind(ccl_list, paste0(config$path.to.processed.screens, screen, "/", config$name.ccl.file))
@@ -114,14 +134,147 @@ for (screen in config$target.screens){
   generate_tables_summary_performance(paste0(config$results.dir, screen), "summary_results.csv") 
   generate_violin_plots(paste0(config$results.dir, screen), "summary_results.csv", paste0(config$figs.dir, screen))
   generate_model_heatmaps(paste0(config$results.dir, screen), config$results.correlations.dir, common_drugs, paste0(config$figs.dir, screen))
-  jaccard_index(paste0(config$results.dir, screen), config$results.features.dir, common_drugs)
+ # jaccard_index(paste0(config$results.dir, screen), config$results.features.dir, common_drugs)
+  screen_path <- paste0(config$results.dir, screen)
+  features_subdir <- config$results.features.dir
+  methods <- c('lasso', 'en', 'ridge')
+  new_jaccard_index(screen_path, features_subdir, common_drugs, methods)
 }
 
-####################### K-FOLD CROSS VALIDATION FOR PAGERANK GENES ########################
+####################### K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
 
-# Parameters
-feature_sizes <- c(10, 20, 50)
-results <- list()
+results_biological_priors_drugbank <- list()
+results_biological_priors_dtc <- list()
+
+
+# Training on Drugbank/DTC drug targets
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  results_biological_priors_drugbank <- run.cv.gene.set.per.drug(results_biological_priors_drugbank, screen, common_drugs, "drugbank", config$drugbank.gene.set, data, config, 10)
+  results_biological_priors_dtc <- run.cv.gene.set.per.drug(results_biological_priors_dtc, screen, common_drugs, "dtc", config$dtc.gene.set, data, config, 10)
+}
+write.results.drug.targets(results_biological_priors_drugbank, config$target.screens, "drugbank", config)
+write.results.drug.targets(results_biological_priors_dtc, config$target.screens, "dtc", config)
+# Read the data
+df1 <- read.csv("./results/cv_performance/drugbank/gCSI/performance_drugbank_drug_targets.csv")
+df2 <- read.csv("./results/cv_performance/drugbank/GDSC2/performance_drugbank_drug_targets.csv")
+df3 <- read.csv("./results/cv_performance/dtc/gCSI/performance_dtc_drug_targets.csv")
+df4 <- read.csv("./results/cv_performance/dtc/GDSC2/performance_dtc_drug_targets.csv")
+
+# Add a column to identify the dataset
+df1$Dataset <- "Drugbank_gCSI"
+df2$Dataset <- "Drugbank_GDSC2"
+df3$Dataset <- "DTC_gCSI"
+df4$Dataset <- "DTC_GDSC2"
+
+# Combine the data frames
+combined_df <- bind_rows(df1, df2, df3, df4)
+
+combined_df12 <- bind_rows(df1, df2)
+combined_df34 <- bind_rows(df3, df4)
+
+# Violin plot for PEARSON_Mean
+ggplot(combined_df, aes(x = Dataset, y = PEARSON_Mean, fill = Dataset)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON across all drugs",
+       x = "Gene set and training dataset",
+       y = "PEARSON mean values after 10-fold cv") +
+  theme(legend.position = "none")   # Hide legend if you don't need it
+ggsave(filename = "figs/DRUGBANK_DTC/pearson_mean.png", width = 8, height = 6)
+
+
+# Violin plot for RMSE_Mean
+ggplot(combined_df12, aes(x = Dataset, y = RMSE_Mean, fill = Dataset)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
+  theme_minimal() +
+  labs(title = "Distribution of RMSE across all drugs",
+       x = "Gene set and training dataset",
+       y = "RMSE mean values after 10-fold cv") +
+  theme(legend.position = "none")   # Hide legend if you don't need it
+ggsave(filename = "figs/DRUGBANK_DTC/rmse_mean_drugbank.png", width = 8, height = 6)
+
+# Violin plot for RMSE_Mean
+ggplot(combined_df34, aes(x = Dataset, y = RMSE_Mean, fill = Dataset)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
+  theme_minimal() +
+  labs(title = "Distribution of RMSE across all drugs",
+       x = "Gene set and training dataset",
+       y = "RMSE mean values after 10-fold cv") +
+  theme(legend.position = "none")   # Hide legend if you don't need it
+ggsave(filename = "figs/DRUGBANK_DTC/rmse_mean_dtc.png", width = 8, height = 6)
+
+
+# Load DrugBank data
+drugbank_data <- read.delim("results/drugbank/AffectedGenesByDrug.txt", stringsAsFactors = FALSE)
+drugbank_genes <- lapply(split(drugbank_data$GENES_AFFECTED, drugbank_data$DRUG_NAME), function(x) unlist(strsplit(x, ", ")))
+
+# Load DTC data
+dtc_data <- read.csv("results/dtc/AffectedGenesByDrug.csv", stringsAsFactors = FALSE)
+dtc_genes <- lapply(split(dtc_data$gene_names, dtc_data$compound_name), function(x) unlist(strsplit(x, ", ")))
+
+# Load Lasso data
+lasso_files <- list.files("results/GDSC2/positive/lasso/features", full.names = TRUE)
+lasso_genes <- lapply(lasso_files, function(file) list(readLines(file)))
+names(lasso_genes) <- gsub(".txt", "", basename(lasso_files))
+
+# Function to extract all unique genes from lasso_genes and save to a file
+save_unique_lasso_genes <- function(lasso_genes, output_file) {
+  # Flatten the list and extract unique genes
+  all_genes <- unique(unlist(lasso_genes))
+  
+  # Write the unique genes to the specified file
+  writeLines(all_genes, output_file)
+}
+
+# Call the function
+save_unique_lasso_genes(lasso_genes, "data/lasso_gene_set.txt")
+
+
+jaccard_db_dtc_lasso(drugbank_genes, dtc_genes, lasso_genes, "results/jaccard/dtc_drugbank_jaccard_indices.csv")
+
+# Load gene sets
+lasso_genes <- readLines("data/lasso_gene_set.txt")
+dtc_genes <- readLines("data/dtc_gene_set.txt")
+drugbank_genes <- readLines("data/drugbank_gene_set.txt")
+save_venn_plots_db_dtc_lasso(drugbank_genes, dtc_genes, lasso_genes, "./figs/DRUGBANK_DTC/venn_plot_gene_sets_colored.png")
+
+
+############ now we do the same for pathway analysis ###########
+
+# Load DrugBank data
+drugbank_files <- list.files("results/pathway_enrichment/drugbank", full.names = TRUE, pattern = "\\.txt$")
+drugbank_pathways <- lapply(drugbank_files, function(file) list(readLines(file)))
+names(drugbank_pathways) <- gsub(".txt", "", basename(drugbank_files))
+
+# Load DTC data
+dtc_files <- list.files("results/pathway_enrichment/dtc", full.names = TRUE, pattern = "\\.txt$")
+dtc_pathways <- lapply(dtc_files, function(file) list(readLines(file)))
+names(dtc_pathways) <- gsub(".txt", "", basename(dtc_files))
+
+# Load Lasso data
+lasso_files <- list.files("results/pathway_enrichment/lasso_features", full.names = TRUE, pattern = "\\.txt$")
+lasso_pathways <- lapply(lasso_files, function(file) list(readLines(file)))
+names(lasso_pathways) <- gsub(".txt", "", basename(lasso_files))
+
+jaccard_db_dtc_lasso(drugbank_pathways, dtc_pathways, lasso_pathways, "results/jaccard/dtc_drugbank_pathways_jaccard_indices.csv")
+
+# for the venn plot we have to merge all pathways (eliminate separation per drug)
+merged_drugbank_pathways <- unique(unlist(drugbank_pathways))
+merged_dtc_pathways <- unique(unlist(dtc_pathways))
+merged_lasso_pathways <- unique(unlist(lasso_pathways))
+
+save_venn_plots_db_dtc_lasso(merged_drugbank_pathways, merged_dtc_pathways, merged_lasso_pathways, "./figs/DRUGBANK_DTC/venn_plot_pathways_colored.png")
+
+
+
+
+#####################################################################
 
 # Initialize
 results <- init.results(results, c("lasso", "random", "drugbank"), config$target.screens, feature_sizes)
@@ -137,8 +290,62 @@ results <- run.other.cv(results, feature_sizes, common_drugs, source_data, targe
 write.other.results(results, feature_sizes, config)
 
 ############################# PLOTS FOR PAGERANK VS RANDOM PERFORMANCES #############################
-# First we group the lasso_GDSC, lasso_GCSI, drugbank and random performances in a single table:
+# Plots for drug bank / DTC data
+generate_violin_plots(paste0(config$results.dir, screen), "summary_results.csv", paste0(config$figs.dir, screen))
 
+
+# Jaccard distances to compare the feature sets in results/pagerank_output/
+pagerank_output_path <- "results/pagerank_output/"
+methods <- c("lasso", "en", "ridge")
+subfolders <- c("GDSC2", "gCSI")
+subsubfolders <- c("positive", "negative")
+feature_suffix <- "_50.txt"
+
+# Get the list of drugs from the drugbank folder
+drug_files <- list.files(paste0(pagerank_output_path, "drugbank/"), pattern = feature_suffix, full.names = TRUE)
+drug_names <- gsub(feature_suffix, "", basename(drug_files))
+
+# Initialize a data frame to store pairwise Jaccard distances
+pairwise_jaccard_results <- data.frame(Drug = character(), Method1 = character(), Subfolder1 = character(), Subsubfolder1 = character(),
+                     Method2 = character(), Subfolder2 = character(), Subsubfolder2 = character(), Jaccard = numeric(), stringsAsFactors = FALSE)
+method2 <- "drugbank"
+# Compare pairwise Jaccard distances for each drug
+for (drug in drug_names) {
+  for (method1 in methods) {
+  for (subfolder1 in subfolders) {
+    for (subsubfolder1 in subsubfolders) {  # We got the ML loop, we just compare it with drugbank data
+       
+        file1 <- paste0(pagerank_output_path, method1, "/", subfolder1, "/", subsubfolder1, "/", drug, feature_suffix)
+        file2 <- paste0(pagerank_output_path, method2, "/", drug, feature_suffix)
+        
+        if (file.exists(file1) && file.exists(file2)) {
+          features1 <- readLines(file1)
+          features2 <- readLines(file2)
+          
+          jaccard <- compute_jaccard_index(features1, features2)
+          
+          pairwise_jaccard_results <- rbind(pairwise_jaccard_results, data.frame(
+          Drug = drug,
+          Method1 = method1,
+          Subfolder1 = subfolder1,
+          Subsubfolder1 = subsubfolder1,
+          Method2 = method2,
+          Jaccard = jaccard,
+          stringsAsFactors = FALSE
+          ))
+        }
+    }
+  }
+  }
+}
+
+# Save pairwise Jaccard results to a CSV file
+write.csv(pairwise_jaccard_results, file = paste0(pagerank_output_path, "pairwise_jaccard_distances.csv"), row.names = FALSE)
+
+# Generate a heatmap for pairwise Jaccard distances
+plot_pairwise_jaccard_heatmap(pairwise_jaccard_results, paste0(pagerank_output_path, "pairwise_jaccard_heatmap.png"))
+
+# First we group the lasso_GDSC, lasso_GCSI, drugbank and random performances in a single table:
 # Load all data
 combined <- load_all_performance_data(feature_sizes, config)
 filtered_combined <- filter_valid_drugs(combined)

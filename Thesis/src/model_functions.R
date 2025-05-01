@@ -189,6 +189,7 @@ perform.cross.validation <- function(n, test_data, drug){
 
 
 
+
 train.model.and.get.results <- function(source_data, drug, model_type, output_features, target_data, output_eval, output_corrs){
   # Train model
   train_data <- prepare.data.for.ml(source_data, drug)
@@ -317,23 +318,21 @@ k.fold.linear.model <- function(data_to_split, drug, num_folds) {
 }
 
 
-compute.cv.for.pagerank.input <- function(path_pagerank_genes, source_data, target_data, drug, num_folds) {
+compute.cv.for.pagerank.input <- function(path_pagerank_genes, data, drug, num_folds) {
   pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
   pagerank_genes <- pagerank_genes[pagerank_genes %in% colnames(source_data$expression)]
-  
   if (length(pagerank_genes) == 0 || is.null(pagerank_genes)) {
     # Handle the case when gene_list is NULL or empty
     cat("gene_list is empty or NULL\n")
     return(NULL)
   } else {
-    filtered_source$expression <- source_data$expression %>% select(c("Cell_line", pagerank_genes))
-    filtered_target$expression <- target_data$expression %>% select(c("Cell_line", pagerank_genes))
-    filtered_source$response <- source_data$response
-    filtered_target$response <- target_data$response
+    filtered_data <- list()
+    filtered_data$expression <- data$expression %>% select(c("Cell_line", pagerank_genes))
+    filtered_data$response <- data$response
+    results_drug <- k.fold.linear.model(filtered_data, drug, num_folds)
+    return(results_drug)
   }
-  results_drug <- k.fold.linear.model(filtered_target, drug, num_folds)
-  
-  return(results_drug)
+
 }
 
 compute.cv.for.random.input <- function(source_data, target_data, drug, num_folds, num_genes) {
@@ -352,7 +351,7 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
 
 process.results.pagerank <- function(path_pagerank_output, drug, feature_size, source_data, target_data, num_folds) {
   pagerank_output <- paste0(path_pagerank_output, "_", feature_size, ".txt")
-  results_cv <- compute.cv.for.pagerank.input(pagerank_output, source_data, target_data, drug, num_folds) # 10 is num_foldsç
+  results_cv <- compute.cv.for.pagerank.input(pagerank_output, target_data, drug, num_folds) # 10 is num_folds
   return(results_cv)
 }
 
@@ -374,10 +373,36 @@ init.results <- function(results, methods, screens, sizes) {
   }
   return(results)
 }
+
+#given a path gene_set_file_path with a subset of genes, performs 10-fold cv per drug
+run.cv.gene.set.per.drug <- function(results, screen, drugs, gene_set_name, gene_set_file_path, target_data, config, num_folds) {
+  
+  genes <- load_pagerank_feature_list(gene_set_file_path)
+  genes <- genes[genes %in% colnames(source_data$expression)]
+  print(paste0("Total number of genes used while training in ", screen, " for ", gene_set_name, ": ", length(genes)))
+  
+  if (length(genes) == 0 || is.null(genes)) {
+    # Handle the case when gene_list is NULL or empty
+    cat("Gene list file is empty or NULL\n")
+    return(NULL)
+  } else {
+    filtered_target$expression <- target_data$expression %>% select(c("Cell_line", genes))
+    filtered_target$response <- target_data$response
+  }
+  for (drug in drugs) {
+    #cat("Processing drug:", drug, "with size:", size, "\n")  #  ADD THIS
+    result <- compute.cv.for.pagerank.input(gene_set_file_path, filtered_target, drug, num_folds) # 10 is num_folds
+    key <- paste0(gene_set_name, "_", screen)
+    results[[key]] <- rbind(results[[key]], result)
+  }
+  
+  return(results)
+}
+
 run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data, config, num_folds) {
   for (drug in drugs) {
     for (size in sizes) {
-      #cat("Processing drug:", drug, "with size:", size, "\n")  # ✅ ADD THIS
+      #cat("Processing drug:", drug, "with size:", size, "\n")  
       path <- file.path(paste0(config$results.pagerank.output, "lasso"), screen, "positive", drug)
       result <- process.results.pagerank(path, drug, size, source_data, target_data, num_folds)
       key <- paste0("lasso_", screen, "_", size)
@@ -387,6 +412,14 @@ run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data
   return(results)
 }
 
+write.results.drug.targets <- function(results, screens, drug_target_source, config) {
+  for (screen in screens) {
+    key <- paste0(drug_target_source, "_", screen)
+    out_path <- paste0("results/cv_performance/", drug_target_source, "/", screen, "/performance_", drug_target_source, "_drug_targets.csv")
+    write.csv(results[[key]], out_path, row.names = FALSE)
+    print(paste0("Written results of 10-fold CV for ", drug_target_source, " drug targets in screen ", screen," at ", out_path))
+  }
+}
 
 write.lasso.results <- function(results, screens, sizes, config) {
   for (screen in screens) {
