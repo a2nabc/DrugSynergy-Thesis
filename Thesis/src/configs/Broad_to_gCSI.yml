@@ -36,4 +36,8 @@ default:
   results.cv.drugbank.subdir: "results/cv_performance/drugtargets_drugbank_pagerank_input/"
   drugbank.gene.set: "data/drugbank_gene_set.txt"
   dtc.gene.set: "data/dtc_gene_set.txt"
+  betweenness.gene.set: "results/centrality_measures/betweenness_top_50.txt"
+  degree.gene.set: "results/centrality_measures/degree_top_50.txt"
+  eigenvector.gene.set: "results/centrality_measures/eigenvector_top_50.txt"
+  uniform.pagerank.gene.set: "results/centrality_measures/pagerank_top_50.txt"
   

@@ -421,6 +421,17 @@ write.results.drug.targets <- function(results, screens, drug_target_source, con
   }
 }
 
+write.results.central.genes <- function(results, screens, central_gene_sets, config) {
+  for (screen in screens) {
+    for (gene_set_name in names(central_gene_sets)) {
+      key <- paste0(gene_set_name, "_", screen)
+      out_path <- paste0("results/cv_performance/central_genes/", screen, "/performance_", gene_set_name, "_central_genes.csv")
+      write.csv(results[[key]], out_path, row.names = FALSE)
+      print(paste0("Written results of 10-fold CV for ", gene_set_name, " central genes in screen ", screen, " at ", out_path))
+    }
+  }
+}
+
 write.lasso.results <- function(results, screens, sizes, config) {
   for (screen in screens) {
     for (size in sizes) {

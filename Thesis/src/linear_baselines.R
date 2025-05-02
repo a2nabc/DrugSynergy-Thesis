@@ -141,7 +141,7 @@ for (screen in config$target.screens){
   new_jaccard_index(screen_path, features_subdir, common_drugs, methods)
 }
 
-####################### K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
+############################################################# K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
 
 results_biological_priors_drugbank <- list()
 results_biological_priors_dtc <- list()
@@ -243,6 +243,112 @@ lasso_genes <- readLines("data/lasso_gene_set.txt")
 dtc_genes <- readLines("data/dtc_gene_set.txt")
 drugbank_genes <- readLines("data/drugbank_gene_set.txt")
 save_venn_plots_db_dtc_lasso(drugbank_genes, dtc_genes, lasso_genes, "./figs/DRUGBANK_DTC/venn_plot_gene_sets_colored.png")
+
+
+############################################################### 10-FOLD CV FOR CENTRALIZED MEASURES ##########################################################
+results_central_genes <- list()
+central_gene_sets <- list(
+  betweenness = config$betweenness.gene.set,
+  eigenvector = config$eigenvector.gene.set,
+  degree = config$degree.gene.set,
+  uniform_pagerank = config$uniform.pagerank.gene.set
+)
+
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  for (gene_set_name in names(central_gene_sets)) {
+    gene_set <- central_gene_sets[[gene_set_name]]
+    results_central_genes <- run.cv.gene.set.per.drug(
+      results_central_genes, 
+      screen, 
+      common_drugs, 
+      gene_set_name, 
+      gene_set, 
+      data, 
+      config, 
+      10
+    )
+  }
+}
+write.results.central.genes(results_central_genes, config$target.screens, central_gene_sets, config)
+
+# Load centrality measure performance data for gCSI
+betweenness_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_betweenness_central_genes.csv")
+degree_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_degree_central_genes.csv")
+eigenvector_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_eigenvector_central_genes.csv")
+pagerank_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_uniform_pagerank_central_genes.csv")
+
+# Load centrality measure performance data for GDSC
+betweenness_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_betweenness_central_genes.csv")
+degree_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_degree_central_genes.csv")
+eigenvector_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_eigenvector_central_genes.csv")
+pagerank_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_uniform_pagerank_central_genes.csv")
+
+# Add a column to identify the centrality measure and dataset
+betweenness_gCSI$Method <- "Betweenness"
+degree_gCSI$Method <- "Degree"
+eigenvector_gCSI$Method <- "Eigenvector"
+pagerank_gCSI$Method <- "Pagerank"
+betweenness_GDSC$Method <- "Betweenness"
+degree_GDSC$Method <- "Degree"
+eigenvector_GDSC$Method <- "Eigenvector"
+pagerank_GDSC$Method <- "Pagerank"
+
+betweenness_gCSI$Screen <- "gCSI"
+degree_gCSI$Screen <- "gCSI"
+eigenvector_gCSI$Screen <- "gCSI"
+pagerank_gCSI$Screen <- "gCSI"
+betweenness_GDSC$Screen <- "GDSC2"
+degree_GDSC$Screen <- "GDSC2"
+eigenvector_GDSC$Screen <- "GDSC2"
+pagerank_GDSC$Screen <- "GDSC2"
+
+# Combine all data into a single data frame
+combined_centrality <- bind_rows(
+  betweenness_gCSI, degree_gCSI, eigenvector_gCSI, pagerank_gCSI,
+  betweenness_GDSC, degree_GDSC, eigenvector_GDSC, pagerank_GDSC
+)
+
+# Save the combined data for further analysis
+write.csv(combined_centrality, "results/cv_performance/central_genes/combined_centrality_performance.csv", row.names = FALSE)
+
+# Generate violin plots for PEARSON_Mean by centrality measures and screens
+# Filter data for Betweenness and Degree methods
+methods_to_plot <- c("Betweenness", "Degree", "Eigenvector", "Pagerank")
+
+# Loop through each method and generate plots
+for (method in methods_to_plot) {
+  method_data <- combined_centrality %>% 
+    filter(Method == method) %>% 
+    filter(is.finite(PEARSON_Mean), is.finite(RMSE_Mean))  # Remove non-finite values
+  
+  # PEARSON plot for gCSI and GDSC2
+  pearson_plot <- ggplot(method_data, aes(x = Screen, y = PEARSON_Mean, fill = Screen)) +
+    geom_violin(trim = TRUE, alpha = 0.6) +
+    geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+    theme_minimal() +
+    labs(title = paste("PEARSON_Mean for", method, "Method"),
+         x = "Screen",
+         y = "PEARSON Mean") +
+    theme(legend.position = "none") +
+    scale_fill_brewer(palette = "Set3")
+  ggsave(filename = paste0("figs/CENTRALITY_MEASURES/Violin_PEARSON_Mean_", method, ".png"), plot = pearson_plot, width = 8, height = 6)
+  
+  # RMSE plot for gCSI and GDSC2
+  rmse_plot <- ggplot(method_data, aes(x = Screen, y = RMSE_Mean, fill = Screen)) +
+    geom_violin(trim = TRUE, alpha = 0.6) +
+    geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+    theme_minimal() +
+    labs(title = paste("RMSE_Mean for", method, "Method"),
+         x = "Screen",
+         y = "RMSE Mean") +
+    theme(legend.position = "none") +
+    scale_fill_brewer(palette = "Set3")
+  ggsave(filename = paste0("figs/CENTRALITY_MEASURES/Violin_RMSE_Mean_", method, ".png"), plot = rmse_plot, width = 8, height = 6)
+}
 
 
 ############ now we do the same for pathway analysis ###########
