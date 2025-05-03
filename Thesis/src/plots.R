@@ -86,6 +86,39 @@ plot_pearson_boxplot <- function(data, size, output_path, width = 10, height = 6
   ggsave(output_path, plot = p, width = width, height = height)
   return(p)
 }
+run_wilcoxon_tests_no_size <- function(data) {
+  # Ensure there are no duplicate entries for Drug and Method
+  data <- data %>%
+    group_by(Drug, Method) %>%
+    summarise(PEARSON_Mean = mean(PEARSON_Mean, na.rm = TRUE), .groups = "drop")
+  
+  # Pivot the data to wide format
+  pearson_wide <- data %>%
+    pivot_wider(names_from = Method, values_from = PEARSON_Mean)
+  
+  methods <- colnames(pearson_wide)[-1]  # Exclude the "Drug" column
+  
+  comparisons <- combn(methods, 2, simplify = FALSE)
+  results <- lapply(comparisons, function(pair) {
+    # Ensure the columns are numeric before performing the test
+    x <- pearson_wide[[pair[1]]]
+    y <- pearson_wide[[pair[2]]]
+    if (is.numeric(x) && is.numeric(y)) {
+      test <- wilcox.test(x, y, paired = TRUE)
+      data.frame(Comparison = paste(pair, collapse = " vs "), P_Value = test$p.value)
+    } else {
+      data.frame(Comparison = paste(pair, collapse = " vs "), P_Value = NA)
+    }
+  })
+  
+  # Combine the results
+  results_df <- bind_rows(results)
+  
+  # Apply FDR correction using the Benjamini-Hochberg method
+  results_df$FDR_P_Value <- p.adjust(results_df$P_Value, method = "BH")
+  
+  return(results_df)
+}
 
 run_wilcoxon_tests <- function(data, size) {
   data_filtered <- data %>% filter(FEATURE_SIZE == size)

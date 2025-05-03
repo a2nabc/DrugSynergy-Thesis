@@ -133,6 +133,7 @@ venn_plot(ccl_list, paste0(config$figs.dir, "venn_plot.png"))
 for (screen in config$target.screens){
   generate_tables_summary_performance(paste0(config$results.dir, screen), "summary_results.csv") 
   generate_violin_plots(paste0(config$results.dir, screen), "summary_results.csv", paste0(config$figs.dir, screen))
+  
   generate_model_heatmaps(paste0(config$results.dir, screen), config$results.correlations.dir, common_drugs, paste0(config$figs.dir, screen))
  # jaccard_index(paste0(config$results.dir, screen), config$results.features.dir, common_drugs)
   screen_path <- paste0(config$results.dir, screen)
@@ -140,6 +141,30 @@ for (screen in config$target.screens){
   methods <- c('lasso', 'en', 'ridge')
   new_jaccard_index(screen_path, features_subdir, common_drugs, methods)
 }
+
+generate_violin_plots_all_in_one(paste0(config$results.dir, "GDSC2"), paste0(config$results.dir, "gCSI"), "summary_results.csv", paste0(config$figs.dir, screen))
+
+############################################################# K-FOLD CROSS VALIDATION FOR ALL THE GENES IN THE DATA ########################
+# Perform 10-fold CV for both screens (GDSC2 and gCSI) using all genes in the original data
+results_all_genes <- list()
+
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  num_folds <- 10
+  for (drug in common_drugs) {
+    result_drug <- k.fold.linear.model(data, drug, num_folds)
+    results_all_genes[[paste0(screen, "_", drug)]] <- result_drug
+  }
+}
+
+# Combine results into a single data frame
+results_all_genes_df <- do.call(rbind, results_all_genes)
+
+# Save results to a CSV file
+write.csv(results_all_genes_df, file = paste0(config$results.dir, "/cv_performance/PC_genes/", "cv_results_all_genes.csv"), row.names = FALSE)
 
 ############################################################# K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
 
@@ -275,80 +300,52 @@ for (screen in config$target.screens) {
 }
 write.results.central.genes(results_central_genes, config$target.screens, central_gene_sets, config)
 
-# Load centrality measure performance data for gCSI
-betweenness_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_betweenness_central_genes.csv")
-degree_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_degree_central_genes.csv")
-eigenvector_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_eigenvector_central_genes.csv")
-pagerank_gCSI <- read.csv("results/cv_performance/central_genes/gCSI/performance_uniform_pagerank_central_genes.csv")
-
-# Load centrality measure performance data for GDSC
-betweenness_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_betweenness_central_genes.csv")
-degree_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_degree_central_genes.csv")
-eigenvector_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_eigenvector_central_genes.csv")
-pagerank_GDSC <- read.csv("results/cv_performance/central_genes/GDSC2/performance_uniform_pagerank_central_genes.csv")
-
-# Add a column to identify the centrality measure and dataset
-betweenness_gCSI$Method <- "Betweenness"
-degree_gCSI$Method <- "Degree"
-eigenvector_gCSI$Method <- "Eigenvector"
-pagerank_gCSI$Method <- "Pagerank"
-betweenness_GDSC$Method <- "Betweenness"
-degree_GDSC$Method <- "Degree"
-eigenvector_GDSC$Method <- "Eigenvector"
-pagerank_GDSC$Method <- "Pagerank"
-
-betweenness_gCSI$Screen <- "gCSI"
-degree_gCSI$Screen <- "gCSI"
-eigenvector_gCSI$Screen <- "gCSI"
-pagerank_gCSI$Screen <- "gCSI"
-betweenness_GDSC$Screen <- "GDSC2"
-degree_GDSC$Screen <- "GDSC2"
-eigenvector_GDSC$Screen <- "GDSC2"
-pagerank_GDSC$Screen <- "GDSC2"
-
-# Combine all data into a single data frame
+# Combine all centrality data into a single data frame
 combined_centrality <- bind_rows(
   betweenness_gCSI, degree_gCSI, eigenvector_gCSI, pagerank_gCSI,
   betweenness_GDSC, degree_GDSC, eigenvector_GDSC, pagerank_GDSC
 )
 
-# Save the combined data for further analysis
-write.csv(combined_centrality, "results/cv_performance/central_genes/combined_centrality_performance.csv", row.names = FALSE)
+# Add a column to identify the centrality measure and dataset
+combined_centrality <- combined_centrality %>%
+  mutate(Method = factor(Method, levels = c("Betweenness", "Degree", "Eigenvector", "Pagerank")),
+         Screen = factor(Screen, levels = c("gCSI", "GDSC2")))
 
-# Generate violin plots for PEARSON_Mean by centrality measures and screens
-# Filter data for Betweenness and Degree methods
-methods_to_plot <- c("Betweenness", "Degree", "Eigenvector", "Pagerank")
+# Filter data for valid PEARSON_Mean and RMSE_Mean values
+filtered_centrality <- combined_centrality %>%
+  filter(is.finite(PEARSON_Mean), is.finite(RMSE_Mean))
 
-# Loop through each method and generate plots
-for (method in methods_to_plot) {
-  method_data <- combined_centrality %>% 
-    filter(Method == method) %>% 
-    filter(is.finite(PEARSON_Mean), is.finite(RMSE_Mean))  # Remove non-finite values
-  
-  # PEARSON plot for gCSI and GDSC2
-  pearson_plot <- ggplot(method_data, aes(x = Screen, y = PEARSON_Mean, fill = Screen)) +
-    geom_violin(trim = TRUE, alpha = 0.6) +
-    geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
-    theme_minimal() +
-    labs(title = paste("PEARSON_Mean for", method, "Method"),
-         x = "Screen",
-         y = "PEARSON Mean") +
-    theme(legend.position = "none") +
-    scale_fill_brewer(palette = "Set3")
-  ggsave(filename = paste0("figs/CENTRALITY_MEASURES/Violin_PEARSON_Mean_", method, ".png"), plot = pearson_plot, width = 8, height = 6)
-  
-  # RMSE plot for gCSI and GDSC2
-  rmse_plot <- ggplot(method_data, aes(x = Screen, y = RMSE_Mean, fill = Screen)) +
-    geom_violin(trim = TRUE, alpha = 0.6) +
-    geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
-    theme_minimal() +
-    labs(title = paste("RMSE_Mean for", method, "Method"),
-         x = "Screen",
-         y = "RMSE Mean") +
-    theme(legend.position = "none") +
-    scale_fill_brewer(palette = "Set3")
-  ggsave(filename = paste0("figs/CENTRALITY_MEASURES/Violin_RMSE_Mean_", method, ".png"), plot = rmse_plot, width = 8, height = 6)
-}
+# Generate a single-axis violin plot for PEARSON_Mean
+pearson_plot <- ggplot(filtered_centrality, aes(x = interaction(Screen, Method), y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "PEARSON_Mean for Centrality Measures Across Screens",
+       x = "Screen and Centrality Measure",
+       y = "PEARSON Mean") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Dark2")
+  scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
+
+# Save the PEARSON_Mean plot
+ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_PEARSON_Mean_SingleAxis_centrality.png",
+       plot = pearson_plot, width = 12, height = 8)
+
+# Generate a single-axis violin plot for RMSE_Mean
+rmse_plot <- ggplot(filtered_centrality, aes(x = interaction(Screen, Method), y = RMSE_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "RMSE_Mean for Centrality Measures Across Screens",
+       x = "Screen and Centrality Measure",
+       y = "RMSE Mean") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Dark2") +
+  scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
+
+# Save the RMSE_Mean plot
+ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_RMSE_Mean_SingleAxis_centrality.png",
+       plot = rmse_plot, width = 12, height = 8)
 
 
 ############ now we do the same for pathway analysis ###########
@@ -380,22 +377,223 @@ save_venn_plots_db_dtc_lasso(merged_drugbank_pathways, merged_dtc_pathways, merg
 
 
 
-#####################################################################
+##################################################################### DRUGBANK AND DTC AND RANDOM ##################################################
 
 # Initialize
-results <- init.results(results, c("lasso", "random", "drugbank"), config$target.screens, feature_sizes)
+results <- init.results(results, c("lasso", "random", "drugbank", "dtc"), config$target.screens, feature_sizes)
 
 # Lasso
 for (screen in config$target.screens) {
-  results <- run.lasso.cv(results, screen, feature_sizes, common_drugs, source_data, target_data, config, 10)
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  results <- run.lasso.cv(results, screen, feature_sizes, common_drugs, source_data, data, config, 10)
 }
 write.lasso.results(results, config$target.screens, feature_sizes, config)
 
-# Random + Drugbank
-results <- run.other.cv(results, feature_sizes, common_drugs, source_data, target_data, config, 10)
-write.other.results(results, feature_sizes, config)
+# Random + Drugbank + DTC
+for (screen in config$target.screens){
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  results <- run.other.cv(results, feature_sizes, common_drugs, screen, data, config, 10)
+  write.other.results(results, feature_sizes, config, screen)
+}
+
+#ultima prova. pagerank all genes:
+for (screen in config$target.screens){
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  genes_to_keep_dtc <- load_pagerank_feature_list("./results/pagerank_output/dtc/pagerank_dtc_50.txt")
+  genes_to_keep_dtc <- genes_to_keep_dtc[genes_to_keep_dtc %in% colnames(data$expression)]
+  genes_to_keep_drugbank <- load_pagerank_feature_list("./results/pagerank_output/drugbank/pagerank_db_50.txt")
+  genes_to_keep_drugbank <- genes_to_keep_drugbank[genes_to_keep_drugbank %in% colnames(data$expression)]
+  
+  # Ensure filtered_1 and filtered_2 are initialized as lists
+  filtered_1 <- list()
+  filtered_2 <- list()
+  
+  # Correctly subset the data
+  filtered_1$expression <- data$expression[, c("Cell_line", genes_to_keep_dtc), drop = FALSE]
+  filtered_1$response <- data$response
+  filtered_2$expression <- data$expression[, c("Cell_line", genes_to_keep_drugbank), drop = FALSE]
+  filtered_2$response <- data$response
+  
+  num_folds <- 10
+  for (drug in common_drugs) {
+    
+    result_drug_dtc <- k.fold.linear.model(filtered_1, drug, num_folds)
+    results[[paste0("dtc_", screen, "_all")]] <- rbind(results[[paste0("dtc_", screen, "_all")]], result_drug_dtc)
+    
+    result_drug_drugbank <- k.fold.linear.model(filtered_2, drug, num_folds)
+    results[[paste0("drugbank_", screen, "_all")]] <- rbind(results[[paste0("drugbank_", screen, "_all")]], result_drug_drugbank)
+  }
+  
+  
+  
+  write.other.results(results, feature_sizes, config, screen)
+}
+
 
 ############################# PLOTS FOR PAGERANK VS RANDOM PERFORMANCES #############################
+methods_to_plot <- c("random", "lasso", "dtc", "drugbank")
+library(readr)
+library(patchwork)
+
+# Initialize lists to store data
+all_pearson_data <- list()
+all_rmse_data <- list()
+
+# Loop through each method and collect data
+for (method in methods_to_plot) {
+  # Safely load the CSV file and handle potential errors
+  csv_path <- paste0("../../resum_top50_", method, ".csv")
+  if (file.exists(csv_path)) {
+    method_data <- tryCatch({
+      read_csv(csv_path) %>%
+        pivot_longer(cols = starts_with("RMSE_Mean"), names_to = "Screen", values_to = "RMSE_Mean") %>%
+        pivot_longer(cols = starts_with("PEARSON_Mean"), names_to = "Screen_Pearson", values_to = "PEARSON_Mean") %>%
+        filter(if ("PEARSON_Mean" %in% colnames(.)) is.finite(PEARSON_Mean) else FALSE,
+               if ("RMSE_Mean" %in% colnames(.)) is.finite(RMSE_Mean) else FALSE) %>%
+        mutate(Screen = ifelse(grepl("GDSC", Screen_Pearson), "GDSC", "gCSI"),
+               Method = method)
+    }, error = function(e) {
+      message(paste("Error reading file:", csv_path, " - ", e$message))
+      NULL
+    })
+    
+    if (!is.null(method_data)) {
+      all_pearson_data[[method]] <- method_data %>% select(Screen, PEARSON_Mean, Method)
+      all_rmse_data[[method]] <- method_data %>% select(Screen, RMSE_Mean, Method)
+    }
+  } else {
+    message(paste("File does not exist:", csv_path))
+  }
+}
+
+# Combine all data into single data frames
+combined_pearson_data <- bind_rows(all_pearson_data)
+combined_rmse_data <- bind_rows(all_rmse_data)
+
+# PEARSON plot
+pearson_plot <- ggplot(combined_pearson_data, aes(x = interaction(Screen, Method), y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "PEARSON_Mean for All Methods",
+       x = "Screen and Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set3") +
+  scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
+
+ggsave(filename = "figs/LASSO_PAGERANK1_PAGERANK2/Combined_Violin_PEARSON_Mean_SingleAxis.png",
+       plot = pearson_plot, width = 12, height = 8)
+
+# RMSE plot
+rmse_plot <- ggplot(combined_rmse_data, aes(x = interaction(Screen, Method), y = RMSE_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "RMSE_Mean for All Methods",
+       x = "Screen and Method",
+       y = "RMSE Mean") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set3") +
+  scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
+
+ggsave(filename = "figs/LASSO_PAGERANK1_PAGERANK2/Combined_Violin_RMSE_Mean_SingleAxis.png",
+       plot = rmse_plot, width = 12, height = 8)
+
+
+
+
+#################################################### COMPARISONNNNNNNNNNNNNNNNN 
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+
+# Define file paths
+file_paths <- list(
+  Lasso_derived_features = "results/GDSC2/positive/summary_results.csv",
+  Drugbank_features = "results/cv_performance/drugbank/GDSC2/performance_drugbank_drug_targets.csv",
+  Pagerank_features = "results/cv_performance/central_genes/GDSC2/performance_uniform_pagerank_central_genes.csv",
+  Lasso_Pagerank_features = "../../resum_top50_lasso.csv",
+  Drugbank_Pagerank_features = "../../resum_top50_drugbank.csv",
+  Random_features = "../../resum_top50_random.csv"
+)
+# Load and process data
+data_list <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if (name == "Lasso_derived_features") {
+      if ("PEARSON" %in% colnames(data)) {
+        data <- data %>%
+          select(Drug, PEARSON_Mean = PEARSON) %>%
+          filter(is.finite(PEARSON_Mean)) %>%
+          mutate(Method = name)
+      } else {
+        data <- tibble()  # Return an empty tibble if PEARSON is missing
+      }
+    } else if (name %in% c("Drugbank_features", "Pagerank_features")) {
+      if ("PEARSON_Mean" %in% colnames(data)) {
+        data <- data %>%
+          select(Drug, PEARSON_Mean) %>%
+          filter(is.finite(PEARSON_Mean)) %>%
+          mutate(Method = name)
+      } else {
+        data <- tibble()  # Return an empty tibble if PEARSON_Mean is missing
+      }
+    } else if (name %in% c("Lasso_Pagerank_features", "Drugbank_Pagerank_features", "Random_features")) {
+      if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
+        data <- data %>%
+          select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+          filter(is.finite(PEARSON_Mean)) %>%
+          mutate(Method = name)
+      } else {
+        data <- tibble()  # Return an empty tibble if PEARSON_Mean_GDSC is missing
+      }
+    } else {
+      data <- tibble()  # Return an empty tibble for unsupported formats
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+# Combine all data into a single data frame
+combined_data <- bind_rows(data_list)
+
+# Ensure combined_data has the expected structure
+if (nrow(combined_data) == 0) {
+  stop("No valid data was loaded. Please check the file paths and data structure.")
+}
+
+# Generate violin and boxplot for PEARSON_Mean
+plot <- ggplot(combined_data, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the plot
+ggsave(filename = "figs/Violin_Boxplot_PEARSON_Mean_Distributions.png", plot = plot, width = 10, height = 6)
+
+
+
+
+################33 END COMPARISON
+
 # Plots for drug bank / DTC data
 generate_violin_plots(paste0(config$results.dir, screen), "summary_results.csv", paste0(config$figs.dir, screen))
 
@@ -453,20 +651,136 @@ plot_pairwise_jaccard_heatmap(pairwise_jaccard_results, paste0(pagerank_output_p
 
 # First we group the lasso_GDSC, lasso_GCSI, drugbank and random performances in a single table:
 # Load all data
-combined <- load_all_performance_data(feature_sizes, config)
-filtered_combined <- filter_valid_drugs(combined)
+combined2 <- load_all_performance_data(feature_sizes, config)
+filtered_combined2 <- filter_valid_drugs(combined2)
+
+# Prepare combined_data for Wilcoxon input
+prepare_combined_data <- function(combined_data, file_paths) {
+  # Initialize an empty data frame to store the results
+  prepared_data <- data.frame(
+    Drug = character(),
+    MSE_Mean = numeric(),
+    MSE_SD = numeric(),
+    RMSE_Mean = numeric(),
+    RMSE_SD = numeric(),
+    MAE_Mean = numeric(),
+    MAE_SD = numeric(),
+    R2_Mean = numeric(),
+    R2_SD = numeric(),
+    PEARSON_Mean = numeric(),
+    PEARSON_SD = numeric(),
+    Method = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  # Iterate through each method in file_paths
+  for (method_name in names(file_paths)) {
+    file_path <- file_paths[[method_name]]
+    
+    # Safely load the data
+    if (file.exists(file_path)) {
+      method_data <- read.csv(file_path)
+      
+      # Check if required columns exist
+      if (method_name == "Lasso_derived_features") {
+        if ("PEARSON" %in% colnames(method_data)) {
+          method_data <- method_data %>%
+            select(Drug, PEARSON_Mean = PEARSON) %>%
+            mutate(
+              MSE_Mean = NA,
+              MSE_SD = NA,
+              RMSE_Mean = NA,
+              RMSE_SD = NA,
+              MAE_Mean = NA,
+              MAE_SD = NA,
+              R2_Mean = NA,
+              R2_SD = NA,
+              PEARSON_SD = NA,
+              Method = method_name
+            )
+          
+          # Append to the prepared_data
+          prepared_data <- rbind(prepared_data, method_data)
+        }
+      } else if (method_name %in% c("Drugbank_features", "Pagerank_features")) {
+        if (all(c("Drug", "PEARSON_Mean") %in% colnames(method_data))) {
+          method_data <- method_data %>%
+            mutate(
+              MSE_Mean = ifelse("MSE_Mean" %in% colnames(.), MSE_Mean, NA),
+              MSE_SD = ifelse("MSE_SD" %in% colnames(.), MSE_SD, NA),
+              RMSE_Mean = ifelse("RMSE_Mean" %in% colnames(.), RMSE_Mean, NA),
+              RMSE_SD = ifelse("RMSE_SD" %in% colnames(.), RMSE_SD, NA),
+              MAE_Mean = ifelse("MAE_Mean" %in% colnames(.), MAE_Mean, NA),
+              MAE_SD = ifelse("MAE_SD" %in% colnames(.), MAE_SD, NA),
+              R2_Mean = ifelse("R2_Mean" %in% colnames(.), R2_Mean, NA),
+              R2_SD = ifelse("R2_SD" %in% colnames(.), R2_SD, NA),
+              PEARSON_SD = ifelse("PEARSON_SD" %in% colnames(.), PEARSON_SD, NA)
+            ) %>%
+            mutate(Method = method_name) %>%
+            select(
+              Drug,
+              MSE_Mean,
+              MSE_SD,
+              RMSE_Mean,
+              RMSE_SD,
+              MAE_Mean,
+              MAE_SD,
+              R2_Mean,
+              R2_SD,
+              PEARSON_Mean,
+              PEARSON_SD,
+              Method
+            )
+          
+          # Append to the prepared_data
+          prepared_data <- rbind(prepared_data, method_data)
+        }
+      } else if (method_name %in% c("Lasso_Pagerank_features", "Drugbank_Pagerank_features", "Random_features")) {
+        if ("PEARSON_Mean_GDSC" %in% colnames(method_data)) {
+          method_data <- method_data %>%
+            select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+            mutate(
+              MSE_Mean = NA,
+              MSE_SD = NA,
+              RMSE_Mean = NA,
+              RMSE_SD = NA,
+              MAE_Mean = NA,
+              MAE_SD = NA,
+              R2_Mean = NA,
+              R2_SD = NA,
+              PEARSON_SD = NA,
+              Method = method_name
+            )
+          
+          # Append to the prepared_data
+          prepared_data <- rbind(prepared_data, method_data)
+        }
+      }
+    }
+  }
+  
+  return(prepared_data)
+}
+
+# Call the function to prepare the data
+prepared_combined_data <- prepare_combined_data(combined_data, file_paths)
+
+# Save the prepared data to a CSV file
+write.csv(prepared_combined_data, "results/prepared_combined_data.csv", row.names = FALSE)
+
+wilcoxon <- run_wilcoxon_tests_no_size(prepared_combined_data)
 
 # Barplots
-plot_pearson_barplot(filtered_combined, 10, "figs/Barplot_10_features.png", "RdYlGn")
-plot_pearson_barplot(filtered_combined, 20,  "figs/Barplot_20_features.png", "RdBu")
-plot_pearson_barplot(filtered_combined, 50,  "figs/Barplot_50_features.png", "PuOr")
-
-# Boxplots
-plot_pearson_boxplot(filtered_combined, 10, "figs/Boxplot_10_features.png")
-plot_pearson_boxplot(filtered_combined, 20, "figs/Boxplot_20_features.png")
-plot_pearson_boxplot(filtered_combined, 50, "figs/Boxplot_50_features.png")
+######   plot_pearson_barplot(filtered_combined, 10, "figs/Barplot_10_features.png", "RdYlGn")
+######   plot_pearson_barplot(filtered_combined, 20,  "figs/Barplot_20_features.png", "RdBu")
+######   plot_pearson_barplot(filtered_combined, 50,  "figs/Barplot_50_features.png", "PuOr")
+######   
+######   # Boxplots
+######   plot_pearson_boxplot(filtered_combined, 10, "figs/Boxplot_10_features.png")
+######   plot_pearson_boxplot(filtered_combined, 20, "figs/Boxplot_20_features.png")
+######   plot_pearson_boxplot(filtered_combined, 50, "figs/Boxplot_50_features.png")
 
 # Wilcoxon test results
-wilcoxon_results <- run_wilcoxon_tests(filtered_combined, 50)
+wilcoxon_results <- run_wilcoxon_tests(prepared_combined_data, 50)
 write.csv(wilcoxon_results, file = "results/cv_performance/wilcoxon_fdr_results.csv", row.names = FALSE)
 print(wilcoxon_results)

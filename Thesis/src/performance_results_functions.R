@@ -172,8 +172,81 @@ generate_violin_plots <- function(csv_path, csv_name, plot_dir) {
   }
   print("DONE VIOLIN")
 }
-
-
+generate_violin_plots_all_in_one <- function(csv_path_screen1, csv_path_screen2, csv_name, plot_dir) {
+  # Initialize an empty data frame to store results from both screens
+  all_results <- data.frame()
+  
+  # Process the first screen (GDSC2)
+  subfolders_screen1 <- list.dirs(csv_path_screen1, recursive = FALSE)
+  for (subfolder in subfolders_screen1) {
+    file_path <- paste0(subfolder, "/", csv_name)
+    experiment_results <- read.csv(file_path)
+    experiment_results$Screen <- "GDSC2"
+    experiment_results$Experiment <- basename(subfolder)
+    experiment_results$Condition <- ifelse(grepl("positive", subfolder, ignore.case = TRUE), "Positive", "Negative")
+    all_results <- rbind(all_results, experiment_results)
+  }
+  
+  # Process the second screen (gCSI)
+  subfolders_screen2 <- list.dirs(csv_path_screen2, recursive = FALSE)
+  for (subfolder in subfolders_screen2) {
+    file_path <- paste0(subfolder, "/", csv_name)
+    experiment_results <- read.csv(file_path)
+    experiment_results$Screen <- "gCSI"
+    experiment_results$Experiment <- basename(subfolder)
+    experiment_results$Condition <- ifelse(grepl("positive", subfolder, ignore.case = TRUE), "Positive", "Negative")
+    all_results <- rbind(all_results, experiment_results)
+  }
+  
+  # Add grouping information
+  all_results$Model <- as.factor(all_results$Model)
+  all_results$Group <- paste(all_results$Model, all_results$Screen, all_results$Condition, sep = "_")
+  
+  # Define custom colors for models
+  model_colors <- c(
+    "lasso" = "blue",
+    "en" = "green",
+    "ridge" = "red"
+  )
+  
+  # Add a color column based on Model
+  all_results$ColorGroup <- all_results$Model
+  
+  # Ensure consistent ordering of groups for consecutive colors
+  all_results$Group <- factor(all_results$Group, levels = unique(all_results$Group))
+  
+  # Add separators for clear grouping
+  all_results$Group <- factor(all_results$Group, levels = c(
+    "lasso_GDSC2_Negative", "en_GDSC2_Negative", "ridge_GDSC2_Negative",
+    "---",  # Unique separator
+    "lasso_GDSC2_Positive", "en_GDSC2_Positive", "ridge_GDSC2_Positive",
+    "----",  # Unique separator
+    "lasso_gCSI_Negative", "en_gCSI_Negative", "ridge_gCSI_Negative",
+    "-----",  # Unique separator
+    "lasso_gCSI_Positive", "en_gCSI_Positive", "ridge_gCSI_Positive"
+  ))
+  
+  # List of performance metrics to plot
+  metrics <- c("PEARSON", "RMSE")
+  
+  for (metric in metrics) {
+    p <- ggplot(all_results, aes(x = Group, y = all_results[[metric]], fill = ColorGroup)) +
+      geom_violin(trim = TRUE, alpha = 0.6) +
+      geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+      scale_fill_manual(values = model_colors) +
+      theme_minimal() +
+      labs(title = paste("Model Performance:", metric), x = "Group", y = metric) +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "none") +
+      geom_vline(xintercept = c(3.5, 6.5, 9.5), linetype = "dashed", color = "black")  # Add vertical separators
+    
+    # Save combined plot as PNG and PDF
+    ggsave(filename = paste0(plot_dir, "/", metric, "_all_in_one_violin_plot.png"), plot = p, width = 12, height = 6, dpi = 300)
+    ggsave(filename = paste0(plot_dir, "/", metric, "_all_in_one_violin_plot.pdf"), plot = p, width = 12, height = 6)
+    
+    message("Saved combined", metric, "violin plot to", plot_dir, "\n")
+  }
+  print("DONE VIOLIN")
+}
 
 #computes the jaccard index for positive and negative experiments given a screen
 jaccard_index <- function(screen_path, features_subdir, drugs) {

@@ -108,7 +108,7 @@ def run_pagerank_from_drugbank(path_drugbank_genes, G):
 
         # Compute PageRank scores
         results = process_gene_list(G, gene_list)
-        output_path = os.path.join(base_results_path, "drugbank", f"{drug}")
+        output_path = os.path.join(base_results_path, "drugbank", "drugwise", f"{drug}")
         save_top_genes(results, output_path)
 
         # Save results
@@ -140,6 +140,20 @@ centrality_dir = "results/centrality_measures"
 os.makedirs(centrality_dir, exist_ok=True)
 
 
+def save_all_genes(pagerank_scores, file_name):
+    """Save all genes with their scores to a file."""
+    dir_path = os.path.dirname(file_name)  # Get the directory from the file path
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)  # Create directory if it doesn't exist
+
+    # Save all genes with their scores
+    with open(f"{file_name}_all.txt", "w") as f:
+        for gene, score in pagerank_scores:
+            f.write(f"{gene}\t{score}\n")
+
+    print(f"File saved: {file_name}_all.txt")
+
+# Updated code to save all genes
 for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "eigenvector", "pagerank"]):
     sorted_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)
     top_genes_named = []
@@ -148,6 +162,7 @@ for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "ei
         top_genes_named.append((gene_name, score))
     output_base = os.path.join(centrality_dir, f"{name}_top")
     save_top_genes(top_genes_named, output_base)
+    save_all_genes(top_genes_named, output_base)
 
 
 
@@ -172,3 +187,48 @@ with open(drugs_path, "r") as f:
     drug_list = [line.strip() for line in f]
 
 #pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
+
+
+
+######################################################### RUN PAGERANK IN DTC (not separing by drug) ######################################################
+gene_list_dtc = "data/dtc_gene_set.txt"
+
+with open(gene_list_dtc, "r") as f:
+    gene_list_dtc = {line.strip() for line in f}
+
+pagerank_scores_dtc = process_gene_list(G, gene_list_dtc)
+save_top_genes(pagerank_scores_dtc, os.path.join(base_results_path, "dtc", "pagerank_dtc"))
+
+
+
+######################################################### RUN PAGERANK IN Drugbank (not separing by drug) ######################################################
+gene_list_db = "data/drugbank_gene_set.txt"
+
+with open(gene_list_db, "r") as f:
+    gene_list_db = {line.strip() for line in f}
+
+pagerank_scores_db = process_gene_list(G, gene_list_db)
+save_top_genes(pagerank_scores_db, os.path.join(base_results_path, "drugbank", "pagerank_db"))
+
+
+######################################################### RUN PAGERANK IN DTC PER DRUG ######################################################
+
+path_dtc_info = "results/dtc/AffectedGenesByDrug.csv"
+if not os.path.exists(path_dtc_info):
+    raise FileNotFoundError(f"The file {path_dtc_info} does not exist.")
+
+# Load DTC data
+dtc_data = pd.read_csv(path_dtc_info, sep=",", header=0)
+compound_gene_map = {
+    row['compound_name']: [gene.strip() for gene in str(row['gene_names']).split(",") if gene.strip()]
+    for _, row in dtc_data.iterrows() if pd.notna(row['gene_names'])
+}
+
+# Run PageRank with the filtered gene list
+for compound in compound_gene_map:
+    gene_list = compound_gene_map[compound]
+
+    # Compute PageRank scores
+    results = process_gene_list(G, gene_list)
+    output_path = os.path.join(base_results_path, "dtc", "drugwise", f"{compound}")
+    save_top_genes(results, output_path)

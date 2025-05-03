@@ -349,9 +349,9 @@ compute.cv.for.random.input <- function(source_data, target_data, drug, num_fold
 }
 
 
-process.results.pagerank <- function(path_pagerank_output, drug, feature_size, source_data, target_data, num_folds) {
+process.results.pagerank <- function(path_pagerank_output, drug, feature_size, target_data, num_folds) {
   pagerank_output <- paste0(path_pagerank_output, "_", feature_size, ".txt")
-  results_cv <- compute.cv.for.pagerank.input(pagerank_output, target_data, drug, num_folds) # 10 is num_folds
+  results_cv <- compute.cv.for.pagerank.input(pagerank_output, target_data, drug, num_folds) 
   return(results_cv)
 }
 
@@ -366,7 +366,7 @@ init.results <- function(results, methods, screens, sizes) {
           results[[key]] <- list()
         }
       } else {
-        key <- paste0(method, "_", size)
+        key <- paste0(method, "_", screen, "_", size)
         results[[key]] <- list()
       }
     }
@@ -404,7 +404,7 @@ run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data
     for (size in sizes) {
       #cat("Processing drug:", drug, "with size:", size, "\n")  
       path <- file.path(paste0(config$results.pagerank.output, "lasso"), screen, "positive", drug)
-      result <- process.results.pagerank(path, drug, size, source_data, target_data, num_folds)
+      result <- process.results.pagerank(path, drug, size, target_data, num_folds)
       key <- paste0("lasso_", screen, "_", size)
       results[[key]] <- rbind(results[[key]], result)
     }
@@ -443,30 +443,45 @@ write.lasso.results <- function(results, screens, sizes, config) {
   }
 }
 
-run.other.cv <- function(results, sizes, drugs, source_data, target_data, config, num_folds) {
+run.other.cv <- function(results, sizes, drugs, screen, screen_data, config, num_folds) {
   for (drug in drugs) {
     for (size in sizes) {
       # Drugbank
       db_path <- paste0(config$results.pagerank.output, config$drugbank.subfolder, drug)
-      result_db <- process.results.pagerank(db_path, drug, size, source_data, target_data, num_folds)
-      results[[paste0("drugbank_", size)]] <- rbind(results[[paste0("drugbank_", size)]], result_db)
+      result_db <- process.results.pagerank(db_path, drug, size, screen_data, num_folds) #dbpath = "results/pagerank_output/drugbank/drugwise"
+      results[[paste0("drugbank_", screen, "_", size)]] <- rbind(results[[paste0("drugbank_", screen, "_", size)]], result_db)
+      
+      # DTC
+      dtc_path <- paste0(config$results.pagerank.output, config$dtc.subfolder, drug)
+      result_dtc <- process.results.pagerank(dtc_path, drug, size, screen_data, num_folds) 
+      results[[paste0("dtc_", screen, "_", size)]] <- rbind(results[[paste0("dtc_", screen, "_", size)]], result_dtc)
       
       # Random
-      result_rand <- compute.cv.for.random.input(source_data, target_data, drug, num_folds, size)
-      results[[paste0("random_", size)]] <- rbind(results[[paste0("random_", size)]], result_rand)
+      result_rand <- compute.cv.for.random.input(source_data, screen_data, drug, num_folds, size)
+      results[[paste0("random_", screen, "_", size)]] <- rbind(results[[paste0("random_", screen, "_", size)]], result_rand)
     }
   }
   return(results)
 }
 
-write.other.results <- function(results, sizes, config) {
+write.other.results <- function(results, sizes, config, screen) {
   for (size in sizes) {
-    write.csv(results[[paste0("drugbank_", size)]],
-              file.path(config$results.cv.drugbank.subdir, paste0("drugbank_performance_top_", size, "_features.csv")),
+    write.csv(results[[paste0("drugbank_", screen, "_", size)]],
+              file.path(config$results.cv.drugbank.subdir, screen, paste0("drugbank_performance_top_", size, "_features.csv")),
               row.names = FALSE)
     
-    write.csv(results[[paste0("random_", size)]],
-              file.path(config$results.cv.random.subdir, paste0("random_performance_", size, "_features.csv")),
+    write.csv(results[[paste0("dtc_", screen, "_", size)]],
+              file.path(config$results.cv.dtc.subdir, screen, paste0("dtc_performance_top_", size, "_features.csv")),
+              row.names = FALSE)
+    
+    write.csv(results[[paste0("random_", screen, "_", size)]],
+              file.path(config$results.cv.random.subdir, screen, paste0("random_performance_", size, "_features.csv")),
               row.names = FALSE)
   }
+  write.csv(results[[paste0("dtc_", screen, "_all")]],
+            file.path(config$results.cv.dtc.subdir, screen, "dtc_performance_all_gene_set.csv"),
+            row.names = FALSE)
+  write.csv(results[[paste0("drugbank_", screen, "_all")]],
+            file.path(config$results.cv.drugbank.subdir, screen, "drugbank_performance_all_gene_set.csv"),
+            row.names = FALSE)
 }

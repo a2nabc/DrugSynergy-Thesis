@@ -97,7 +97,7 @@ def get_pagerank_lasso_genes(is_GDSC, is_positive, biomarker):
         return set(line.strip() for line in f)
     
 def get_drugbank_genes(biomarker):
-    path_drugbank_genes = f'./results/pagerank_output/drugbank/{biomarker}_50.txt'
+    path_drugbank_genes = f'./results/pagerank_output/drugbank/drugwise/{biomarker}_50.txt'
     if not os.path.exists(path_drugbank_genes):
         return set()
     with open(path_drugbank_genes, 'r') as f:
@@ -202,6 +202,8 @@ for combo in measure_combinations:
 bp_dic_lasso = {}
 bp_dic_pagerank_lasso = {}
 bp_dic_pagerank_drugbank = {}
+
+
 for biomarker in drugs:
 
     is_GDSC = False
@@ -244,9 +246,67 @@ for biomarker in drugs:
 fig_folder = "figs/LASSO_PAGERANK1_PAGERANK2"
 if not os.path.exists(fig_folder):
             os.makedirs(fig_folder)  # Create directory if it doesn't exist
-venn_plot(bp_dic_lasso, bp_dic_pagerank_lasso, bp_dic_pagerank_drugbank, ('Lasso', 'PageRank from Lasso', 'PageRank from DrugBank'), os.path.join(fig_folder, "pathway_enrichment_venn.png"))
+venn_plot(bp_dic_lasso, bp_dic_pagerank_lasso, bp_dic_pagerank_drugbank, ('Lasso', 'PageRank from Lasso', 'PageRank from DrugBank'), os.path.join(fig_folder, "pathway_enrichment_venn_Lasso.png"))
+
+# Load DrugBank pathways into a dictionary
+drugbank_pathways_dic = {}
+drugbank_files = [f for f in os.listdir("results/pathway_enrichment/drugbank") if f.endswith(".txt")]
+
+for file in drugbank_files:
+    file_path = os.path.join("results/pathway_enrichment/drugbank", file)
+    with open(file_path, 'r') as f:
+        drug_name = os.path.splitext(file)[0]
+        pathways = [line.strip() for line in f]
+        drugbank_pathways_dic[drug_name] = pathways
+
+# Generate Venn plot using drugbank_pathways_dic
+venn_plot(drugbank_pathways_dic, bp_dic_pagerank_lasso, bp_dic_pagerank_drugbank, 
+          ('DrugBank', 'PageRank from Lasso', 'PageRank from DrugBank'), 
+          os.path.join(fig_folder, "pathway_enrichment_venn_DB.png"))
 
 
+
+####################################### Venn pairwise ###########################################
+# Generate Venn diagrams for DrugBank and each centrality measure
+fig_folder = "figs/DRUGBANK_CENTRALITY"
+if not os.path.exists(fig_folder):
+    os.makedirs(fig_folder)
+
+# Venn for DrugBank and Betweenness
+venn_plot(
+    drugbank_pathways_dic,
+    {key: bp_dic_centrality.get("betweenness", []) for key in drugbank_pathways_dic.keys()},
+    {},
+    ('DrugBank', 'Betweenness', ''),
+    os.path.join(fig_folder, "venn_drugbank_betweenness.png")
+)
+
+# Venn for DrugBank and Degree
+venn_plot(
+    drugbank_pathways_dic,
+    {key: bp_dic_centrality.get("degree", []) for key in drugbank_pathways_dic.keys()},
+    {},
+    ('DrugBank', 'Degree', ''),
+    os.path.join(fig_folder, "venn_drugbank_degree.png")
+)
+
+# Venn for DrugBank and Eigenvector
+venn_plot(
+    drugbank_pathways_dic,
+    {key: bp_dic_centrality.get("eigenvector", []) for key in drugbank_pathways_dic.keys()},
+    {},
+    ('DrugBank', 'Eigenvector', ''),
+    os.path.join(fig_folder, "venn_drugbank_eigenvector.png")
+)
+
+# Venn for DrugBank and PageRank
+venn_plot(
+    drugbank_pathways_dic,
+    {key: bp_dic_centrality.get("pagerank", []) for key in drugbank_pathways_dic.keys()},
+    {},
+    ('DrugBank', 'PageRank', ''),
+    os.path.join(fig_folder, "venn_drugbank_pagerank.png")
+)
 
 ########################################### PATHWAY ENRICHMENT TO COMPARE LASSO, EN AND RIDGE RESULTS ##########################################
 
