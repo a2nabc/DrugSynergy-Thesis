@@ -154,7 +154,7 @@ def save_all_genes(pagerank_scores, file_name):
     print(f"File saved: {file_name}_all.txt")
 
 # Updated code to save all genes
-for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "eigenvector", "pagerank"]):
+for centrality, name in zip([deg, btw, eig, pr], ["degree", "betweenness", "eigenvector", "pagerank"]):
     sorted_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)
     top_genes_named = []
     for node_id, score in sorted_nodes:
@@ -163,7 +163,6 @@ for (centrality, name) in zip([deg, btw, eig, pr], ["degree", "betweenness", "ei
     output_base = os.path.join(centrality_dir, f"{name}_top")
     save_top_genes(top_genes_named, output_base)
     save_all_genes(top_genes_named, output_base)
-
 
 
 ################################################ RUN PAGERANK in features from lasso/en/rige #########################################
@@ -186,7 +185,7 @@ drugs_path = "data/common_drugs.txt"
 with open(drugs_path, "r") as f:
     drug_list = [line.strip() for line in f]
 
-#pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
+pagerank_scores = run_pagerank_from_drugbank(path_drugbank_info, G)
 
 
 

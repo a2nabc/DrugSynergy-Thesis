@@ -140,7 +140,7 @@ with open('./data/common_drugs.txt', 'r') as f:
     drugs = set(line.strip() for line in f)
 
 
-print(f"Number of pathways in Reactome: {len(reactome_pathways)}")
+
 base_results_path = os.path.join("results", "pathway_enrichment")  # Base path for results
 
 ########################################### PATHWAY ENRICHMENT TO COMPARE DEGREE, BETWEENNESS, EIGENVECTOR AND PAGERANK results ##########################################
@@ -178,23 +178,66 @@ fig_folder = "figs/CENTRALITY_MEASURES"
 if not os.path.exists(fig_folder):
     os.makedirs(fig_folder)
 
-
 # Generate all combinations of 3 measures out of the 4
 measures = ["degree", "betweenness", "eigenvector", "pagerank"]
 measure_combinations = list(combinations(measures, 3))
 
-# Create Venn plots for each combination
-for combo in measure_combinations:
+# Get all files ending with .txt and _cancer.txt
+txt_files = sorted([f for f in os.listdir(os.path.join(base_results_path, "centrality_measures")) if f.endswith(".txt") and not f.endswith("_cancer.txt")])
+cancer_txt_files = sorted([f for f in os.listdir(os.path.join(base_results_path, "centrality_measures")) if f.endswith("_cancer.txt")])
+
+# Generate combinations of 3 for each group
+txt_combinations = list(combinations(txt_files, 3))
+cancer_txt_combinations = list(combinations(cancer_txt_files, 3))
+
+# Create Venn plots for each combination of .txt files
+for combo in txt_combinations:
     fig_folder = "figs/CENTRALITY_MEASURES_COMBINATIONS"
     if not os.path.exists(fig_folder):
         os.makedirs(fig_folder)
 
+    # Read pathways from saved files for each measure
+    sets = []
+    for measure in combo:
+        file_path = os.path.join(base_results_path, "centrality_measures", measure)
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                pathways = [line.strip() for line in f]
+                sets.append(set(pathways))
+        else:
+            sets.append(set())  # Empty set if file doesn't exist
+
     venn_plot(
-        {combo[0]: bp_dic_centrality.get(combo[0], [])},
-        {combo[1]: bp_dic_centrality.get(combo[1], [])},
-        {combo[2]: bp_dic_centrality.get(combo[2], [])},
+        {combo[0]: sets[0]},
+        {combo[1]: sets[1]},
+        {combo[2]: sets[2]},
         combo,
-        os.path.join(fig_folder, f"venn_{'_'.join(combo)}.png")
+        os.path.join(fig_folder, f"venn_{'_'.join([os.path.splitext(c)[0] for c in combo])}.png")
+    )
+
+# Create Venn plots for each combination of _cancer.txt files
+for combo in cancer_txt_combinations:
+    fig_folder = "figs/CENTRALITY_MEASURES_COMBINATIONS_CANCER"
+    if not os.path.exists(fig_folder):
+        os.makedirs(fig_folder)
+
+    # Read pathways from saved files for each measure
+    sets = []
+    for measure in combo:
+        file_path = os.path.join(base_results_path, "centrality_measures", measure)
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                pathways = [line.strip() for line in f]
+                sets.append(set(pathways))
+        else:
+            sets.append(set())  # Empty set if file doesn't exist
+
+    venn_plot(
+        {combo[0]: sets[0]},
+        {combo[1]: sets[1]},
+        {combo[2]: sets[2]},
+        combo,
+        os.path.join(fig_folder, f"venn_{'_'.join([os.path.splitext(c)[0] for c in combo])}.png")
     )
 
 
@@ -206,7 +249,7 @@ bp_dic_pagerank_drugbank = {}
 
 for biomarker in drugs:
 
-    is_GDSC = False
+    is_GDSC = True
     is_positive = True
     target_set = "GDSC2" if is_GDSC else "gCSI"
     experiment = "positive" if is_positive else "negative"
@@ -250,20 +293,50 @@ venn_plot(bp_dic_lasso, bp_dic_pagerank_lasso, bp_dic_pagerank_drugbank, ('Lasso
 
 # Load DrugBank pathways into a dictionary
 drugbank_pathways_dic = {}
-drugbank_files = [f for f in os.listdir("results/pathway_enrichment/drugbank") if f.endswith(".txt")]
+drugbank_files = [f for f in os.listdir("results/pathway_enrichment/drugbank") if f.endswith("_cancer.txt")]
 
 for file in drugbank_files:
     file_path = os.path.join("results/pathway_enrichment/drugbank", file)
     with open(file_path, 'r') as f:
-        drug_name = os.path.splitext(file)[0]
+        drug_name = os.path.splitext(file)[0].replace("_cancer", "")
         pathways = [line.strip() for line in f]
         drugbank_pathways_dic[drug_name] = pathways
 
+# Define a helper function to read pathways from a file
+def read_pathways_from_file(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
+            return set(line.strip() for line in f)
+    return set()
 # Generate Venn plot using drugbank_pathways_dic
-venn_plot(drugbank_pathways_dic, bp_dic_pagerank_lasso, bp_dic_pagerank_drugbank, 
-          ('DrugBank', 'PageRank from Lasso', 'PageRank from DrugBank'), 
-          os.path.join(fig_folder, "pathway_enrichment_venn_DB.png"))
+# Read pathways from saved files for PageRank from Lasso and PageRank from DrugBank
+pagerank_lasso_pathways = set()
+pagerank_lasso_dir = os.path.join(base_results_path, "pagerank_from_lasso")
+if os.path.exists(pagerank_lasso_dir):
+    for file in os.listdir(pagerank_lasso_dir):
+        if file.endswith(".txt") and "_cancer" in file:
+            file_path = os.path.join(pagerank_lasso_dir, file)
+            pagerank_lasso_pathways.update(read_pathways_from_file(file_path))
 
+pagerank_drugbank_pathways = set()
+pagerank_drugbank_dir = os.path.join(base_results_path, "pagerank_from_drugbank")
+if os.path.exists(pagerank_drugbank_dir):
+    for file in os.listdir(pagerank_drugbank_dir):
+        if file.endswith(".txt") and "_cancer" in file:
+            file_path = os.path.join(pagerank_drugbank_dir, file)
+            pagerank_drugbank_pathways.update(read_pathways_from_file(file_path))
+
+# Generate Venn plot
+# Convert drugbank_pathways_dic to a set of pathways
+drugbank_pathways_set = set(p for pathways in drugbank_pathways_dic.values() for p in pathways)
+
+print(pagerank_drugbank_pathways)
+print(pagerank_lasso_pathways)
+print(drugbank_pathways_set)
+# Generate Venn plot
+venn_plot({'DrugBank': drugbank_pathways_set}, {'PageRank from Lasso': pagerank_lasso_pathways}, {'PageRank from DrugBank': pagerank_drugbank_pathways}, 
+          ('DrugBank', 'PageRank from Lasso', 'PageRank from DrugBank'), 
+          os.path.join(fig_folder, "pathway_enrichment_venn_DB_cancer.png"))
 
 
 
@@ -276,7 +349,7 @@ for biomarker in drugs:
     # Perform enrichment analysis for Elastic Net (EN) features
    # en_genes = get_feature_list(True, True, biomarker, "en").union(get_feature_list(True, False, biomarker, "en"))  # Combine positive and negative EN genes
     is_GDSC = False
-    is_positive = False
+    is_positive = True
     target_set = "GDSC2" if is_GDSC else "gCSI"
     experiment = "positive" if is_positive else "negative"
 
@@ -297,40 +370,6 @@ for biomarker in drugs:
         dir = os.path.join(base_results_path, "ridge_features")
         save_results_enrichment(enriched_ridge_df, dir, biomarker, bp_dic_ridge)
 
-
-# Perform pathway enrichment for the specified files
-bp_dic_lasso_set = {}
-bp_dic_en_set = {}
-bp_dic_ridge_set = {}
-
-# Define file paths
-feature_files = {
-    "lasso": "results/GDSC2/negative/lasso/features/lasso_feature_set.txt",
-    "en": "results/GDSC2/negative/en/features/en_feature_set.txt",
-    "ridge": "results/GDSC2/negative/ridge/features/ridge_feature_set.txt"
-}
-
-# Perform enrichment analysis for each feature set
-for feature_type, filepath in feature_files.items():
-    if not os.path.exists(filepath):
-        print(f"File not found: {filepath}")
-        continue
-
-    with open(filepath, 'r') as f:
-        feature_genes = set(line.strip() for line in f)
-
-    if not feature_genes:
-        print(f"No genes found in {filepath}")
-        continue
-
-    enriched_df = perform_enrichment_analysis(feature_genes, background_genes, reactome_pathways)
-    dir = os.path.join(base_results_path, f"{feature_type}_feature_set")
-    if feature_type == "lasso":
-        save_results_enrichment(enriched_df, dir, "lasso_feature_set", bp_dic_lasso_set)
-    elif feature_type == "en":
-        save_results_enrichment(enriched_df, dir, "en_feature_set", bp_dic_en_set)
-    elif feature_type == "ridge":
-        save_results_enrichment(enriched_df, dir, "ridge_feature_set", bp_dic_ridge_set)
 
 
 ################################## PATHWAY ENRICHMENT IN HIGHEST CORRELATED GENES ##############################################
@@ -444,24 +483,58 @@ venn_plot(bp_dic_lasso, bp_dic_en, bp_dic_ridge, ('Lasso', 'Elastic Net', 'Ridge
 #        plt.show()
 #    else:
 #        print("No enriched pathways for the selected Lasso genes.")
-
 fig_folder = "figs/CENTRALITY_MEASURES_COMBINATIONS"
-venn_plot(bp_dic_drugbank, bp_dic_dtc, {'betweenness': bp_dic_centrality.get('betweenness', [])}, 
+
+
+
+# File paths for DrugBank and DTC
+drugbank_file_path = "results/pathway_enrichment/drugbank"
+dtc_file_path = "results/pathway_enrichment/dtc"
+
+# Centrality measure file paths
+betweenness_file_path = "results/pathway_enrichment/centrality_measures/betweenness_cancer.txt"
+degree_file_path = "results/pathway_enrichment/centrality_measures/degree_cancer.txt"
+eigenvector_file_path = "results/pathway_enrichment/centrality_measures/eigenvector_cancer.txt"
+pagerank_file_path = "results/pathway_enrichment/centrality_measures/pagerank_cancer.txt"
+
+# Read pathways from files
+# Read and merge pathways from all files ending in _cancer.txt in the DrugBank and DTC directories
+drugbank_pathways_cancer = set()
+if os.path.exists(drugbank_file_path):
+    for file in os.listdir(drugbank_file_path):
+        if file.endswith("_cancer.txt"):
+            file_path = os.path.join(drugbank_file_path, file)
+            drugbank_pathways_cancer.update(read_pathways_from_file(file_path))
+else:
+    print(f"Directory not found: {drugbank_file_path}")
+
+dtc_pathways_cancer = set()
+for file in os.listdir(dtc_file_path):
+    if file.endswith("_cancer.txt"):
+        file_path = os.path.join(dtc_file_path, file)
+        dtc_pathways_cancer.update(read_pathways_from_file(file_path))
+
+betweenness_pathways = read_pathways_from_file(betweenness_file_path)
+degree_pathways = read_pathways_from_file(degree_file_path)
+eigenvector_pathways = read_pathways_from_file(eigenvector_file_path)
+pagerank_pathways = read_pathways_from_file(pagerank_file_path)
+
+# Generate Venn plots
+venn_plot({'DrugBank': drugbank_pathways_cancer}, {'DTC': dtc_pathways_cancer}, {'Betweenness': betweenness_pathways}, 
           ('DrugBank', 'DTC', 'Betweenness'), 
-          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_betweenness.png"))
+          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_betweenness_cancer.png"))
 
-venn_plot(bp_dic_drugbank, bp_dic_dtc, {'degree': bp_dic_centrality.get('degree', [])}, 
+venn_plot({'DrugBank': drugbank_pathways_cancer}, {'DTC': dtc_pathways_cancer}, {'Degree': degree_pathways}, 
           ('DrugBank', 'DTC', 'Degree'), 
-          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_degree.png"))
+          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_degree_cancer.png"))
 
-venn_plot(bp_dic_drugbank, bp_dic_dtc, {'eigenvector': bp_dic_centrality.get('eigenvector', [])}, 
+venn_plot({'DrugBank': drugbank_pathways_cancer}, {'DTC': dtc_pathways_cancer}, {'Eigenvector': eigenvector_pathways}, 
           ('DrugBank', 'DTC', 'Eigenvector'), 
-          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_eigenvector.png"))
+          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_eigenvector_cancer.png"))
 
-venn_plot(bp_dic_drugbank, bp_dic_dtc, {'pagerank': bp_dic_centrality.get('pagerank', [])}, 
+venn_plot({'DrugBank': drugbank_pathways_cancer}, {'DTC': dtc_pathways_cancer}, {'Pagerank': pagerank_pathways}, 
           ('DrugBank', 'DTC', 'Pagerank'), 
-          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_pagerank.png"))
-
+          os.path.join(fig_folder, "pathway_enrichment_venn_drugbank_dtc_pagerank_cancer.png"))
 
 
 
@@ -486,6 +559,7 @@ drugbank_bin = make_binary_matrix(bp_dic_pagerank_drugbank)
 
 
 import seaborn as sns
+import glob
 
 
 def plot_heatmap(matrix, title, fname):

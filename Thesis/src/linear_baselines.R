@@ -168,6 +168,80 @@ write.csv(results_all_genes_df, file = paste0(config$results.dir, "/cv_performan
 
 ############################################################# K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
 
+
+results_lasso <- list()
+results_en <- list()
+results_ridge <- list()
+
+load_set_from_folder <- function(folder_path, suffix = ".txt") {
+  # Initialize an empty set to store the union of all elements
+  result_set <- character()
+  
+  # List all files in the folder with the specified suffix
+  files <- list.files(folder_path, pattern = paste0(suffix, "$"), full.names = TRUE)
+  
+  # Iterate through each file and add its contents to the result set
+  for (file in files) {
+    file_contents <- readLines(file)
+    result_set <- union(result_set, file_contents)
+  }
+  
+  return(result_set)
+}
+
+path_lasso <- "results/GDSC2/positive/lasso/features"
+path_en <- "results/GDSC2/positive/en/features"
+path_ridge <- "results/GDSC2/positive/ridge/features"
+
+# Load the union of all features from the lasso folder
+lasso_feature_set <- load_set_from_folder(path_lasso)
+
+# Save the result to a .txt file in the same folder
+output_file_lasso <- file.path(path_lasso, "lasso_feature_set.txt")
+writeLines(lasso_feature_set, output_file_lasso)
+
+# Load the union of all features from the ridge folder
+ridge_feature_set <- load_set_from_folder(path_ridge)
+
+# Save the result to a .txt file in the same folder
+output_file_ridge <- file.path(path_ridge, "ridge_feature_set.txt")
+writeLines(ridge_feature_set, output_file_ridge)
+
+# Load the union of all features from the en folder
+en_feature_set <- load_set_from_folder(path_en)
+
+# Save the result to a .txt file in the same folder
+output_file_en <- file.path(path_en, "en_feature_set.txt")
+writeLines(en_feature_set, output_file_en)
+
+# Training on lasso/en/ridge drug targets using the saved feature sets
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  # Load the saved feature sets
+  lasso_gene_set <- "results/GDSC2/positive/lasso/features/"
+  ridge_gene_set <- "results/GDSC2/positive/ridge/features/"
+  en_gene_set <- "results/GDSC2/positive/en/features/"
+  
+  # Run cross-validation for each feature set
+  results_lasso <- run.cv.gene.set.per.drug(results_lasso, screen, common_drugs, "lasso", lasso_gene_set, data, config, 10)
+  results_ridge <- run.cv.gene.set.per.drug(results_ridge, screen, common_drugs, "ridge", ridge_gene_set, data, config, 10)
+  results_en <- run.cv.gene.set.per.drug(results_en, screen, common_drugs, "en", en_gene_set, data, config, 10)
+}
+
+# Write results for each feature set
+
+write.results.lasso.en.ridge(results_lasso, config$target.screens, "lasso", config)
+write.results.lasso.en.ridge(results_ridge, config$target.screens, "ridge", config)
+write.results.lasso.en.ridge(results_en, config$target.screens, "en", config)
+
+#################################################
+
+
+
+
 results_biological_priors_drugbank <- list()
 results_biological_priors_dtc <- list()
 
@@ -187,52 +261,51 @@ df1 <- read.csv("./results/cv_performance/drugbank/gCSI/performance_drugbank_dru
 df2 <- read.csv("./results/cv_performance/drugbank/GDSC2/performance_drugbank_drug_targets.csv")
 df3 <- read.csv("./results/cv_performance/dtc/gCSI/performance_dtc_drug_targets.csv")
 df4 <- read.csv("./results/cv_performance/dtc/GDSC2/performance_dtc_drug_targets.csv")
+#df5 <- read.csv("./results/cv_performance/random_pagerank_input/gCSI/random_performance_50_features.csv")
+#df6 <- read.csv("./results/cv_performance/random_pagerank_input/GDSC2/random_performance_50_features.csv")
+df5 <- read.csv("results/cv_performance/ridge/gCSI/performance_ridge_lasso_en_ridge.csv")
+df6 <- read.csv("results/cv_performance/ridge/GDSC2/performance_ridge_lasso_en_ridge.csv")
 
 # Add a column to identify the dataset
 df1$Dataset <- "Drugbank_gCSI"
 df2$Dataset <- "Drugbank_GDSC2"
 df3$Dataset <- "DTC_gCSI"
 df4$Dataset <- "DTC_GDSC2"
+df5$Dataset <- "All_features_gCSI"
+df6$Dataset <- "All_features_GDSC2"
 
 # Combine the data frames
-combined_df <- bind_rows(df1, df2, df3, df4)
+combined_df <- bind_rows(df1, df2, df3, df4, df5, df6)
 
-combined_df12 <- bind_rows(df1, df2)
-combined_df34 <- bind_rows(df3, df4)
+# Define colors for gCSI and GDSC2
+dataset_colors <- c("gCSI" = "#1f77b4", "GDSC2" = "#ff7f0e")
 
 # Violin plot for PEARSON_Mean
-ggplot(combined_df, aes(x = Dataset, y = PEARSON_Mean, fill = Dataset)) +
+ggplot(combined_df, aes(x = Dataset, y = PEARSON_Mean, fill = ifelse(grepl("gCSI", Dataset), "gCSI", "GDSC2"))) +
   geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
   geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
   theme_minimal() +
+  scale_fill_manual(values = dataset_colors) +
   labs(title = "Distribution of PEARSON across all drugs",
        x = "Gene set and training dataset",
-       y = "PEARSON mean values after 10-fold cv") +
-  theme(legend.position = "none")   # Hide legend if you don't need it
-ggsave(filename = "figs/DRUGBANK_DTC/pearson_mean.png", width = 8, height = 6)
-
+       y = "PEARSON mean values after 10-fold cv",
+       fill = "Dataset") +
+  theme(legend.position = "bottom")   # Show legend
+ggsave(filename = "figs/DRUGBANK_DTC/pearson_mean_colored_all.png", width = 8, height = 6)
 
 # Violin plot for RMSE_Mean
-ggplot(combined_df12, aes(x = Dataset, y = RMSE_Mean, fill = Dataset)) +
+ggplot(combined_df, aes(x = Dataset, y = RMSE_Mean, fill = ifelse(grepl("gCSI", Dataset), "gCSI", "GDSC2"))) +
   geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
   geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
   theme_minimal() +
+  scale_fill_manual(values = dataset_colors) +
   labs(title = "Distribution of RMSE across all drugs",
        x = "Gene set and training dataset",
-       y = "RMSE mean values after 10-fold cv") +
-  theme(legend.position = "none")   # Hide legend if you don't need it
-ggsave(filename = "figs/DRUGBANK_DTC/rmse_mean_drugbank.png", width = 8, height = 6)
+       y = "RMSE mean values after 10-fold cv",
+       fill = "Dataset") +
+  theme(legend.position = "bottom")   # Show legend
+ggsave(filename = "figs/DRUGBANK_DTC/rmse_mean_colored_all.png", width = 8, height = 6)
 
-# Violin plot for RMSE_Mean
-ggplot(combined_df34, aes(x = Dataset, y = RMSE_Mean, fill = Dataset)) +
-  geom_violin(trim = TRUE, alpha = 0.6) +    # Violin plot
-  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) + # Boxplot overlay
-  theme_minimal() +
-  labs(title = "Distribution of RMSE across all drugs",
-       x = "Gene set and training dataset",
-       y = "RMSE mean values after 10-fold cv") +
-  theme(legend.position = "none")   # Hide legend if you don't need it
-ggsave(filename = "figs/DRUGBANK_DTC/rmse_mean_dtc.png", width = 8, height = 6)
 
 
 # Load DrugBank data
@@ -247,6 +320,7 @@ dtc_genes <- lapply(split(dtc_data$gene_names, dtc_data$compound_name), function
 lasso_files <- list.files("results/GDSC2/positive/lasso/features", full.names = TRUE)
 lasso_genes <- lapply(lasso_files, function(file) list(readLines(file)))
 names(lasso_genes) <- gsub(".txt", "", basename(lasso_files))
+
 
 # Function to extract all unique genes from lasso_genes and save to a file
 save_unique_lasso_genes <- function(lasso_genes, output_file) {
@@ -315,20 +389,43 @@ combined_centrality <- combined_centrality %>%
 filtered_centrality <- combined_centrality %>%
   filter(is.finite(PEARSON_Mean), is.finite(RMSE_Mean))
 
+# Load additional data from ../../resums/resum_ridge_LM.csv
+# Load additional data from ../../resums/resum_random50.csv
+ridge_data <- tryCatch({
+  read.csv("../../resums/resum_random50.csv")
+}, error = function(e) {
+  stop("Error loading ridge_data: ", e$message)
+})
+
+# Check if required columns exist
+if (!all(c("PEARSON_Mean_GDSC", "PEARSON_Mean_gCSI") %in% colnames(ridge_data))) {
+  stop("The required columns 'PEARSON_Mean_GDSC' and 'PEARSON_Mean_gCSI' are missing in the ridge_data.")
+}
+
+ridge_data_gdsc <- ridge_data %>%
+  select(PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+  mutate(Method = "Random 50", Screen = "GDSC2")
+ridge_data_gcsi <- ridge_data %>%
+  select(PEARSON_Mean = PEARSON_Mean_gCSI) %>%
+  mutate(Method = "Random 50", Screen = "gCSI")
+
+# Combine ridge data with centrality data
+filtered_centrality <- bind_rows(filtered_centrality, ridge_data_gdsc, ridge_data_gcsi)
+
 # Generate a single-axis violin plot for PEARSON_Mean
 pearson_plot <- ggplot(filtered_centrality, aes(x = interaction(Screen, Method), y = PEARSON_Mean, fill = Method)) +
   geom_violin(trim = TRUE, alpha = 0.6) +
   geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
   theme_minimal() +
-  labs(title = "PEARSON_Mean for Centrality Measures Across Screens",
-       x = "Screen and Centrality Measure",
+  labs(title = "PEARSON_Mean for Centrality Measures and Random sets across screens",
+       x = "Screen and Method",
        y = "PEARSON Mean") +
   theme(legend.position = "bottom") +
-  scale_fill_brewer(palette = "Dark2")
+  scale_fill_brewer(palette = "Dark2") +
   scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
 
 # Save the PEARSON_Mean plot
-ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_PEARSON_Mean_SingleAxis_centrality.png",
+ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_PEARSON_Mean_SingleAxis_centrality_rnd.png",
        plot = pearson_plot, width = 12, height = 8)
 
 # Generate a single-axis violin plot for RMSE_Mean
@@ -336,15 +433,15 @@ rmse_plot <- ggplot(filtered_centrality, aes(x = interaction(Screen, Method), y 
   geom_violin(trim = TRUE, alpha = 0.6) +
   geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
   theme_minimal() +
-  labs(title = "RMSE_Mean for Centrality Measures Across Screens",
-       x = "Screen and Centrality Measure",
+  labs(title = "RMSE_Mean for Centrality Measures and Random sets across screens",
+       x = "Screen and Method",
        y = "RMSE Mean") +
   theme(legend.position = "bottom") +
   scale_fill_brewer(palette = "Dark2") +
   scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
 
 # Save the RMSE_Mean plot
-ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_RMSE_Mean_SingleAxis_centrality.png",
+ggsave(filename = "figs/CENTRALITY_MEASURES/Combined_Violin_RMSE_Mean_SingleAxis_centrality_rnd.png",
        plot = rmse_plot, width = 12, height = 8)
 
 
@@ -374,8 +471,28 @@ merged_lasso_pathways <- unique(unlist(lasso_pathways))
 
 save_venn_plots_db_dtc_lasso(merged_drugbank_pathways, merged_dtc_pathways, merged_lasso_pathways, "./figs/DRUGBANK_DTC/venn_plot_pathways_colored.png")
 
+################### now a venn plot only for relevant pathways
 
+# Load DrugBank data
+drugbank_files_cancer <- list.files("results/pathway_enrichment/drugbank", full.names = TRUE, pattern = "\\_cancer.txt$")
+drugbank_pathways_cancer <- lapply(drugbank_files_cancer, function(file) list(readLines(file)))
+names(drugbank_pathways_cancer) <- gsub("_Cancer.txt", "", basename(drugbank_files_cancer))
 
+# Load DTC data
+dtc_files_cancer <- list.files("results/pathway_enrichment/dtc", full.names = TRUE, pattern = "\\_cancer.txt$")
+dtc_pathways_cancer <- lapply(dtc_files_cancer, function(file) list(readLines(file)))
+names(dtc_pathways_cancer) <- gsub("_cancer.txt", "", basename(dtc_files_cancer))
+
+# Load Lasso data
+lasso_files_cancer <- list.files("results/pathway_enrichment/lasso_features", full.names = TRUE, pattern = "\\_cancer.txt$")
+lasso_pathways_cancer <- lapply(lasso_files_cancer, function(file) list(readLines(file)))
+names(lasso_pathways_cancer) <- gsub("_cancer.txt", "", basename(lasso_files_cancer))
+
+merged_drugbank_pathways_cancer <- unique(unlist(drugbank_pathways_cancer))
+merged_dtc_pathways_cancer <- unique(unlist(dtc_pathways_cancer))
+merged_lasso_pathways_cancer <- unique(unlist(lasso_pathways_cancer))
+
+save_venn_plots_db_dtc_lasso(merged_drugbank_pathways_cancer, merged_dtc_pathways_cancer, merged_lasso_pathways_cancer, "./figs/DRUGBANK_DTC/venn_plot_pathways_colored_cancer.png")
 
 ##################################################################### DRUGBANK AND DTC AND RANDOM ##################################################
 
@@ -399,6 +516,26 @@ for (screen in config$target.screens){
   results <- run.other.cv(results, feature_sizes, common_drugs, screen, data, config, 10)
   write.other.results(results, feature_sizes, config, screen)
 }
+
+
+resultats_lasso_derived <- init.results.wo.methods.and.sizes("lasso", resultats_lasso_derived, config$target.screens)
+resultats_ridge_derived <- init.results.wo.methods.and.sizes("ridge", resultats_ridge_derived, config$target.screens)
+resultats_en_derived <- init.results.wo.methods.and.sizes("en", resultats_en_derived, config$target.screens)
+
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  resultats_lasso_derived <- run.lasso.derived.cv("lasso", resultats_lasso_derived, screen, common_drugs, source_data, data, 10)
+  resultats_ridge_derived <- run.lasso.derived.cv("ridge", resultats_ridge_derived, screen, common_drugs, source_data, data, 10)
+  resultats_en_derived <- run.lasso.derived.cv("en", resultats_en_derived, screen, common_drugs, source_data, data, 10)
+}
+
+write.lasso.derived.results("lasso", resultats_lasso_derived, config$target.screens, config)
+write.lasso.derived.results("ridge", resultats_ridge_derived, config$target.screens, config)
+write.lasso.derived.results("en", resultats_en_derived, config$target.screens, config)
+
 
 #ultima prova. pagerank all genes:
 for (screen in config$target.screens){
@@ -509,56 +646,32 @@ ggsave(filename = "figs/LASSO_PAGERANK1_PAGERANK2/Combined_Violin_RMSE_Mean_Sing
 
 
 
-
-#################################################### COMPARISONNNNNNNNNNNNNNNNN 
+##############################3 VIOLKINS PPR
 # Load required libraries
 library(ggplot2)
 library(dplyr)
 library(readr)
-
 # Define file paths
 file_paths <- list(
-  Lasso_derived_features = "results/GDSC2/positive/summary_results.csv",
-  Drugbank_features = "results/cv_performance/drugbank/GDSC2/performance_drugbank_drug_targets.csv",
-  Pagerank_features = "results/cv_performance/central_genes/GDSC2/performance_uniform_pagerank_central_genes.csv",
-  Lasso_Pagerank_features = "../../resum_top50_lasso.csv",
-  Drugbank_Pagerank_features = "../../resum_top50_drugbank.csv",
-  Random_features = "../../resum_top50_random.csv"
+  Lasso_Pagerank_features = "../../resums/resum_lasso_PPR.csv",
+  Drugbank_Pagerank_features = "../../resums/resum_drugbank_PPR.csv",
+  DTC_Pagerank_features = "../../resums/resum_dtc_PPR.csv",
+  all_features = "../../resums/resum_ridge_LM.csv",
+  Random_features = "../../resums/resum_random50.csv"
 )
-# Load and process data
-data_list <- lapply(names(file_paths), function(name) {
+
+# Load and process data for GDSC
+data_list_gdsc <- lapply(names(file_paths), function(name) {
   file <- file_paths[[name]]
   if (file.exists(file)) {
     data <- read_csv(file, show_col_types = FALSE)
-    if (name == "Lasso_derived_features") {
-      if ("PEARSON" %in% colnames(data)) {
-        data <- data %>%
-          select(Drug, PEARSON_Mean = PEARSON) %>%
-          filter(is.finite(PEARSON_Mean)) %>%
-          mutate(Method = name)
-      } else {
-        data <- tibble()  # Return an empty tibble if PEARSON is missing
-      }
-    } else if (name %in% c("Drugbank_features", "Pagerank_features")) {
-      if ("PEARSON_Mean" %in% colnames(data)) {
-        data <- data %>%
-          select(Drug, PEARSON_Mean) %>%
-          filter(is.finite(PEARSON_Mean)) %>%
-          mutate(Method = name)
-      } else {
-        data <- tibble()  # Return an empty tibble if PEARSON_Mean is missing
-      }
-    } else if (name %in% c("Lasso_Pagerank_features", "Drugbank_Pagerank_features", "Random_features")) {
-      if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
-        data <- data %>%
-          select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
-          filter(is.finite(PEARSON_Mean)) %>%
-          mutate(Method = name)
-      } else {
-        data <- tibble()  # Return an empty tibble if PEARSON_Mean_GDSC is missing
-      }
+    if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
     } else {
-      data <- tibble()  # Return an empty tibble for unsupported formats
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_GDSC is missing
     }
   } else {
     message(paste("File does not exist:", file))
@@ -567,30 +680,302 @@ data_list <- lapply(names(file_paths), function(name) {
   return(data)
 })
 
-# Combine all data into a single data frame
-combined_data <- bind_rows(data_list)
+combined_data_gdsc <- bind_rows(data_list_gdsc)
 
-# Ensure combined_data has the expected structure
-if (nrow(combined_data) == 0) {
-  stop("No valid data was loaded. Please check the file paths and data structure.")
-}
-
-# Generate violin and boxplot for PEARSON_Mean
-plot <- ggplot(combined_data, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+# Generate violin and boxplot for GDSC
+plot_gdsc <- ggplot(combined_data_gdsc, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
   geom_violin(trim = TRUE, alpha = 0.6) +
   geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
   theme_minimal() +
-  labs(title = "Distribution of PEARSON_Mean Across Methods",
+  labs(title = "Distribution of PEARSON_Mean Across Methods (GDSC)",
        x = "Method",
        y = "PEARSON Mean") +
   theme(legend.position = "none") +
   scale_fill_brewer(palette = "Set3")
 
-# Save the plot
-ggsave(filename = "figs/Violin_Boxplot_PEARSON_Mean_Distributions.png", plot = plot, width = 10, height = 6)
+# Save the GDSC plot
+ggsave(filename = "figs/PPR/Violin_Boxplot_PEARSON_Mean_Distributions_GDSC.png", plot = plot_gdsc, width = 10, height = 6)
+
+# Load and process data for gCSI
+data_list_gcsi <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if ("PEARSON_Mean_gCSI" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_gCSI) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
+    } else {
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_gCSI is missing
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+combined_data_gcsi <- bind_rows(data_list_gcsi)
+# Generate violin and boxplot for gCSI
+plot_gcsi <- ggplot(combined_data_gcsi, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods (gCSI)",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the gCSI plot
+ggsave(filename = "figs/PPR/Violin_Boxplot_PEARSON_Mean_Distributions_gCSI.png", plot = plot_gcsi, width = 10, height = 6)
 
 
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+# Define file paths
+file_paths <- list(
+  Lasso_Pagerank_features = "../../resums/resum_lasso_PPR.csv",
+  Drugbank_Pagerank_features = "../../resums/resum_drugbank_PPR.csv",
+  DTC_Pagerank_features = "../../resums/resum_dtc_PPR.csv",
+  all_features = "../../resums/resum_ridge_LM.csv",
+  Random_features = "../../resums/resum_random50.csv"
+)
 
+# Load and process data for GDSC
+data_list_gdsc <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
+    } else {
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_GDSC is missing
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+combined_data_gdsc <- bind_rows(data_list_gdsc)
+
+# Generate violin and boxplot for GDSC
+plot_gdsc <- ggplot(combined_data_gdsc, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods (GDSC)",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the GDSC plot
+ggsave(filename = "figs/PPR/Violin_Boxplot_PEARSON_Mean_Distributions_GDSC.png", plot = plot_gdsc, width = 10, height = 6)
+
+# Load and process data for gCSI
+data_list_gcsi <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if ("PEARSON_Mean_gCSI" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_gCSI) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
+    } else {
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_gCSI is missing
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+combined_data_gcsi <- bind_rows(data_list_gcsi)
+# Generate violin and boxplot for gCSI
+plot_gcsi <- ggplot(combined_data_gcsi, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods (gCSI)",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the gCSI plot
+ggsave(filename = "figs/PPR/Violin_Boxplot_PEARSON_Mean_Distributions_gCSI.png", plot = plot_gcsi, width = 10, height = 6)
+
+############################3violins for other files
+
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+
+# Define file paths for ridge, lasso, and en
+file_paths <- list(
+  EN = "../../resums/resum_en_derived.csv",
+  Lasso = "../../resums/resum_lasso_derived.csv",
+  Ridge = "../../resums/resum_ridge_derived.csv",
+  All_features = "../../resums/resum_ridge_LM.csv"
+)
+
+# Initialize lists to store data
+data_list <- list()
+
+# Loop through each method and collect data
+for (method in names(file_paths)) {
+  file <- file_paths[[method]]
+  if (file.exists(file)) {
+    method_data <- read_csv(file, show_col_types = FALSE) %>%
+      select(Drug, PEARSON_Mean_GDSC, PEARSON_Mean_gCSI) %>%
+      pivot_longer(cols = starts_with("PEARSON_Mean"), names_to = "Screen", values_to = "PEARSON_Mean") %>%
+      filter(is.finite(PEARSON_Mean)) %>%
+      mutate(Screen = ifelse(grepl("GDSC", Screen), "GDSC", "gCSI"),
+             Method = method)
+    data_list[[method]] <- method_data
+  } else {
+    message(paste("File does not exist:", file))
+  }
+}
+
+# Combine all data into a single data frame
+combined_data <- bind_rows(data_list)
+
+# Generate violin plot for PEARSON_Mean
+violin_plot <- ggplot(combined_data, aes(x = interaction(Screen, Method), y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "PEARSON_Mean for Ridge, Lasso, and ElasticNet",
+       x = "Screen and Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set3") +
+  scale_x_discrete(labels = function(x) gsub("\\.", "\n", x))  # Format x-axis labels
+
+# Save the violin plot
+ggsave(filename = "figs/LASSO_EN_RIDGE/Violin_PEARSON_Mean.png", plot = violin_plot, width = 12, height = 8)
+#################################################### COMPARISONNNNNNNNNNNNNNNNN 
+# Load required libraries
+library(ggplot2)
+library(dplyr)
+library(readr)
+# Define file paths
+file_paths <- list(
+  Lasso_derived_features = "../../resums/resum_lasso_LM.csv",
+  Drugbank_features = "../../resums/resum_drugbank_drug_targets.csv",
+  DTC_features = "../../resums/resum_dtc_drug_targets.csv",
+  Pagerank_features = "../../resums/resum_uniform_pagerank_central_genes.csv",
+  Lasso_Pagerank_features = "../../resums/resum_lasso_PPR.csv",
+  Drugbank_Pagerank_features = "../../resums/resum_drugbank_PPR.csv",
+  Random_features = "../../resums/resum_random50.csv",
+  All_genes = "../../resums/resum_ridge_LM.csv"
+)
+
+# Load and process data for GDSC
+data_list_gdsc <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
+    } else {
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_GDSC is missing
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+# Load and process data for gCSI
+data_list_gcsi <- lapply(names(file_paths), function(name) {
+  file <- file_paths[[name]]
+  if (file.exists(file)) {
+    data <- read_csv(file, show_col_types = FALSE)
+    if ("PEARSON_Mean_gCSI" %in% colnames(data)) {
+      data <- data %>%
+        select(Drug, PEARSON_Mean = PEARSON_Mean_gCSI) %>%
+        filter(is.finite(PEARSON_Mean)) %>%
+        mutate(Method = name)
+    } else {
+      data <- tibble()  # Return an empty tibble if PEARSON_Mean_gCSI is missing
+    }
+  } else {
+    message(paste("File does not exist:", file))
+    data <- tibble()  # Return an empty tibble if the file does not exist
+  }
+  return(data)
+})
+
+# Combine all data into single data frames
+combined_data_gdsc <- bind_rows(data_list_gdsc)
+combined_data_gcsi <- bind_rows(data_list_gcsi)
+
+# Ensure combined_data_gdsc and combined_data_gcsi have the expected structure
+if (nrow(combined_data_gdsc) == 0) {
+  stop("No valid GDSC data was loaded. Please check the file paths and data structure.")
+}
+if (nrow(combined_data_gcsi) == 0) {
+  stop("No valid gCSI data was loaded. Please check the file paths and data structure.")
+}
+
+# Generate violin and boxplot for GDSC
+plot_gdsc <- ggplot(combined_data_gdsc, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods (GDSC)",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the GDSC plot
+ggsave(filename = "figs/Overall/Violin_Boxplot_PEARSON_Mean_Distributions_GDSC.png", plot = plot_gdsc, width = 10, height = 6)
+
+# Generate violin and boxplot for gCSI
+plot_gcsi <- ggplot(combined_data_gcsi, aes(x = Method, y = PEARSON_Mean, fill = Method)) +
+  geom_violin(trim = TRUE, alpha = 0.6) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  theme_minimal() +
+  labs(title = "Distribution of PEARSON_Mean Across Methods (gCSI)",
+       x = "Method",
+       y = "PEARSON Mean") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Set3")
+
+# Save the gCSI plot
+ggsave(filename = "figs/Overall/Violin_Boxplot_PEARSON_Mean_Distributions_gCSI.png", plot = plot_gcsi, width = 10, height = 6)
+
+
+# Perform Wilcoxon tests for GDSC and gCSI
+wilcoxon_results_GDSC <- run_wilcoxon_tests_no_size(filtered_data_GDSC)
+wilcoxon_results_gCSI <- run_wilcoxon_tests_no_size(filtered_data_gCSI)
+
+# Save the results to CSV files
+write.csv(wilcoxon_results_GDSC, "results/wilcoxon_results_GDSC.csv", row.names = FALSE)
+write.csv(wilcoxon_results_gCSI, "results/wilcoxon_results_gCSI.csv", row.names = FALSE)
+
+# Print the results
+print(wilcoxon_results_GDSC)
+print(wilcoxon_results_gCSI)
 
 ################33 END COMPARISON
 
@@ -769,6 +1154,113 @@ prepared_combined_data <- prepare_combined_data(combined_data, file_paths)
 write.csv(prepared_combined_data, "results/prepared_combined_data.csv", row.names = FALSE)
 
 wilcoxon <- run_wilcoxon_tests_no_size(prepared_combined_data)
+
+
+##############################################################################################
+##############################################################################################
+        ############################## WILCOXON #######################################
+##############################################################################################
+##############################################################################################
+##############################################################################################
+
+# Load required libraries
+library(dplyr)
+library(tidyr)
+
+# Define the folder path
+folder_path <- "../../resums/"
+
+# Get the list of CSV files in the folder
+# Prompt the user to choose the pattern for filtering files
+
+choice <- 2
+
+# Set the pattern based on the user's choice
+if (choice == 1) {
+  pattern <- "\\_(drug_targets|ridge_LM)\\.csv$"
+} else if (choice == 2) {
+  pattern <- "\\_(PPR|ridge_LM)\\.csv$"
+} else if (choice == 3){
+  pattern <- "\\_(central_genes|ridge_LM)\\.csv$"
+} else if (choice == 4) {
+  pattern <- "\\_(PPR|ridge_LM)\\.csv$"
+} else {
+  stop("Invalid choice. Please run the script again and choose 1 or 2.")
+}
+
+# List files based on the chosen pattern
+csv_files <- list.files(folder_path, pattern = pattern, full.names = TRUE)
+
+csv_files <- list(
+  Lasso_derived_features = "../../resums/resum_lasso_derived.csv",
+  Drugbank_features = "../../resums/resum_drugbank_drug_targets.csv",
+  Pagerank_features = "../../resums/resum_uniform_pagerank_central_genes.csv",
+  Lasso_Pagerank_features = "../../resums/resum_lasso_PPR.csv",
+  Drugbank_Pagerank_features = "../../resums/resum_drugbank_PPR.csv",
+  Random_features = "../../resums/resum_random50.csv",
+  All_features = "../../resums/resum_ridge_LM.csv",
+)
+
+# Initialize empty data frames to store combined data for GDSC and gCSI
+combined_data_GDSC <- data.frame(
+  Drug = character(),
+  PEARSON_Mean = numeric(),
+  Method = character(),
+  stringsAsFactors = FALSE
+)
+
+combined_data_gCSI <- data.frame(
+  Drug = character(),
+  PEARSON_Mean = numeric(),
+  Method = character(),
+  stringsAsFactors = FALSE
+)
+
+# Loop through each file and extract PEARSON_Mean data for GDSC and gCSI
+for (file in csv_files) {
+  # Extract the method name from the file name
+  method_name <- gsub("\\.csv$", "", basename(file))
+  
+  # Read the CSV file
+  data <- read.csv(file)
+  
+  # Process GDSC data
+  if ("PEARSON_Mean_GDSC" %in% colnames(data)) {
+    gdsc_data <- data %>%
+      select(Drug, PEARSON_Mean = PEARSON_Mean_GDSC) %>%
+      mutate(Method = method_name)
+    
+    # Append to the combined GDSC data
+    combined_data_GDSC <- bind_rows(combined_data_GDSC, gdsc_data)
+  }
+  
+  # Process gCSI data
+  if ("PEARSON_Mean_gCSI" %in% colnames(data)) {
+    gcsi_data <- data %>%
+      select(Drug, PEARSON_Mean = PEARSON_Mean_gCSI) %>%
+      mutate(Method = method_name)
+    
+    # Append to the combined gCSI data
+    combined_data_gCSI <- bind_rows(combined_data_gCSI, gcsi_data)
+  }
+}
+
+# Ensure combined_data_GDSC and combined_data_gCSI have valid PEARSON_Mean values
+filtered_data_GDSC <- combined_data_GDSC %>%
+  filter(is.finite(PEARSON_Mean))
+
+filtered_data_gCSI <- combined_data_gCSI %>%
+  filter(is.finite(PEARSON_Mean))
+# Perform Wilcoxon tests for GDSC and gCSI
+wilcoxon_results_GDSC <- run_wilcoxon_tests_no_size(filtered_data_GDSC)
+wilcoxon_results_gCSI <- run_wilcoxon_tests_no_size(filtered_data_gCSI)
+
+# Save the results to CSV files
+write.csv(wilcoxon_results_GDSC, "results/wilcoxon_results_GDSC.csv", row.names = FALSE)
+write.csv(wilcoxon_results_gCSI, "results/wilcoxon_results_gCSI.csv", row.names = FALSE)
+
+print(wilcoxon_results_GDSC)
+print(wilcoxon_results_gCSI)
 
 # Barplots
 ######   plot_pearson_barplot(filtered_combined, 10, "figs/Barplot_10_features.png", "RdYlGn")

@@ -212,6 +212,9 @@ train.model.and.get.results <- function(source_data, drug, model_type, output_fe
   gene_corrs <- compute.gene.correlations(features, test_data, eval_info$y_test, drug)
   write.csv(gene_corrs, output_corrs)
   
+  # Extract all Pearson correlation observations
+  all_pearson_observations <- cor(eval_info$y_test, eval_info$y_pred, method = "pearson")
+  
   # Perform cross-validation
   #    cv <- perform.cv(test_data, drug)
   
@@ -227,8 +230,8 @@ train.model.and.get.results <- function(source_data, drug, model_type, output_fe
     model = model_info$model,
     eval = eval_info$eval_metrics,
     features_selected = features,
-    gene_correlations = gene_corrs
-    #cross_validation_avg = cross_val_avg
+    gene_correlations = gene_corrs,
+    all_pearson_observations = all_pearson_observations
   )
   
   # Store dimensions of training / testing data
@@ -317,6 +320,85 @@ k.fold.linear.model <- function(data_to_split, drug, num_folds) {
   return(summary_results)
 }
 
+evaluate.feature.set <- function(path_to_feature_set, data_to_split, drug, num_folds) {
+  feature_set <- readLines(path_to_feature_set)
+  feature_set <- unlist(feature_set)  # Ensure feature_set is a character vector
+  filtered_data <- list()
+  filtered_data$expression <- data_to_split$expression %>%
+    select(any_of(c("Cell_line", feature_set)))
+  filtered_data$response <- data_to_split$response
+
+  if (is.null(filtered_data) || !("expression" %in% names(filtered_data)) || !("response" %in% names(filtered_data))) {
+    stop("filtered_data is NULL or does not contain the required 'expression' and 'response' components for drug:", drug) 
+  }
+  
+  data <- prepare.data.for.ml(filtered_data, drug)
+  responses <- data$AAC
+  cv_folds <- createFolds(responses, k = num_folds, list = TRUE)
+  
+  results <- data.frame(Drug = character(), MSE = numeric(), RMSE = numeric(), MAE = numeric(), R2 = numeric(), PEARSON = numeric())
+  
+  for (fold_idx in seq_along(cv_folds)) {
+    # Split data for this fold
+    train_indices <- unlist(cv_folds[-fold_idx])  # All but one fold for training
+    test_indices <- unlist(cv_folds[fold_idx])  # The held-out fold for testing
+    
+    train_data <- data[train_indices, ]
+    test_data <- data[test_indices, ]
+    
+    # Prepare training and testing data
+    X_train <- as.matrix(train_data %>% select(-AAC))
+    y_train <- train_data$AAC
+    X_test <- as.matrix(test_data %>% select(-AAC))
+    y_test <- test_data$AAC
+    
+    # Fit Lasso model
+    lasso_model <- cv.glmnet(X_train, y_train, alpha = 1)  # Lasso regression
+    best_lambda <- lasso_model$lambda.min
+    final_model <- glmnet(X_train, y_train, alpha = 1, lambda = best_lambda)
+    
+    # Predict on test data
+    y_pred <- predict(final_model, newx = X_test)
+    y_pred <- as.vector(y_pred)
+    
+    # Evaluate model performance
+    eval_metrics <- evaluate_regression(y_test, y_pred)
+    
+    # Append results for this fold
+    fold_results <- data.frame(
+      Drug = drug,
+      MSE = eval_metrics$MSE,
+      RMSE = eval_metrics$RMSE,
+      MAE = eval_metrics$MAE,
+      R2 = eval_metrics$R2,
+      PEARSON = eval_metrics$PEARSON
+    )
+    results <- rbind(results, fold_results)
+  }
+  
+  # Compute mean and standard deviation of metrics
+  numeric_results <- results[, sapply(results, is.numeric)]
+  mean_results <- colMeans(numeric_results, na.rm = TRUE)
+  sd_results <- apply(numeric_results, 2, sd, na.rm = TRUE)
+  
+  # Create summary dataframe
+  summary_results <- data.frame(
+    Drug = drug,
+    MSE_Mean = mean_results["MSE"],
+    MSE_SD = sd_results["MSE"],
+    RMSE_Mean = mean_results["RMSE"],
+    RMSE_SD = sd_results["RMSE"],
+    MAE_Mean = mean_results["MAE"],
+    MAE_SD = sd_results["MAE"],
+    R2_Mean = mean_results["R2"],
+    R2_SD = sd_results["R2"],
+    PEARSON_Mean = mean_results["PEARSON"],
+    PEARSON_SD = sd_results["PEARSON"]
+  )
+  
+  return(summary_results)
+}
+
 
 compute.cv.for.pagerank.input <- function(path_pagerank_genes, data, drug, num_folds) {
   pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
@@ -329,7 +411,8 @@ compute.cv.for.pagerank.input <- function(path_pagerank_genes, data, drug, num_f
     filtered_data <- list()
     filtered_data$expression <- data$expression %>% select(c("Cell_line", pagerank_genes))
     filtered_data$response <- data$response
-    results_drug <- k.fold.linear.model(filtered_data, drug, num_folds)
+    #results_drug <- k.fold.linear.model(filtered_data, drug, num_folds)
+    results_drug <- evaluate.feature.set(filtered_data, drug, num_folds)
     return(results_drug)
   }
 
@@ -355,6 +438,7 @@ process.results.pagerank <- function(path_pagerank_output, drug, feature_size, t
   return(results_cv)
 }
 
+
 # pagerank_cv_helpers.R
 
 init.results <- function(results, methods, screens, sizes) {
@@ -374,24 +458,23 @@ init.results <- function(results, methods, screens, sizes) {
   return(results)
 }
 
+init.results.wo.methods.and.sizes <- function(method, results, screens) {
+  results <-  list()
+  for (screen in screens) {
+    key <- paste0(method, "_", screen, "_derived")
+    results[[key]] <- list()
+  }
+  return(results)
+}
+
 #given a path gene_set_file_path with a subset of genes, performs 10-fold cv per drug
 run.cv.gene.set.per.drug <- function(results, screen, drugs, gene_set_name, gene_set_file_path, target_data, config, num_folds) {
   
-  genes <- load_pagerank_feature_list(gene_set_file_path)
-  genes <- genes[genes %in% colnames(source_data$expression)]
-  print(paste0("Total number of genes used while training in ", screen, " for ", gene_set_name, ": ", length(genes)))
-  
-  if (length(genes) == 0 || is.null(genes)) {
-    # Handle the case when gene_list is NULL or empty
-    cat("Gene list file is empty or NULL\n")
-    return(NULL)
-  } else {
-    filtered_target$expression <- target_data$expression %>% select(c("Cell_line", genes))
-    filtered_target$response <- target_data$response
-  }
   for (drug in drugs) {
     #cat("Processing drug:", drug, "with size:", size, "\n")  #  ADD THIS
-    result <- compute.cv.for.pagerank.input(gene_set_file_path, filtered_target, drug, num_folds) # 10 is num_folds
+    gene_set_path <- file.path(gene_set_file_path, paste0(drug, ".txt"))
+    #result <- compute.cv.for.pagerank.input(gene_set_path, target_data, drug, num_folds) # 10 is num_folds
+    result <- evaluate.feature.set(gene_set_path, target_data, drug, num_folds)
     key <- paste0(gene_set_name, "_", screen)
     results[[key]] <- rbind(results[[key]], result)
   }
@@ -410,6 +493,27 @@ run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data
     }
   }
   return(results)
+}
+
+#method is wither lasso, ridge or en
+run.lasso.derived.cv <- function(method, results, screen, drugs, source_data, target_data, num_folds) {
+  for (drug in drugs) {
+    #cat("Processing drug:", drug, "\n")  
+    path <- file.path("results", screen, "positive", method, "features", paste0(drug, ".txt"))
+    result <- compute.cv.for.pagerank.input(path, target_data, drug, num_folds)
+    key <- paste0(method, "_", screen, "_derived")
+    results[[key]] <- rbind(results[[key]], result)
+  }
+  return(results)
+}
+
+write.results.lasso.en.ridge <- function(results, screens, method, config) {
+  for (screen in screens) {
+    key <- paste0(method, "_", screen)
+    out_path <- paste0("results/cv_performance/", method, "/", screen, "/performance_", method, "_lasso_en_ridge.csv")
+    write.csv(results[[key]], out_path, row.names = FALSE)
+    print(paste0("Written results of 10-fold CV for ", method, " in screen ", screen, " at ", out_path))
+  }
 }
 
 write.results.drug.targets <- function(results, screens, drug_target_source, config) {
@@ -440,6 +544,15 @@ write.lasso.results <- function(results, screens, sizes, config) {
       print(out_path)
       write.csv(results[[key]], out_path, row.names = FALSE)
     }
+  }
+}
+
+write.lasso.derived.results <- function(method, results, screens, config) {
+  for (screen in screens) {
+    key <- paste0(method, "_", screen, "_derived")
+    out_path <- file.path("results", "cv_performance", paste0(method, "_derived"), screen, paste0(method, "_performance_derived_features.csv"))
+    print(out_path)
+    write.csv(results[[key]], out_path, row.names = FALSE)
   }
 }
 
