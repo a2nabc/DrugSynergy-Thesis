@@ -1,0 +1,45 @@
+# you need to specify a default configuration
+# we probably only need one for these experiments
+
+default:
+  source.screen: "Broad"
+  source.expression: !expr paste0("./data/processed/", source.screen, "/expression.csv")
+  source.response: !expr paste0("./data/processed/", source.screen, "/responses.csv")
+  gene.sets: !expr c('KEGG', 'LINCS')
+  gene.sets.path: "./data/gene_subsets/"
+  target.screen: "gCSI"
+  target.expression: !expr paste0("./data/processed/", target.screen, "/expression.csv")
+  target.response: !expr paste0("./data/processed/", target.screen, "/responses.csv")
+  models: !expr c('lasso','en','ridge')
+  drugs: "./data/common_drugs.txt"
+  experiment.type.is.positive: "false"
+  results.dir: "./results/"
+  results.features.dir: "features/"
+  results.eval.dir: "evaluation/"
+  results.correlations.dir: "correlations/"
+  results.cv.dir: "cv/"
+  results.metadata.dir: "metadata/"
+  path.to.processed.screens: "./data/processed/"
+  screens: !expr c('GDSC2', 'Broad', 'gCSI')
+  target.screens: !expr c('GDSC2', 'gCSI')
+  name.ccl.file: "ccl_data.csv"
+  figs.dir: "./figs/"
+  results.pagerank.features.dir: "pagerank_genes/"         #innecessari, crec
+  drugbank.data.file: "drugbank/AffectedGenesByDrug.txt"
+  results.pagerank.output: "results/pagerank_output/"
+  drugbank.subfolder: "drugbank/drugwise/"
+  dtc.subfolder: "dtc/drugwise/"
+  results.cv.performance: "results/cv_performance/"
+  results.cv.random.subdir: "results/cv_performance/random_pagerank_input/"
+  results.cv.lasso.subdir: "results/cv_performance/lasso_pagerank_input/"
+  results.cv.lasso.gdsc: "results/cv_performance/lasso_pagerank_input/GDSC2"
+  results.cv.lasso.gcsi: "results/cv_performance/lasso_pagerank_input/gCSI"
+  results.cv.drugbank.subdir: "results/cv_performance/drugtargets_drugbank_pagerank_input/"
+  results.cv.dtc.subdir: "results/cv_performance/drugtargets_dtc_pagerank_input/"
+  drugbank.gene.set: "data/drugbank_gene_set.txt"
+  dtc.gene.set: "data/dtc_gene_set.txt"
+  betweenness.gene.set: "results/centrality_measures/betweenness_top_50.txt"
+  degree.gene.set: "results/centrality_measures/degree_top_50.txt"
+  eigenvector.gene.set: "results/centrality_measures/eigenvector_top_50.txt"
+  uniform.pagerank.gene.set: "results/centrality_measures/pagerank_top_50.txt"
+  
