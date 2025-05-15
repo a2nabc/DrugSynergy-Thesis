@@ -319,8 +319,27 @@ k.fold.linear.model <- function(data_to_split, drug, num_folds) {
   
   return(summary_results)
 }
-
 evaluate.feature.set <- function(path_to_feature_set, data_to_split, drug, num_folds) {
+  if (!file.exists(path_to_feature_set)) {
+    cat("Error: The file at path", path_to_feature_set, "does not exist.\n")
+    return(list(
+      summary = data.frame(
+        Drug = drug,
+        MSE_Mean = -1000,
+        MSE_SD = -1000,
+        RMSE_Mean = -1000,
+        RMSE_SD = -1000,
+        MAE_Mean = -1000,
+        MAE_SD = -1000,
+        R2_Mean = -1000,
+        R2_SD = -1000,
+        PEARSON_Mean = -1000,
+        PEARSON_SD = -1000
+      ),
+      fold_results = list()
+    ))
+  }
+
   feature_set <- readLines(path_to_feature_set)
   feature_set <- unlist(feature_set)  # Ensure feature_set is a character vector
   filtered_data <- list()
@@ -337,43 +356,65 @@ evaluate.feature.set <- function(path_to_feature_set, data_to_split, drug, num_f
   cv_folds <- createFolds(responses, k = num_folds, list = TRUE)
   
   results <- data.frame(Drug = character(), MSE = numeric(), RMSE = numeric(), MAE = numeric(), R2 = numeric(), PEARSON = numeric())
+  fold_results_list <- list()
   
   for (fold_idx in seq_along(cv_folds)) {
-    # Split data for this fold
-    train_indices <- unlist(cv_folds[-fold_idx])  # All but one fold for training
-    test_indices <- unlist(cv_folds[fold_idx])  # The held-out fold for testing
-    
-    train_data <- data[train_indices, ]
-    test_data <- data[test_indices, ]
-    
-    # Prepare training and testing data
-    X_train <- as.matrix(train_data %>% select(-AAC))
-    y_train <- train_data$AAC
-    X_test <- as.matrix(test_data %>% select(-AAC))
-    y_test <- test_data$AAC
-    
-    # Fit Lasso model
-    lasso_model <- cv.glmnet(X_train, y_train, alpha = 1)  # Lasso regression
-    best_lambda <- lasso_model$lambda.min
-    final_model <- glmnet(X_train, y_train, alpha = 1, lambda = best_lambda)
-    
-    # Predict on test data
-    y_pred <- predict(final_model, newx = X_test)
-    y_pred <- as.vector(y_pred)
-    
-    # Evaluate model performance
-    eval_metrics <- evaluate_regression(y_test, y_pred)
-    
-    # Append results for this fold
-    fold_results <- data.frame(
-      Drug = drug,
-      MSE = eval_metrics$MSE,
-      RMSE = eval_metrics$RMSE,
-      MAE = eval_metrics$MAE,
-      R2 = eval_metrics$R2,
-      PEARSON = eval_metrics$PEARSON
-    )
-    results <- rbind(results, fold_results)
+    tryCatch({
+      # Split data for this fold
+      train_indices <- unlist(cv_folds[-fold_idx])  # All but one fold for training
+      test_indices <- unlist(cv_folds[fold_idx])  # The held-out fold for testing
+      
+      train_data <- data[train_indices, ]
+      test_data <- data[test_indices, ]
+      
+      # Prepare training and testing data
+      X_train <- as.matrix(train_data %>% select(-AAC))
+      y_train <- train_data$AAC
+      X_test <- as.matrix(test_data %>% select(-AAC))
+      y_test <- test_data$AAC
+      
+      # Ensure X_train has at least two columns
+      if (ncol(X_train) < 2) {
+        stop("X_train must have at least two columns for glmnet.")
+      }
+      
+      # Fit Lasso model
+      lasso_model <- cv.glmnet(X_train, y_train, alpha = 1)  # Lasso regression
+      best_lambda <- lasso_model$lambda.min
+      final_model <- glmnet(X_train, y_train, alpha = 1, lambda = best_lambda)
+      
+      # Predict on test data
+      y_pred <- predict(final_model, newx = X_test)
+      y_pred <- as.vector(y_pred)
+      
+      # Evaluate model performance
+      eval_metrics <- evaluate_regression(y_test, y_pred)
+      
+      # Append results for this fold
+      fold_results <- data.frame(
+        Drug = drug,
+        MSE = eval_metrics$MSE,
+        RMSE = eval_metrics$RMSE,
+        MAE = eval_metrics$MAE,
+        R2 = eval_metrics$R2,
+        PEARSON = eval_metrics$PEARSON
+      )
+      results <- rbind(results, fold_results)
+      fold_results_list[[paste0("Fold_", fold_idx)]] <- eval_metrics
+    }, error = function(e) {
+      cat("Training stopped for drug:", drug, "at fold:", fold_idx, "\n")
+      # Append -1 for all metrics in case of failure
+      fold_results <- data.frame(
+        Drug = drug,
+        MSE = -1000,
+        RMSE = -1000,
+        MAE = -1000,
+        R2 = -1000,
+        PEARSON = -1000
+      )
+      results <- rbind(results, fold_results)
+      fold_results_list[[paste0("Fold_", fold_idx)]] <- list(MSE = -1000, RMSE = -1000, MAE = -1000, R2 = -1000, PEARSON = -1000)
+    })
   }
   
   # Compute mean and standard deviation of metrics
@@ -396,9 +437,8 @@ evaluate.feature.set <- function(path_to_feature_set, data_to_split, drug, num_f
     PEARSON_SD = sd_results["PEARSON"]
   )
   
-  return(summary_results)
+  return(list(summary = summary_results, fold_results = fold_results_list))
 }
-
 
 compute.cv.for.pagerank.input <- function(path_pagerank_genes, data, drug, num_folds) {
   pagerank_genes <- load_pagerank_feature_list(path_pagerank_genes)
@@ -413,6 +453,7 @@ compute.cv.for.pagerank.input <- function(path_pagerank_genes, data, drug, num_f
     filtered_data$response <- data$response
     #results_drug <- k.fold.linear.model(filtered_data, drug, num_folds)
     results_drug <- evaluate.feature.set(filtered_data, drug, num_folds)
+    results_drug <- results_drug$summary
     return(results_drug)
   }
 
@@ -467,19 +508,140 @@ init.results.wo.methods.and.sizes <- function(method, results, screens) {
   return(results)
 }
 
+
+
+#given a path gene_set_file_path with a subset of genes, performs 10-fold cv per drug
+run.cv.gene.set.per.drug.ppr <- function(results, screen, drugs, gene_set_name, gene_set_file_path, target_data, config, num_folds) {
+  
+  for (drug in drugs) {
+  #cat("Processing drug:", drug, "with size:", size, "\n")  #  ADD THIS
+  if (grepl("\\.txt$", gene_set_file_path)) {
+    gene_set_path <- gene_set_file_path
+  } else {
+    gene_set_path <- file.path(gene_set_file_path, paste0(drug, "_50.txt"))
+  }
+  result <- evaluate.feature.set(gene_set_path, target_data, drug, num_folds)
+  
+  # Extract summary and per-fold results
+  summary_result <- result$summary
+  fold_results <- result$fold_results
+  
+  # Store summary results
+  key <- paste0(gene_set_name, "_", screen)
+  results[[key]] <- rbind(results[[key]], summary_result)
+  
+  # Store per-fold results
+  fold_key <- paste0(gene_set_name, "_", screen, "_folds")
+  if (is.null(results[[fold_key]])) {
+    results[[fold_key]] <- list()
+  }
+  results[[fold_key]][[drug]] <- fold_results
+  }
+  
+  return(results)
+}
+
 #given a path gene_set_file_path with a subset of genes, performs 10-fold cv per drug
 run.cv.gene.set.per.drug <- function(results, screen, drugs, gene_set_name, gene_set_file_path, target_data, config, num_folds) {
   
   for (drug in drugs) {
-    #cat("Processing drug:", drug, "with size:", size, "\n")  #  ADD THIS
+  #cat("Processing drug:", drug, "with size:", size, "\n")  #  ADD THIS
+  if (grepl("\\.txt$", gene_set_file_path)) {
+    gene_set_path <- gene_set_file_path
+  } else {
     gene_set_path <- file.path(gene_set_file_path, paste0(drug, ".txt"))
-    #result <- compute.cv.for.pagerank.input(gene_set_path, target_data, drug, num_folds) # 10 is num_folds
-    result <- evaluate.feature.set(gene_set_path, target_data, drug, num_folds)
-    key <- paste0(gene_set_name, "_", screen)
-    results[[key]] <- rbind(results[[key]], result)
+  }
+  result <- evaluate.feature.set(gene_set_path, target_data, drug, num_folds)
+  
+  # Extract summary and per-fold results
+  summary_result <- result$summary
+  fold_results <- result$fold_results
+  
+  # Store summary results
+  key <- paste0(gene_set_name, "_", screen)
+  results[[key]] <- rbind(results[[key]], summary_result)
+  
+  # Store per-fold results
+  fold_key <- paste0(gene_set_name, "_", screen, "_folds")
+  if (is.null(results[[fold_key]])) {
+    results[[fold_key]] <- list()
+  }
+  results[[fold_key]][[drug]] <- fold_results
   }
   
   return(results)
+}
+plot_pearson_distribution_filtering <- function(results, screen, gene_set_name, output_file) {
+  # Extract fold results for the specified screen and gene set
+  fold_key <- paste0(gene_set_name, "_", screen, "_folds")
+  fold_results <- results[[fold_key]]
+  
+  if (is.null(fold_results)) {
+    stop("No fold results found for the specified screen and gene set.")
+  }
+  
+  # Prepare data for plotting
+  plot_data <- do.call(rbind, lapply(names(fold_results), function(drug) {
+    pearson_values <- sapply(fold_results[[drug]], function(fold) fold$PEARSON)
+    if (length(pearson_values) > 0) {
+      data.frame(
+        Drug = drug,
+        Pearson = pearson_values
+      )
+    } else {
+      NULL
+    }
+  }))
+  
+  if (is.null(plot_data) || nrow(plot_data) == 0) {
+    stop("No valid Pearson values found for plotting.")
+  }
+  
+  # Create the plot
+  library(ggplot2)
+  plot <- ggplot(plot_data, aes(x = Drug, y = Pearson, fill = Drug)) +
+    geom_boxplot(alpha = 0.7) +
+    theme_minimal() +
+    labs(
+      title = paste("Distribution of Pearson values across folds for", gene_set_name, "feature set in", screen),
+      x = "Drug",
+      y = "Pearson Correlation"
+    ) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  # Save the plot
+  ggsave(filename = output_file, plot = plot, width = 12, height = 6)
+}
+
+
+plot_pearson_distribution <- function(results, screen, gene_set_name) {
+  # Extract fold results for the specified screen and gene set
+  fold_key <- paste0(gene_set_name, "_", screen, "_folds")
+  fold_results <- results[[fold_key]]
+  
+  if (is.null(fold_results)) {
+    stop("No fold results found for the specified screen and gene set.")
+  }
+  
+  # Prepare data for plotting
+  plot_data <- do.call(rbind, lapply(names(fold_results), function(drug) {
+    data.frame(
+      Drug = drug,
+      Pearson = sapply(fold_results[[drug]], function(fold) fold$PEARSON)
+    )
+  }))
+  
+  # Create the plot
+  library(ggplot2)
+  ggplot(plot_data, aes(x = Drug, y = Pearson, fill = Drug)) +
+    geom_boxplot(alpha = 0.7) +
+    theme_minimal() +
+    labs(
+      title = "Distribution of Pearson Values Across Folds",
+      x = "Drug",
+      y = "Pearson Correlation"
+    ) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 
 run.lasso.cv <- function(results, screen, sizes, drugs, source_data, target_data, config, num_folds) {
@@ -506,17 +668,60 @@ run.lasso.derived.cv <- function(method, results, screen, drugs, source_data, ta
   }
   return(results)
 }
-
 write.results.lasso.en.ridge <- function(results, screens, method, config) {
   for (screen in screens) {
     key <- paste0(method, "_", screen)
     out_path <- paste0("results/cv_performance/", method, "/", screen, "/performance_", method, "_lasso_en_ridge.csv")
-    write.csv(results[[key]], out_path, row.names = FALSE)
+    
+    # Select only the required columns
+    filtered_results <- results[[key]][, c("Drug", "PEARSON_Mean", "PEARSON_SD", "RMSE_Mean", "RMSE_SD")]
+    
+    write.csv(filtered_results, out_path, row.names = FALSE)
+    print(paste0("Written results of 10-fold CV for ", method, " in screen ", screen, " at ", out_path))
+  }
+}
+#methos is ppr-lasso, ppr-db, ppr-dtc
+#method is drugbank or dtc
+write.results.ppr <- function(results, screens, method, config) {
+  for (screen in screens) {
+    key <- paste0(method, "_", screen)
+    out_path <- paste0("results/cv_performance/PPR/", method, "/", screen, "/performance_", method, ".csv")
+    
+    # Select only the required columns
+    filtered_results <- results[[key]][, c("Drug", "PEARSON_Mean", "PEARSON_SD", "RMSE_Mean", "RMSE_SD")]
+    
+    write.csv(filtered_results, out_path, row.names = FALSE)
     print(paste0("Written results of 10-fold CV for ", method, " in screen ", screen, " at ", out_path))
   }
 }
 
-write.results.drug.targets <- function(results, screens, drug_target_source, config) {
+#method is drugbank or dtc
+write.results.drug.targets <- function(results, screens, method, config) {
+  for (screen in screens) {
+    key <- paste0(method, "_", screen)
+    out_path <- paste0("results/cv_performance/", method, "/", screen, "/performance_", method, "_drug_targets.csv")
+    
+    # Select only the required columns
+    filtered_results <- results[[key]][, c("Drug", "PEARSON_Mean", "PEARSON_SD", "RMSE_Mean", "RMSE_SD")]
+    
+    write.csv(filtered_results, out_path, row.names = FALSE)
+    print(paste0("Written results of 10-fold CV for ", method, " in screen ", screen, " at ", out_path))
+  }
+}
+write.results.centrality <- function(results, screens, centrality_measures, config) {
+  for (screen in screens) {
+    for (measure in centrality_measures) {
+      key <- paste0(measure, "_", screen)
+      out_path <- file.path("results", "cv_performance", "centrality", screen, paste0("performance_", measure, "_centrality.csv"))
+      dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
+      write.csv(results[[key]], out_path, row.names = FALSE)
+      print(paste0("Written results of 10-fold CV for ", measure, " centrality in screen ", screen, " at ", out_path))
+    }
+  }
+}
+
+
+write.results.drug.targets2 <- function(results, screens, drug_target_source, config) {
   for (screen in screens) {
     key <- paste0(drug_target_source, "_", screen)
     out_path <- paste0("results/cv_performance/", drug_target_source, "/", screen, "/performance_", drug_target_source, "_drug_targets.csv")

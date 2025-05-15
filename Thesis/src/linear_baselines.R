@@ -144,30 +144,8 @@ for (screen in config$target.screens){
 
 generate_violin_plots_all_in_one(paste0(config$results.dir, "GDSC2"), paste0(config$results.dir, "gCSI"), "summary_results.csv", paste0(config$figs.dir, screen))
 
-############################################################# K-FOLD CROSS VALIDATION FOR ALL THE GENES IN THE DATA ########################
-# Perform 10-fold CV for both screens (GDSC2 and gCSI) using all genes in the original data
-results_all_genes <- list()
-
-for (screen in config$target.screens) {
-  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
-  data_response <- paste0("./data/processed/", screen, "/responses.csv")
-  data <- load_data(data_expression, data_response)
-  
-  num_folds <- 10
-  for (drug in common_drugs) {
-    result_drug <- k.fold.linear.model(data, drug, num_folds)
-    results_all_genes[[paste0(screen, "_", drug)]] <- result_drug
-  }
-}
-
-# Combine results into a single data frame
-results_all_genes_df <- do.call(rbind, results_all_genes)
-
-# Save results to a CSV file
-write.csv(results_all_genes_df, file = paste0(config$results.dir, "/cv_performance/PC_genes/", "cv_results_all_genes.csv"), row.names = FALSE)
 
 ############################################################# K-FOLD CROSS VALIDATION FOR GIVEN GENE SETS ######################## --> OK
-
 
 results_lasso <- list()
 results_en <- list()
@@ -237,6 +215,64 @@ write.results.lasso.en.ridge(results_lasso, config$target.screens, "lasso", conf
 write.results.lasso.en.ridge(results_ridge, config$target.screens, "ridge", config)
 write.results.lasso.en.ridge(results_en, config$target.screens, "en", config)
 
+################################################# PLOT DRUG-WISE PERFORMANCE ##################################
+# Define a function to generate the drug-wise PEARSON barplot
+generate_pearson_barplot <- function(folder_paths, output_file) {
+  # Load required libraries
+  library(ggplot2)
+  library(dplyr)
+  
+  # Initialize an empty data frame to store results
+  pearson_data <- data.frame(Drug = character(), PEARSON_Mean = numeric(), Model = character(), stringsAsFactors = FALSE)
+  
+  # Loop through each folder and calculate the mean of eval_metrics.PEARSON
+  for (model in names(folder_paths)) {
+    folder_path <- folder_paths[[model]]
+    csv_files <- list.files(folder_path, pattern = "\\.csv$", full.names = TRUE)
+    
+    for (file in csv_files) {
+      # Extract the drug name from the file name
+      drug_name <- gsub("\\.csv$", "", basename(file))
+      
+      # Read the CSV file
+      data <- read.csv(file)
+      
+      # Check if the column exists and calculate the mean
+      if ("eval_metrics.PEARSON" %in% colnames(data)) {
+        pearson_mean <- mean(data$eval_metrics.PEARSON, na.rm = TRUE)
+        pearson_data <- rbind(pearson_data, data.frame(
+          Drug = drug_name,
+          PEARSON_Mean = pearson_mean,
+          Model = model
+        ))
+      }
+    }
+  }
+  
+  # Create the barplot without vertical lines
+  plot <- ggplot(pearson_data, aes(x = Drug, y = PEARSON_Mean, fill = Model)) +
+    geom_bar(stat = "identity", position = "dodge") +
+    theme_minimal() +
+    labs(title = "Mean PEARSON Values for Each Drug and Model",
+         x = "Drug",
+         y = "Mean PEARSON",
+         fill = "Model") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+  
+  # Save the plot
+  ggsave(filename = output_file, plot = plot, width = 12, height = 6)
+}
+
+# Call the function with the specified folder paths and output file
+folder_paths <- list(
+  lasso = "/home/anna/Desktop/BHK/Thesis/results/GDSC2/negative/lasso/evaluation",
+  en = "/home/anna/Desktop/BHK/Thesis/results/GDSC2/negative/en/evaluation",
+  ridge = "/home/anna/Desktop/BHK/Thesis/results/GDSC2/negative/ridge/evaluation"
+)
+output_file <- "/home/anna/Desktop/BHK/Thesis/results/gCSI/positive/evaluation/pearson_barplot_combined.png"
+
+generate_pearson_barplot(folder_paths, output_file)
+
 #################################################
 
 
@@ -251,11 +287,27 @@ for (screen in config$target.screens) {
   data_expression <- paste0("./data/processed/", screen, "/expression.csv")
   data_response <- paste0("./data/processed/", screen, "/responses.csv")
   data <- load_data(data_expression, data_response)
-  results_biological_priors_drugbank <- run.cv.gene.set.per.drug(results_biological_priors_drugbank, screen, common_drugs, "drugbank", config$drugbank.gene.set, data, config, 10)
-  results_biological_priors_dtc <- run.cv.gene.set.per.drug(results_biological_priors_dtc, screen, common_drugs, "dtc", config$dtc.gene.set, data, config, 10)
+  folder_drugbank <- "results/drugbank/features/"
+  folder_dtc <- "results/dtc/features/"
+  results_biological_priors_drugbank <- run.cv.gene.set.per.drug(results_biological_priors_drugbank, screen, common_drugs, "drugbank", folder_drugbank, data, config, 10)
+  results_biological_priors_dtc <- run.cv.gene.set.per.drug(results_biological_priors_dtc, screen, common_drugs, "dtc", folder_dtc, data, config, 10)
 }
 write.results.drug.targets(results_biological_priors_drugbank, config$target.screens, "drugbank", config)
 write.results.drug.targets(results_biological_priors_dtc, config$target.screens, "dtc", config)
+
+
+################################################# PLOT DRUG-WISE PERFORMANCE ##################################
+
+plot_pearson_distribution_filtering(results_biological_priors_drugbank, "GDSC2", "drugbank", "figs/DRUGBANK_DTC/pearson_distribution_drugbank_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_biological_priors_drugbank, "gCSI", "drugbank", "figs/DRUGBANK_DTC/pearson_distribution_drugbank_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_biological_priors_dtc, "GDSC2", "dtc", "figs/DRUGBANK_DTC/pearson_distribution_dtc_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_biological_priors_dtc, "gCSI", "dtc", "figs/DRUGBANK_DTC/pearson_distribution_dtc_gCSI_drugwise.png")
+
+
+# Call the function with the specified folder paths and output file
+
+###############################################################################################################
+
 # Read the data
 df1 <- read.csv("./results/cv_performance/drugbank/gCSI/performance_drugbank_drug_targets.csv")
 df2 <- read.csv("./results/cv_performance/drugbank/GDSC2/performance_drugbank_drug_targets.csv")
@@ -372,7 +424,56 @@ for (screen in config$target.screens) {
     )
   }
 }
-write.results.central.genes(results_central_genes, config$target.screens, central_gene_sets, config)
+#write.results.central.genes(results_central_genes, config$target.screens, central_gene_sets, config)
+write.results.centrality(results_central_genes, config$screens, c("betweenness", "degree", "uniform_pagerank", "eigenvector"), config) 
+
+
+################################################# PLOT DRUG-WISE PERFORMANCE ##################################
+
+plot_pearson_distribution_filtering(results_central_genes, "GDSC2", "betweenness", "figs/CENTRALITY_MEASURES/pearson_distribution_betweenness_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "gCSI", "betweenness", "figs/CENTRALITY_MEASURES/pearson_distribution_betweenness_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "GDSC2", "degree", "figs/CENTRALITY_MEASURES/pearson_distribution_degree_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "gCSI", "degree", "figs/CENTRALITY_MEASURES/pearson_distribution_degree_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "GDSC2", "uniform_pagerank", "figs/CENTRALITY_MEASURES/pearson_distribution_uniform_pagerank_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "gCSI", "uniform_pagerank", "figs/CENTRALITY_MEASURES/pearson_distribution_uniform_pagerank_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "GDSC2", "eigenvector", "figs/CENTRALITY_MEASURES/pearson_distribution_eigenvector_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_central_genes, "gCSI", "eigenvector", "figs/CENTRALITY_MEASURES/pearson_distribution_eigenvector_gCSI_drugwise.png")
+
+
+################################################### 10-FOLD CV FOR PPR ##########################################################
+results_ppr_lasso <- list()
+results_ppr_db <- list()
+results_ppr_dtc <- list()
+
+#training on feature sets drug-wise
+for (screen in config$target.screens) {
+  data_expression <- paste0("./data/processed/", screen, "/expression.csv")
+  data_response <- paste0("./data/processed/", screen, "/responses.csv")
+  data <- load_data(data_expression, data_response)
+  
+  # Load the saved feature sets
+  lasso_ppr_gene_set <- "results/pagerank_output/lasso/GDSC2/positive"
+  drugbank_ppr_gene_set <- "results/pagerank_output/drugbank/drugwise"
+  dtc_ppr_gene_set <- "results/pagerank_output/dtc/drugwise"
+  
+  # Run cross-validation for each feature set
+  results_ppr_lasso <- run.cv.gene.set.per.drug.ppr(results_ppr_lasso, screen, common_drugs, "ppr_lasso", lasso_ppr_gene_set, data, config, 10)
+  results_ppr_db <- run.cv.gene.set.per.drug.ppr(results_ppr_db, screen, common_drugs, "ppr_db", drugbank_ppr_gene_set, data, config, 10)
+  results_ppr_dtc <- run.cv.gene.set.per.drug.ppr(results_ppr_dtc, screen, common_drugs, "ppr_dtc", dtc_ppr_gene_set, data, config, 10)
+}
+
+write.results.ppr(results_ppr_lasso, config$target.screens, "ppr_lasso", config)
+write.results.ppr(results_ppr_db, config$target.screens, "ppr_db", config)
+write.results.ppr(results_ppr_dtc, config$target.screens, "ppr_dtc", config)
+
+################################################# PLOT DRUG-WISE PERFORMANCE ##################################
+plot_pearson_distribution_filtering(results_ppr_lasso, "GDSC2", "ppr_lasso", "figs/PPR/pearson_distribution_ppr_lasso_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_ppr_lasso, "gCSI", "ppr_lasso", "figs/PPR/pearson_distribution_ppr_lasso_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_ppr_db, "GDSC2", "ppr_db", "figs/PPR/pearson_distribution_ppr_db_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_ppr_db, "gCSI", "ppr_db", "figs/PPR/pearson_distribution_ppr_db_gCSI_drugwise.png")
+plot_pearson_distribution_filtering(results_ppr_dtc, "GDSC2", "ppr_dtc", "figs/PPR/pearson_distribution_ppr_dtc_GDSC_drugwise.png")
+plot_pearson_distribution_filtering(results_ppr_dtc, "gCSI", "ppr_dtc", "figs/PPR/pearson_distribution_ppr_dtc_gCSI_drugwise.png")
+
 
 # Combine all centrality data into a single data frame
 combined_centrality <- bind_rows(
